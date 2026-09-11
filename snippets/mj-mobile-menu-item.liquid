@@ -1,0 +1,245 @@
+{% comment %}
+  MisJoyas mobile nav item — header blocks: button / tree_menu.
+  Mirrors desktop: tree_menu with a menu = dropdown (accordion), even if
+  enable_button_style is on. cta_link must NOT collapse that into a plain link
+  (desktop still shows the megamenu when cta_link is set).
+  Accepts: block, section, index, menus, is_rtl
+{% endcomment %}
+{%- liquid
+  assign is_header_button = false
+  if block.type == 'button'
+    assign is_header_button = true
+  endif
+
+  assign menu_link = blank
+  assign has_menu = false
+  assign use_button_style = false
+  assign title_color = blank
+  assign badge_label = blank
+  assign panel_heading = blank
+  assign item_heading = blank
+  assign item_heading_rich = blank
+  assign open_new_window = false
+
+  if is_header_button
+    assign menu_link = block.settings.button_link
+    assign item_heading = block.settings.button_label
+    assign item_heading_rich = block.settings.button_label_rich
+    assign open_new_window = block.settings.open_new_window
+    assign use_button_style = true
+  else
+    if block.settings.menu != blank and block.settings.menu.links != blank
+      assign has_menu = true
+    endif
+    if block.settings.menu_item_link != blank
+      assign menu_link = block.settings.menu_item_link
+    elsif block.settings.cta_link != blank
+      assign menu_link = block.settings.cta_link
+    endif
+    if block.settings.enable_button_style
+      assign use_button_style = true
+    endif
+    assign title_color = block.settings.title_color
+    assign badge_label = block.settings.label
+    assign item_heading = block.settings.heading
+    assign item_heading_rich = block.settings.heading_rich
+    assign open_new_window = block.settings.open_new_window
+    assign panel_heading = block.settings.mega_heading
+  endif
+
+  assign btn_variant = 'button-solid'
+  if block.settings.show_button_style == 'secondary'
+    assign btn_variant = 'button-outline'
+  elsif block.settings.show_button_style == 'text-link'
+    assign btn_variant = 'button-text-link'
+  else
+    assign btn_variant = 'button-disable-effect'
+  endif
+  assign wrapper_class = 'mobile-menu-button-' | append: block.id
+-%}
+
+{%- capture menu_title -%}
+  {%- if item_heading_rich != blank -%}
+    <span class="mj-mobile-nav__title-text">{{ item_heading_rich }}</span>
+  {%- else -%}
+    {%- assign title = item_heading -%}
+    {%- if section.settings.enable_highlight and title != blank -%}
+      {%- liquid
+        assign is_highlight = false
+        assign list_menu = menus | join: '||' | prepend: '||' | append: '||' | escape
+        assign menu_item = '||' | append: title | append: '||' | escape
+        if list_menu contains menu_item
+          assign is_highlight = true
+        endif
+      -%}
+      {%- if is_highlight -%}
+        {% render 'menu-highlight',
+          highlight_type: section.settings.highlight_style,
+          menu_title: title,
+          section_id: section.id,
+          transparent: false
+        %}
+      {%- else -%}
+        <span class="mj-mobile-nav__title-text">{{ title | escape }}</span>
+      {%- endif -%}
+    {%- else -%}
+      <span class="mj-mobile-nav__title-text">{{ title | escape }}</span>
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- if is_header_button -%}
+  {%- comment -%} Pure Header Button block: CTA link only. {%- endcomment -%}
+  <li class="mj-mobile-nav__cta-item x-block-menu-{{ index }} block-mobile-navigation" {{ block.shopify_attributes }}>
+    {%- render 'header-menu-button-styles', block: block, css_class: wrapper_class, text_only_hover: true -%}
+    <div class="mj-mobile-nav__cta {{ wrapper_class }}">
+      {%- if menu_link != blank -%}
+        <a
+          href="{{ menu_link }}"
+          {% if open_new_window %}target="_blank"{% endif %}
+          class="button {{ btn_variant }} mj-mobile-nav__cta-btn"
+        >
+          {{ menu_title }}
+        </a>
+      {%- else -%}
+        <span class="button {{ btn_variant }} mj-mobile-nav__cta-btn opacity-70">{{ menu_title }}</span>
+      {%- endif -%}
+    </div>
+  </li>
+
+{%- elsif has_menu -%}
+  {%- comment -%}
+    Tree menu with children = accordion (desktop megamenu equivalent).
+    enable_button_style only changes the trigger look, not the interaction.
+  {%- endcomment -%}
+  <li
+    x-data="{ open: false }"
+    class="mj-mobile-nav__item x-block-menu-{{ index }} block-mobile-navigation{% if use_button_style %} mj-mobile-nav__item--button{% endif %}"
+    {{ block.shopify_attributes }}
+  >
+    {%- if use_button_style -%}
+      {%- render 'header-menu-button-styles', block: block, css_class: wrapper_class, text_only_hover: true -%}
+    {%- endif -%}
+    <button
+      type="button"
+      class="mj-mobile-nav__trigger{% if use_button_style %} button {{ btn_variant }} mj-mobile-nav__cta-btn {{ wrapper_class }}{% endif %}{% unless use_button_style %}{% if title_color != blank and title_color.alpha != 0.0 %} has-custom-color{% endif %}{% endunless %}"
+      {% unless use_button_style %}
+        {% if title_color != blank and title_color.alpha != 0.0 %}
+          style="--mj-nav-item-color: {{ title_color }};"
+        {% endif %}
+      {% endunless %}
+      @click="open = !open"
+      :aria-expanded="open.toString()"
+    >
+      <span
+        class="mj-mobile-nav__title{% unless use_button_style %}{% if title_color != blank and title_color.alpha != 0.0 %} has-custom-color{% endif %}{% endunless %}"
+      >
+        {{ menu_title }}
+      </span>
+      {%- if badge_label != blank -%}
+        <span
+          class="mj-mobile-nav__badge"
+          style="
+            {% if block.settings.label_color != blank and block.settings.label_color.alpha != 0.0 %}background-color: {{ block.settings.label_color }};{% endif %}
+            {% if block.settings.label_text_color_light != blank and block.settings.label_text_color_light.alpha != 0.0 %}color: {{ block.settings.label_text_color_light }};{% endif %}
+          "
+        >{{ badge_label | escape }}</span>
+      {%- endif -%}
+      <span class="mj-mobile-nav__caret" :class="{ 'is-open': open }" aria-hidden="true">
+        {% render 'mj-menu-caret' %}
+      </span>
+    </button>
+
+    <div class="mj-mobile-nav__accordion" x-show="open" x-cloak>
+      {%- for child in block.settings.menu.links -%}
+        {%- assign child_id = index | append: '-' | append: forloop.index -%}
+        {%- if child.links != blank -%}
+          <button
+            type="button"
+            class="mj-mobile-nav__sublink"
+            @click="$store.xMobileNav.setActiveLink('{{ child_id }}'); $store.xMobileNav.scrollTop();"
+          >
+            {{ child.title | escape }}
+          </button>
+        {%- else -%}
+          <a href="{{ child.url }}" class="mj-mobile-nav__sublink">{{ child.title | escape }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- liquid
+        assign view_all_link = block.settings.cta_link
+        if view_all_link == blank and block.settings.menu_item_link != blank
+          assign view_all_link = block.settings.menu_item_link
+        endif
+      -%}
+      {%- if view_all_link != blank -%}
+        <a href="{{ view_all_link }}" class="mj-mobile-nav__sublink mj-mobile-nav__view-all">{{ 'templates.search.view_all' | t }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- for child in block.settings.menu.links -%}
+      {%- if child.links != blank -%}
+        {%- assign child_id = index | append: '-' | append: forloop.index -%}
+        <div
+          class="menu-drawer mj-mobile-nav__panel duration-300 ease-in-out top-0 left-0 absolute background-header w-full h-full z-20 invisible{% if is_rtl %} -translate-x-full{% else %} translate-x-full{% endif %}"
+          :class="{ 'menu-opening': $store.xMobileNav.currentMenuLinks.includes('{{ child_id }}') }"
+        >
+          {% render 'mj-mobile-drill-panel',
+            links: child.links,
+            back_title: child.title,
+            panel_heading: panel_heading,
+            panel_id: child_id,
+            start_id: child_id,
+            is_rtl: is_rtl
+          %}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </li>
+
+{%- elsif use_button_style -%}
+  {%- comment -%} Tree menu styled as button but with no children: CTA link. {%- endcomment -%}
+  <li class="mj-mobile-nav__cta-item x-block-menu-{{ index }} block-mobile-navigation" {{ block.shopify_attributes }}>
+    {%- render 'header-menu-button-styles', block: block, css_class: wrapper_class, text_only_hover: true -%}
+    <div class="mj-mobile-nav__cta {{ wrapper_class }}">
+      {%- if menu_link != blank -%}
+        <a
+          href="{{ menu_link }}"
+          {% if open_new_window %}target="_blank"{% endif %}
+          class="button {{ btn_variant }} mj-mobile-nav__cta-btn"
+        >
+          {{ menu_title }}
+        </a>
+      {%- else -%}
+        <span class="button {{ btn_variant }} mj-mobile-nav__cta-btn opacity-70">{{ menu_title }}</span>
+      {%- endif -%}
+    </div>
+  </li>
+
+{%- elsif item_heading != blank or item_heading_rich != blank -%}
+  <li class="mj-mobile-nav__item mj-mobile-nav__item--link x-block-menu-{{ index }} block-mobile-navigation" {{ block.shopify_attributes }}>
+    {%- if menu_link != blank -%}
+      <a
+        href="{{ menu_link }}"
+        {% if open_new_window %}target="_blank"{% endif %}
+        class="mj-mobile-nav__trigger{% if title_color != blank and title_color.alpha != 0.0 %} has-custom-color{% endif %}"
+        {% if title_color != blank and title_color.alpha != 0.0 %}style="--mj-nav-item-color: {{ title_color }};"{% endif %}
+      >
+        {{ menu_title }}
+        {%- if badge_label != blank -%}
+          <span class="mj-mobile-nav__badge">{{ badge_label | escape }}</span>
+        {%- endif -%}
+      </a>
+    {%- else -%}
+      <div
+        class="mj-mobile-nav__trigger{% if title_color != blank and title_color.alpha != 0.0 %} has-custom-color{% endif %}"
+        {% if title_color != blank and title_color.alpha != 0.0 %}style="--mj-nav-item-color: {{ title_color }};"{% endif %}
+      >
+        {{ menu_title }}
+        {%- if badge_label != blank -%}
+          <span class="mj-mobile-nav__badge">{{ badge_label | escape }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </li>
+{%- endif -%}

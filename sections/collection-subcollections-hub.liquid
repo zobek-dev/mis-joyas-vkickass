@@ -1,0 +1,383 @@
+{%- liquid
+  assign ratio = 100
+  if section.settings.image_ratio == 'rectangle'
+    assign ratio = 150
+  endif
+  if section.settings.image_ratio == '3/4'
+    assign ratio = 133
+  endif
+
+  assign max_columns = section.settings.columns_desktop
+  assign min_columns_mobile = section.settings.columns_mobile | times: 1
+  assign columns_desktop = section.settings.columns_desktop | plus: 0
+  assign rendered_count = 0
+  assign hub_menu = linklists[section.settings.menu]
+  assign use_menu = false
+  assign use_metafield = false
+  assign use_blocks = false
+
+  for block in section.blocks
+    if block.type == 'collection' and block.settings.collection != blank
+      assign use_blocks = true
+      break
+    endif
+  endfor
+
+  if use_blocks
+  elsif collection.metafields.custom.related_collections.value.count > 0
+    assign use_metafield = true
+  elsif hub_menu != blank and hub_menu.links.size > 0
+    assign use_menu = true
+  endif
+-%}
+{%- style -%}
+  .spacing--{{ section.id }} {
+    gap: {{ section.settings.spacing_mobile }}px;
+  }
+  @media screen and (min-width: 768px) {
+    .spacing--{{ section.id }} {
+      gap: {{ section.settings.spacing }}px;
+    }
+  }
+{%- endstyle -%}
+<div class="collection-list-page x-page-width page-width pt-[{{ section.settings.padding_top_mobile }}px] md:pt-[{{ section.settings.padding_top }}px] pb-[{{ section.settings.padding_bottom_mobile }}px] md:pb-[{{ section.settings.padding_bottom }}px]">
+  {% if section.settings.title != blank %}
+    <{{ section.settings.heading_tag }} class="h2 mb-8 leading-tight{% if settings.lang_direction contains request.locale.iso_code %} text-right{% endif %}">
+      {{ section.settings.title | escape }}
+    </{{ section.settings.heading_tag }}>
+  {% endif %}
+
+  <ul class="collection-list grid grid-cols-{{ min_columns_mobile }} md:grid-cols-{{ max_columns }} spacing--{{ section.id }}" role="list">
+    {%- if use_blocks -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'collection' and block.settings.collection != blank -%}
+          {%- liquid
+            assign rendered_count = rendered_count | plus: 1
+            assign block_columns_desktop = block.settings.number_of_columns
+            assign block_columns_mobile = block.settings.number_of_columns
+            assign collage = false
+
+            if block_columns_desktop > max_columns
+              assign block_columns_desktop = max_columns
+            endif
+            if block_columns_mobile > min_columns_mobile
+              assign block_columns_mobile = min_columns_mobile
+            endif
+            if block.settings.collection.featured_image != blank
+              assign collage = 'auto'
+            endif
+          -%}
+          <li class="collection-list-item flex flex-col group overflow-hidden relative col-span-{{ block_columns_mobile }} md:col-span-{{ block_columns_desktop }} row-span-{{ block.settings.number_of_row }}" {{ block.shopify_attributes }}>
+            {% render 'card-collection',
+              card_collection: block.settings.collection,
+              block_type: 'featured_collection',
+              image_ratio: section.settings.image_ratio,
+              ratio: ratio,
+              extend_height: true,
+              collage: collage,
+              block: block,
+              image: block.settings.image,
+              title_size: section.settings.title_size,
+              content_alignment: section.settings.content_alignment,
+              content_position: section.settings.content_position,
+              columns_desktop: block_columns_desktop,
+              columns_mobile: section.settings.columns_mobile | plus: 0,
+              image_overlay_opacity: section.settings.image_overlay_opacity,
+              text_overlay: section.settings.show_text_overlay,
+              collection_metafield: section.settings.collection_metafield,
+              show_item_count: section.settings.show_item_count
+            %}
+          </li>
+        {%- elsif request.design_mode and block.type == 'collection' -%}
+          <li class="collection-list-item tw-p-4 tw-text-sm tw-text-center tw-border tw-border-dashed tw-rounded" {{ block.shopify_attributes }}>
+            Bloque sin colección asignada. Selecciona la subcolección en el editor.
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- elsif use_metafield -%}
+      {%- for sub_collection in collection.metafields.custom.related_collections.value -%}
+        {%- if sub_collection != blank -%}
+          {%- assign rendered_count = rendered_count | plus: 1 -%}
+          <li class="collection-list-item overflow-hidden">
+            {% render 'card-collection',
+              card_collection: sub_collection,
+              block_type: 'featured_collection',
+              image_ratio: section.settings.image_ratio,
+              ratio: ratio,
+              title_size: section.settings.title_size,
+              content_alignment: section.settings.content_alignment,
+              content_position: section.settings.content_position,
+              text_overlay: section.settings.show_text_overlay,
+              image_overlay_opacity: section.settings.image_overlay_opacity,
+              columns_desktop: columns_desktop,
+              columns_mobile: section.settings.columns_mobile | plus: 0,
+              collection_metafield: section.settings.collection_metafield,
+              show_item_count: section.settings.show_item_count
+            %}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- elsif use_menu -%}
+      {%- for link in hub_menu.links -%}
+        {%- if link.type == 'collection_link' and link.object != blank -%}
+          {%- assign rendered_count = rendered_count | plus: 1 -%}
+          <li class="collection-list-item overflow-hidden">
+            {% render 'card-collection',
+              card_collection: link.object,
+              block_type: 'featured_collection',
+              image_ratio: section.settings.image_ratio,
+              ratio: ratio,
+              title_size: section.settings.title_size,
+              content_alignment: section.settings.content_alignment,
+              content_position: section.settings.content_position,
+              text_overlay: section.settings.show_text_overlay,
+              image_overlay_opacity: section.settings.image_overlay_opacity,
+              columns_desktop: columns_desktop,
+              columns_mobile: section.settings.columns_mobile | plus: 0,
+              collection_metafield: section.settings.collection_metafield,
+              show_item_count: section.settings.show_item_count
+            %}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  </ul>
+
+  {%- if rendered_count == 0 -%}
+    <p class="tw-text-center tw-text-sm tw-p-8 tw-text-[#737373]">
+      {%- if request.design_mode -%}
+        No hay subcolecciones visibles. Elige un menú de navegación, asigna bloques de colección o configura el metafield <strong>custom.related_collections</strong> en la colección padre.
+      {%- else -%}
+        {{ 'sections.collection_list.empty' | t | default: 'No hay colecciones para mostrar.' }}
+      {%- endif -%}
+    </p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Subcolecciones (hub)",
+  "tag": "section",
+  "class": "section x-section-collection-subcollections-hub",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Muestra subcolecciones en una colección padre. Prioridad: 1) bloques de colección, 2) metafield custom.related_collections, 3) menú de navegación."
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menú de subcolecciones",
+      "info": "Usa el menú colecciones-rebajas-invierno (el mismo del header). Cada enlace debe ser una colección."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título opcional"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "default": "h2",
+      "label": "Etiqueta del título",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        { "value": "square", "label": "Cuadrado" },
+        { "value": "rectangle", "label": "Rectangular" },
+        { "value": "3/4", "label": "3/4" },
+        { "value": "round", "label": "Redondo" },
+        { "value": "auto", "label": "Automático" }
+      ],
+      "default": "square",
+      "label": "Proporción de imagen"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 50,
+      "max": 200,
+      "step": 10,
+      "unit": "%",
+      "label": "Tamaño del título",
+      "default": 80
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_overlay",
+      "default": false,
+      "label": "Texto sobre imagen"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "label": "Alineación del texto",
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "options": [
+        { "value": "top", "label": "Arriba" },
+        { "value": "center", "label": "Centro" },
+        { "value": "bottom", "label": "Abajo" }
+      ],
+      "label": "Posición del texto",
+      "default": "bottom"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 5,
+      "max": 95,
+      "step": 5,
+      "default": 5,
+      "unit": "%",
+      "label": "Opacidad del overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_item_count",
+      "default": true,
+      "label": "Mostrar cantidad de productos"
+    },
+    {
+      "type": "text",
+      "id": "collection_metafield",
+      "label": "Metafield de imagen alternativa (opcional)"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5,
+      "label": "Columnas en escritorio"
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 1,
+      "default": 28,
+      "label": "Espacio entre tarjetas (escritorio)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 4,
+      "default": 36,
+      "label": "Padding superior"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 4,
+      "default": 36,
+      "label": "Padding inferior"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2",
+      "label": "Columnas en móvil"
+    },
+    {
+      "type": "range",
+      "id": "spacing_mobile",
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 1,
+      "default": 20,
+      "label": "Espacio entre tarjetas (móvil)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 4,
+      "default": 32,
+      "label": "Padding superior móvil"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 4,
+      "default": 32,
+      "label": "Padding inferior móvil"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Subcolección",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Colección"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen personalizada"
+        },
+        {
+          "type": "range",
+          "id": "number_of_columns",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 1,
+          "label": "Columnas que ocupa"
+        },
+        {
+          "type": "range",
+          "id": "number_of_row",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "default": 1,
+          "label": "Filas que ocupa"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Subcolecciones (hub)"
+    }
+  ]
+}
+{% endschema %}

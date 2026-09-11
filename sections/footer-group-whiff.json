@@ -11,6 +11,21 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
+    "misjoyas_whatsapp_float": {
+      "type": "misjoyas-whatsapp-float",
+      "settings": {
+        "enable": true,
+        "phone": "56945454917",
+        "message": "¡Hola! 👋 Me gustaría hacer una consulta con MisJoyas. ¿Me pueden orientar, por favor?",
+        "offset_bottom": 80,
+        "offset_bottom_mobile": 20,
+        "offset_right": 20,
+        "offset_right_mobile": 17,
+        "size_desktop": 60,
+        "size_mobile": 50,
+        "z_index": 100
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -19,7 +34,7 @@
           "settings": {
             "open_by_default": false,
             "heading_text": "",
-            "subtext": "<p>DESDE 1990<br/><br/>Venta de joyas en plata 925 al por mayor  <br/>Chile.</p>",
+            "subtext": "<p>DESDE 1990<br/><br/>Venta de joyas en plata 925 y baño de oro al por mayor.<br/>Chile.</p>",
             "show_social_icons": true,
             "icon_layout": "horizontal",
             "image": "shopify://shop_images/MISJOYAS-logo_blanco_3cdb9529-b879-4c23-88ac-dbac27b10b30.png",
@@ -33,7 +48,7 @@
           "settings": {
             "open_by_default": false,
             "heading_menu": "Te ayudamos",
-            "menu": "footer",
+            "menu": "quienes-somos-septiembre",
             "show_social_icons": false
           }
         },
@@ -83,6 +98,7 @@
     }
   },
   "order": [
+    "misjoyas_whatsapp_float",
     "footer"
   ]
 }

@@ -3,6 +3,12 @@
     {%- liquid
       assign kit_height = section.settings.banner_height
       assign kit_height_mobile = section.settings.banner_height_mobile
+      if kit_height == blank
+        assign kit_height = 340
+      endif
+      if kit_height_mobile == blank
+        assign kit_height_mobile = 636
+      endif
       assign has_blocks = false
       if section.blocks.size > 0
         assign has_blocks = true
@@ -11,146 +17,256 @@
       if section.blocks.size > 1
         assign enable_slider = true
       endif
-
-      assign mobile_ar_w = 440
-      assign mobile_ar_h = 400
-      assign desktop_ar_w = 1488
-      assign desktop_ar_h = 400
-
-      if has_blocks
-        for block in section.blocks
-          assign block_desktop = block.settings.image
-          assign block_mobile = block.settings.image_mobile
-
-          if block_desktop != blank
-            assign cmp_desktop = block_desktop.height | times: desktop_ar_w
-            assign cmp_desktop_ref = desktop_ar_h | times: block_desktop.width
-            if cmp_desktop > cmp_desktop_ref
-              assign desktop_ar_h = block_desktop.height
-              assign desktop_ar_w = block_desktop.width
-            endif
+      assign show_sparkles = section.settings.show_sparkles
+      assign autoplay_ms = section.settings.change_slides_speed | default: 5 | times: 1000
+      assign mobile_ratio_w = 440
+      assign mobile_ratio_h = kit_height_mobile
+      assign mobile_ratio_found = false
+      for block in section.blocks
+        unless mobile_ratio_found
+          # Preferir preview del video mobile para no forzar un ratio ajeno (evita crop/escala pixelada)
+          if block.settings.video_mobile != blank and block.settings.video_mobile.preview_image != blank
+            assign mobile_ratio_w = block.settings.video_mobile.preview_image.width
+            assign mobile_ratio_h = block.settings.video_mobile.preview_image.height
+            assign mobile_ratio_found = true
+          elsif block.settings.image_mobile != blank
+            assign mobile_ratio_w = block.settings.image_mobile.width
+            assign mobile_ratio_h = block.settings.image_mobile.height
+            assign mobile_ratio_found = true
+          elsif block.settings.image != blank
+            assign mobile_ratio_w = block.settings.image.width
+            assign mobile_ratio_h = block.settings.image.height
+            assign mobile_ratio_found = true
           endif
-
-          if block_mobile != blank
-            assign cmp_mobile = block_mobile.height | times: mobile_ar_w
-            assign cmp_mobile_ref = mobile_ar_h | times: block_mobile.width
-            if cmp_mobile > cmp_mobile_ref
-              assign mobile_ar_h = block_mobile.height
-              assign mobile_ar_w = block_mobile.width
-            endif
-          elsif block_desktop != blank
-            assign cmp_mobile = block_desktop.height | times: mobile_ar_w
-            assign cmp_mobile_ref = mobile_ar_h | times: block_desktop.width
-            if cmp_mobile > cmp_mobile_ref
-              assign mobile_ar_h = block_desktop.height
-              assign mobile_ar_w = block_desktop.width
-            endif
-          endif
-        endfor
-      else
-        if section.settings.image != blank
-          assign desktop_ar_h = section.settings.image.height
-          assign desktop_ar_w = section.settings.image.width
-        endif
-        if section.settings.image_mobile != blank
-          assign mobile_ar_h = section.settings.image_mobile.height
-          assign mobile_ar_w = section.settings.image_mobile.width
-        elsif section.settings.image != blank
-          assign mobile_ar_h = section.settings.image.height
-          assign mobile_ar_w = section.settings.image.width
-        endif
-      endif
+        endunless
+      endfor
     -%}
 
     {%- style -%}
       .banner-kit-{{ section.id }} {
-        --banner-kit-max-h: {{ kit_height }}px;
-        --banner-kit-max-h-mobile: {{ kit_height_mobile }}px;
-        --banner-kit-radius: {{ section.settings.border_radius }}px;
+        --banner-2-h: {{ kit_height }}px;
+        --banner-2-h-mobile: {{ kit_height_mobile }}px;
+        --banner-2-desktop-ratio: 1440 / {{ kit_height }};
+        --banner-2-mobile-ratio: {{ mobile_ratio_w }} / {{ mobile_ratio_h }};
+        --banner-2-radius: {{ section.settings.border_radius }}px;
+        --banner-2-autoplay: {{ autoplay_ms }}ms;
         width: 100%;
-        padding-top: {{ section.settings.padding_y_mobile }}px;
-        padding-bottom: {{ section.settings.padding_y_mobile }}px;
-        line-height: 0;
+        padding: {{ section.settings.padding_y_mobile }}px 0;
+        box-sizing: border-box;
+        overflow-x: clip;
+        overflow-y: visible;
       }
       @media (min-width: 768px) {
         .banner-kit-{{ section.id }} {
-          padding-top: {{ section.settings.padding_y }}px;
-          padding-bottom: {{ section.settings.padding_y }}px;
+          padding: {{ section.settings.padding_y }}px 0;
         }
       }
-      .banner-kit-{{ section.id }} .banner-kit__inner {
+      .banner-kit-{{ section.id }} .banner-kit__stage {
+        position: relative;
         width: 100%;
-        max-width: 93rem;
-        margin-left: auto;
-        margin-right: auto;
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-      @media (min-width: 768px) {
-        .banner-kit-{{ section.id }} .banner-kit__inner {
-          padding-left: 0;
-          padding-right: 0;
-        }
+        overflow: visible;
       }
       .banner-kit-{{ section.id }} .banner-kit__frame {
         position: relative;
         width: 100%;
-        border-radius: var(--banner-kit-radius);
+        height: auto;
+        border-radius: var(--banner-2-radius);
         overflow: hidden;
+        background: #1a1a1a;
       }
       @media (min-width: 768px) {
         .banner-kit-{{ section.id }} .banner-kit__frame {
-          height: auto;
-          aspect-ratio: {{ desktop_ar_w }} / {{ desktop_ar_h }};
+          aspect-ratio: var(--banner-2-desktop-ratio);
         }
       }
-      .banner-kit-{{ section.id }} .banner-kit__slider {
-        width: 100%;
-        height: 100%;
-      }
+      .banner-kit-{{ section.id }} .banner-kit__slider,
       .banner-kit-{{ section.id }} .splide__track,
-      .banner-kit-{{ section.id }} .splide__list {
-        height: 100%;
-      }
+      .banner-kit-{{ section.id }} .splide__list,
       .banner-kit-{{ section.id }} .banner-kit__slide {
         width: 100%;
-        height: 100%;
+        height: auto;
       }
-      .banner-kit-{{ section.id }} .banner-kit__link,
-      .banner-kit-{{ section.id }} .banner-kit__picture {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
-      .banner-kit-{{ section.id }} .banner-kit__img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        border-radius: var(--banner-kit-radius);
-      }
-      @media (max-width: 767px) {
-        .banner-kit-{{ section.id }} .banner-kit__frame {
-          height: auto;
-        }
+      @media (min-width: 768px) {
         .banner-kit-{{ section.id }} .banner-kit__slider,
         .banner-kit-{{ section.id }} .splide__track,
         .banner-kit-{{ section.id }} .splide__list,
         .banner-kit-{{ section.id }} .banner-kit__slide {
-          height: auto;
+          height: 100%;
         }
-        .banner-kit-{{ section.id }} .banner-kit__link,
-        .banner-kit-{{ section.id }} .banner-kit__picture {
-          height: auto;
+      }
+      .banner-kit-{{ section.id }} .banner-kit__slide {
+        position: relative;
+      }
+      .banner-kit-{{ section.id }} .banner-kit__media,
+      .banner-kit-{{ section.id }} .banner-kit__media-link {
+        position: relative;
+        inset: auto;
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      @media (min-width: 768px) {
+        .banner-kit-{{ section.id }} .banner-kit__media,
+        .banner-kit-{{ section.id }} .banner-kit__media-link {
+          position: absolute;
+          inset: 0;
+          height: 100%;
         }
+      }
+      .banner-kit-{{ section.id }} .banner-kit__media-link {
+        z-index: 1;
+      }
+      .banner-kit-{{ section.id }} .banner-kit__picture,
+      .banner-kit-{{ section.id }} .banner-kit__video-wrap {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+      @media (min-width: 768px) {
+        .banner-kit-{{ section.id }} .banner-kit__picture,
+        .banner-kit-{{ section.id }} .banner-kit__video-wrap {
+          height: 100%;
+        }
+      }
+      .banner-kit-{{ section.id }} .banner-kit__img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: unset;
+        object-position: center;
+      }
+      @media (min-width: 768px) {
         .banner-kit-{{ section.id }} .banner-kit__img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .banner-kit-{{ section.id }} .banner-kit__video-wrap {
+        aspect-ratio: var(--banner-2-mobile-ratio);
+      }
+      @media (min-width: 768px) {
+        .banner-kit-{{ section.id }} .banner-kit__video-wrap {
+          aspect-ratio: auto;
+        }
+      }
+      .banner-kit-{{ section.id }} .banner-kit__video {
+        display: block;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+      }
+      @media (max-width: 767px) {
+        /*
+          Video mobile a tamaño intrínseco (sin caja forzada que lo estire).
+          Si el MP4 es ~440px, object-fit:cover en un frame alto lo pixelaba en retina.
+        */
+        .banner-kit-{{ section.id }} .banner-kit__video-wrap {
+          aspect-ratio: auto;
+          height: auto;
+        }
+        .banner-kit-{{ section.id }} .banner-kit__video-wrap > div {
+          position: relative !important;
+          inset: auto !important;
           width: 100%;
           height: auto;
-          max-height: none;
-          object-fit: contain;
-          object-position: center top;
         }
+        .banner-kit-{{ section.id }} .banner-kit__video {
+          position: relative;
+          inset: auto;
+          width: 100%;
+          height: auto;
+          object-fit: unset;
+        }
+      }
+      .banner-kit-{{ section.id }} .banner-kit__sparkle {
+        position: absolute;
+        top: 50%;
+        z-index: 4;
+        display: block;
+        width: 60px;
+        height: 59px;
+        pointer-events: none;
+        transform: translateY(-50%);
+        color: #fff;
+      }
+      .banner-kit-{{ section.id }} .banner-kit__sparkle svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+      .banner-kit-{{ section.id }} .banner-kit__sparkle--left {
+        left: -30px;
+      }
+      .banner-kit-{{ section.id }} .banner-kit__sparkle--right {
+        right: -30px;
+      }
+      @media (max-width: 767px) {
+        .banner-kit-{{ section.id }} .banner-kit__sparkle {
+          display: none;
+        }
+      }
+      .banner-kit-{{ section.id }} .banner-kit__content {
+        position: absolute;
+        z-index: 3;
+        left: 20px;
+        right: 20px;
+        bottom: 40px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        pointer-events: none;
+      }
+      @media (min-width: 768px) {
+        .banner-kit-{{ section.id }} .banner-kit__content {
+          left: 40px;
+          right: 80px;
+          top: 50%;
+          bottom: auto;
+          width: auto;
+          transform: translateY(-50%);
+          align-items: center;
+          justify-content: flex-end;
+        }
+      }
+      .banner-kit-{{ section.id }} .banner-kit__cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        min-height: 50px;
+        padding: 12px 32px;
+        border: 0;
+        border-radius: 4px;
+        background: #f83785;
+        background-image: none;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 22px;
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+        pointer-events: auto;
+        transition: background-color 0.2s ease, color 0.2s ease;
+      }
+      .banner-kit-{{ section.id }} .banner-kit__cta:hover,
+      .banner-kit-{{ section.id }} .banner-kit__cta:focus,
+      .banner-kit-{{ section.id }} .banner-kit__cta:focus-visible,
+      .banner-kit-{{ section.id }} .banner-kit__cta:active {
+        background: #000 !important;
+        background-image: none !important;
+        color: #fff !important;
+        text-decoration: none;
+      }
+      .banner-kit-{{ section.id }} .banner-kit__cta::before,
+      .banner-kit-{{ section.id }} .banner-kit__cta::after {
+        content: none !important;
+        display: none !important;
       }
       .banner-kit-{{ section.id }} .banner-kit__placeholder {
         display: flex;
@@ -158,81 +274,61 @@
         justify-content: center;
         width: 100%;
         height: 100%;
-        background-color: #eae3d9;
-        color: #222222;
+        background: #eae3d9;
+        color: #222;
         font-size: 0.875rem;
-        line-height: 1.4;
         text-align: center;
         padding: 1.5rem;
       }
-      .banner-kit-{{ section.id }} .splide__arrows {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 2;
-      }
-      .banner-kit-{{ section.id }} .banner-kit__arrow {
-        pointer-events: auto;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+      .banner-kit-{{ section.id }} .banner-kit__progress {
         display: flex;
-        align-items: center;
         justify-content: center;
-        box-sizing: border-box;
-        width: 28px;
-        min-height: 44px;
-        padding: 10px 2px;
-        border: none;
-        background: rgba(255, 255, 255, 0.9);
-        color: #222222;
-        box-shadow: none;
-        cursor: pointer;
-        transition: background-color 0.15s ease, opacity 0.15s ease;
+        width: 100%;
+        margin-top: 20px;
       }
-      .banner-kit-{{ section.id }} .x-splide:hover .banner-kit__arrow {
-        transform: translateY(-50%);
+      .banner-kit-{{ section.id }} .banner-kit__progress-track {
+        position: relative;
+        width: min(360px, calc(100% - 40px));
+        height: 2px;
+        overflow: hidden;
+        background: #e0e0e0;
       }
-      .banner-kit-{{ section.id }} .banner-kit__arrow:hover,
-      .banner-kit-{{ section.id }} .banner-kit__arrow:focus,
-      .banner-kit-{{ section.id }} .banner-kit__arrow:focus-visible {
-        background: rgba(255, 255, 255, 1);
-        color: #222222;
-        box-shadow: none;
-        opacity: 1;
-      }
-      .banner-kit-{{ section.id }} .banner-kit__arrow:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
-      .banner-kit-{{ section.id }} .banner-kit__arrow--prev {
+      .banner-kit-{{ section.id }} .banner-kit__progress-fill {
+        position: absolute;
+        top: 0;
         left: 0;
-        border-radius: 0 6px 6px 0;
-      }
-      .banner-kit-{{ section.id }} .banner-kit__arrow--next {
-        right: 0;
-        border-radius: 6px 0 0 6px;
-      }
-      .banner-kit-{{ section.id }} .banner-kit__arrow-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 24px;
-        height: 24px;
-        flex-shrink: 0;
-      }
-      .banner-kit-{{ section.id }} .banner-kit__arrow-icon svg {
-        width: 24px;
-        height: 24px;
+        height: 100%;
+        width: 0%;
+        background: #000;
+        will-change: width;
       }
     {%- endstyle -%}
 
     <div
-      class="banner-kit-{{ section.id }} tw-w-full"
+      class="banner-kit-{{ section.id }}"
       role="region"
       aria-label="{{ 'sections.banner-kit.aria_label' | t }}"
     >
-      <div class="banner-kit__inner x-page-width page-width">
+      <div class="banner-kit__stage">
+        {%- if show_sparkles -%}
+          <span class="banner-kit__sparkle banner-kit__sparkle--left" aria-hidden="true">
+            <svg viewBox="0 0 60 60" width="60" height="59" xmlns="http://www.w3.org/2000/svg" focusable="false">
+              <path
+                fill="currentColor"
+                d="M30 0C30 16.5685 16.5685 30 0 30C16.5685 30 30 43.4315 30 60C30 43.4315 43.4315 30 60 30C43.4315 30 30 16.5685 30 0Z"
+              />
+            </svg>
+          </span>
+          <span class="banner-kit__sparkle banner-kit__sparkle--right" aria-hidden="true">
+            <svg viewBox="0 0 60 60" width="60" height="59" xmlns="http://www.w3.org/2000/svg" focusable="false">
+              <path
+                fill="currentColor"
+                d="M30 0C30 16.5685 16.5685 30 0 30C16.5685 30 30 43.4315 30 60C30 43.4315 43.4315 30 60 30C43.4315 30 30 16.5685 30 0Z"
+              />
+            </svg>
+          </span>
+        {%- endif -%}
+
         <div class="banner-kit__frame">
           <div
             id="x-banner-kit-{{ section.id }}"
@@ -241,20 +337,169 @@
               x-intersect.once.margin.200px='$store.xSplide.load($el, {
                 "speed": 800,
                 "type": "loop",
-                "pauseOnHover": true,
-                "pauseOnFocus": false,
-                {%- if section.settings.auto_play -%}
-                  "autoplay": true,
-                  "interval": {{ section.settings.change_slides_speed | times: 1000 }},
-                {%- endif -%}
+                "arrows": false,
+                "pagination": false,
+                "autoplay": false,
+                "autoHeight": false,
+                "breakpoints": {
+                  "767": {
+                    "autoHeight": true
+                  }
+                },
                 {%- if settings.lang_direction contains request.locale.iso_code -%}
                   "direction": "rtl",
                 {%- endif -%}
-                "classes": {
-                  "arrows": "splide__arrows",
-                  "pagination": "hidden"
+              });
+              const root = $el.closest(".banner-kit-{{ section.id }}");
+              const fill = root ? root.querySelector("[data-banner2-fill]") : null;
+              const imageMs = {{ autoplay_ms }};
+              const autoPlay = {{ section.settings.auto_play | json }};
+              const bindBanner2 = () => {
+                const splide = $el.splide;
+                if (!splide) {
+                  requestAnimationFrame(bindBanner2);
+                  return;
                 }
-              })'
+                if ($el.dataset.banner2Bound === "1") return;
+                $el.dataset.banner2Bound = "1";
+                const setWidth = (pct) => {
+                  if (fill) fill.style.width = Math.max(0, Math.min(100, pct)) + "%";
+                };
+                let activeVideo = null;
+                let onEnded = null;
+                let onTimeUpdate = null;
+                let imageRaf = null;
+                let imageStartedAt = 0;
+                let imageRemaining = imageMs;
+                let paused = false;
+
+                const isVisible = (node) => {
+                  let el = node;
+                  while (el && el !== $el) {
+                    const cs = window.getComputedStyle(el);
+                    if (cs.display === "none" || cs.visibility === "hidden") return false;
+                    el = el.parentElement;
+                  }
+                  return true;
+                };
+
+                const getActiveVideo = (slide) => {
+                  const videos = slide.querySelectorAll("video.banner-kit__video");
+                  for (let i = 0; i < videos.length; i++) {
+                    if (isVisible(videos[i])) return videos[i];
+                  }
+                  return null;
+                };
+
+                const clearSlide = () => {
+                  if (imageRaf) {
+                    cancelAnimationFrame(imageRaf);
+                    imageRaf = null;
+                  }
+                  if (activeVideo) {
+                    if (onEnded) activeVideo.removeEventListener("ended", onEnded);
+                    if (onTimeUpdate) activeVideo.removeEventListener("timeupdate", onTimeUpdate);
+                    try { activeVideo.pause(); } catch (e) {}
+                  }
+                  activeVideo = null;
+                  onEnded = null;
+                  onTimeUpdate = null;
+                };
+
+                const pauseAllVideos = () => {
+                  $el.querySelectorAll("video.banner-kit__video").forEach((v) => {
+                    try { v.pause(); } catch (e) {}
+                  });
+                };
+
+                const startImageTimer = () => {
+                  imageStartedAt = performance.now();
+                  const tick = () => {
+                    if (paused) return;
+                    const elapsed = performance.now() - imageStartedAt;
+                    setWidth(Math.min(100, (elapsed / imageRemaining) * 100));
+                    if (elapsed >= imageRemaining) {
+                      setWidth(100);
+                      imageRaf = null;
+                      splide.go(">");
+                      return;
+                    }
+                    imageRaf = requestAnimationFrame(tick);
+                  };
+                  imageRaf = requestAnimationFrame(tick);
+                };
+
+                const runSlide = () => {
+                  clearSlide();
+                  pauseAllVideos();
+                  setWidth(0);
+                  imageRemaining = imageMs;
+                  if (!autoPlay) return;
+
+                  const slideEntry = splide.Components.Slides.getAt(splide.index);
+                  const slide = slideEntry && slideEntry.slide;
+                  if (!slide) return;
+
+                  const video = getActiveVideo(slide);
+                  if (video) {
+                    activeVideo = video;
+                    video.loop = false;
+                    video.muted = true;
+                    try { video.currentTime = 0; } catch (e) {}
+                    onTimeUpdate = () => {
+                      if (video.duration && isFinite(video.duration)) {
+                        setWidth((video.currentTime / video.duration) * 100);
+                      }
+                    };
+                    onEnded = () => {
+                      setWidth(100);
+                      splide.go(">");
+                    };
+                    video.addEventListener("timeupdate", onTimeUpdate);
+                    video.addEventListener("ended", onEnded);
+                    const playPromise = video.play();
+                    if (playPromise && playPromise.catch) {
+                      playPromise.catch(() => startImageTimer());
+                    }
+                    return;
+                  }
+
+                  startImageTimer();
+                };
+
+                splide.on("mounted", runSlide);
+                splide.on("moved", runSlide);
+
+                $el.addEventListener("mouseenter", () => {
+                  if (window.innerWidth < 768) return;
+                  paused = true;
+                  if (activeVideo && !activeVideo.paused) {
+                    try { activeVideo.pause(); } catch (e) {}
+                  }
+                  if (imageRaf) {
+                    cancelAnimationFrame(imageRaf);
+                    imageRaf = null;
+                    const elapsed = performance.now() - imageStartedAt;
+                    imageRemaining = Math.max(200, imageRemaining - elapsed);
+                  }
+                });
+                $el.addEventListener("mouseleave", () => {
+                  if (window.innerWidth < 768) return;
+                  paused = false;
+                  if (activeVideo) {
+                    const playPromise = activeVideo.play();
+                    if (playPromise && playPromise.catch) playPromise.catch(() => {});
+                    return;
+                  }
+                  if (autoPlay && imageRemaining > 0 && !imageRaf) {
+                    startImageTimer();
+                  }
+                });
+
+                if (splide.state >= 3) runSlide();
+              };
+              bindBanner2();
+              '
             {% endif %}
           >
             <div class="{% if enable_slider %}splide__track{% endif %} overflow-hidden h-full">
@@ -264,7 +509,22 @@
                     {%- liquid
                       assign slide_image = block.settings.image
                       assign slide_image_mobile = block.settings.image_mobile
+                      assign slide_video = block.settings.video
+                      assign slide_video_mobile = block.settings.video_mobile
+                      assign has_video = false
+                      if slide_video != blank or slide_video_mobile != blank
+                        assign has_video = true
+                      endif
+                      assign has_media = false
+                      if has_video or slide_image != blank or slide_image_mobile != blank
+                        assign has_media = true
+                      endif
                       assign slide_link = block.settings.link
+                      assign button_label = block.settings.button_label
+                      assign button_link = block.settings.button_link
+                      if button_link == blank
+                        assign button_link = slide_link
+                      endif
                       if block.settings.image_alt != blank
                         assign slide_alt = block.settings.image_alt
                       else
@@ -280,52 +540,152 @@
                       class="banner-kit__slide{% if enable_slider %} splide__slide x-splide-slide flex-shrink-0 w-full{% endif %}"
                       {{ block.shopify_attributes }}
                     >
-                      {%- if slide_image != blank or slide_image_mobile != blank -%}
-                        {%- if slide_link != blank -%}
+                      {%- if has_media -%}
+                        {%- capture slide_media -%}
+                          <div class="banner-kit__media">
+                            {%- if has_video -%}
+                              {%- liquid
+                                assign video_loop = true
+                                if enable_slider
+                                  assign video_loop = false
+                                endif
+                              -%}
+                              <div class="banner-kit__video-wrap" data-banner2-has-video>
+                                {%- liquid
+                                  # Mobile: si el video móvil es de baja resolución (<750px),
+                                  # usar el de escritorio (más nítido en pantallas retina).
+                                  assign video_for_mobile = slide_video_mobile
+                                  if video_for_mobile == blank
+                                    assign video_for_mobile = slide_video
+                                  endif
+                                  if slide_video_mobile != blank and slide_video != blank and slide_video_mobile.preview_image != blank
+                                    if slide_video_mobile.preview_image.width < 750
+                                      assign video_for_mobile = slide_video
+                                    endif
+                                  endif
+                                -%}
+                                {%- if slide_video != blank and slide_video_mobile != blank -%}
+                                  <div class="banner-kit__video-slot banner-kit__video-slot--mobile tw-w-full md:tw-hidden">
+                                    {{
+                                      video_for_mobile
+                                      | video_tag:
+                                        image_size: '1920x',
+                                        autoplay: true,
+                                        loop: video_loop,
+                                        muted: true,
+                                        controls: false,
+                                        playsinline: true,
+                                        preload: 'auto',
+                                        class: 'banner-kit__video'
+                                    }}
+                                  </div>
+                                  <div class="banner-kit__video-slot banner-kit__video-slot--desktop tw-hidden tw-w-full tw-h-full md:tw-block md:tw-absolute md:tw-inset-0">
+                                    {{
+                                      slide_video
+                                      | video_tag:
+                                        image_size: '1920x',
+                                        autoplay: true,
+                                        loop: video_loop,
+                                        muted: true,
+                                        controls: false,
+                                        playsinline: true,
+                                        class: 'banner-kit__video'
+                                    }}
+                                  </div>
+                                {%- elsif slide_video != blank -%}
+                                  {{
+                                    slide_video
+                                    | video_tag:
+                                      image_size: '1920x',
+                                      autoplay: true,
+                                      loop: video_loop,
+                                      muted: true,
+                                      controls: false,
+                                      playsinline: true,
+                                      class: 'banner-kit__video'
+                                  }}
+                                {%- else -%}
+                                  {{
+                                    video_for_mobile
+                                    | video_tag:
+                                      image_size: '1920x',
+                                      autoplay: true,
+                                      loop: video_loop,
+                                      muted: true,
+                                      playsinline: true,
+                                      controls: false,
+                                      preload: 'auto',
+                                      class: 'banner-kit__video'
+                                  }}
+                                {%- endif -%}
+                              </div>
+                            {%- else -%}
+                              <picture class="banner-kit__picture">
+                                {%- if slide_image_mobile != blank -%}
+                                  <source
+                                    media="(max-width: 767px)"
+                                    srcset="
+                                      {{ slide_image_mobile | image_url: width: 750 }} 750w,
+                                      {{ slide_image_mobile | image_url: width: 1100 }} 1100w
+                                    "
+                                    sizes="100vw"
+                                  >
+                                {%- endif -%}
+                                {%- if slide_image != blank -%}
+                                  {{
+                                    slide_image
+                                    | image_url: width: 2400
+                                    | image_tag:
+                                      class: 'banner-kit__img',
+                                      widths: '750, 1100, 1600, 2000, 2400',
+                                      sizes: '100vw',
+                                      alt: slide_alt,
+                                      loading: slide_loading
+                                  }}
+                                {%- elsif slide_image_mobile != blank -%}
+                                  {{
+                                    slide_image_mobile
+                                    | image_url: width: 1100
+                                    | image_tag:
+                                      class: 'banner-kit__img',
+                                      widths: '750, 1100',
+                                      sizes: '100vw',
+                                      alt: slide_alt,
+                                      loading: slide_loading
+                                  }}
+                                {%- endif -%}
+                              </picture>
+                            {%- endif -%}
+                          </div>
+                        {%- endcapture -%}
+
+                        {%- if button_label == blank and slide_link != blank -%}
                           <a
                             href="{{ slide_link }}"
-                            class="banner-kit__link"
+                            class="banner-kit__media-link"
+                            aria-label="{{ slide_alt | escape }}"
                             {% if block.settings.open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
                           >
-                        {%- endif -%}
-                        <picture class="banner-kit__picture">
-                          {%- if slide_image_mobile != blank -%}
-                            <source
-                              media="(max-width: 767px)"
-                              srcset="
-                                {{ slide_image_mobile | image_url: width: 440 }} 440w,
-                                {{ slide_image_mobile | image_url: width: 750 }} 750w,
-                                {{ slide_image_mobile | image_url: width: 880 }} 880w
-                              "
-                              sizes="(max-width: 767px) calc(100vw - 2rem), min(93rem, 100vw)"
-                            >
-                          {%- endif -%}
-                          {%- if slide_image != blank -%}
-                            {{
-                              slide_image
-                              | image_url: width: 2976
-                              | image_tag:
-                                class: 'banner-kit__img',
-                                widths: '440, 750, 1488, 1920, 2976',
-                                sizes: '(max-width: 767px) 100vw, min(93rem, 100vw)',
-                                alt: slide_alt,
-                                loading: slide_loading
-                            }}
-                          {%- elsif slide_image_mobile != blank -%}
-                            {{
-                              slide_image_mobile
-                              | image_url: width: 880
-                              | image_tag:
-                                class: 'banner-kit__img',
-                                widths: '440, 750, 880',
-                                sizes: '100vw',
-                                alt: slide_alt,
-                                loading: slide_loading
-                            }}
-                          {%- endif -%}
-                        </picture>
-                        {%- if slide_link != blank -%}
+                            {{ slide_media }}
                           </a>
+                        {%- else -%}
+                          {{ slide_media }}
+                        {%- endif -%}
+
+                        {%- if button_label != blank -%}
+                          <div class="banner-kit__content">
+                            {%- if button_link != blank -%}
+                              <a
+                                href="{{ button_link }}"
+                                class="banner-kit__cta disable-effect"
+                                {% if block.settings.open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
+                              >
+                                {{ button_label | escape }}
+                              </a>
+                            {%- else -%}
+                              <span class="banner-kit__cta">{{ button_label | escape }}</span>
+                            {%- endif -%}
+                          </div>
                         {%- endif -%}
                       {%- elsif request.design_mode -%}
                         <div class="banner-kit__placeholder">
@@ -334,107 +694,33 @@
                       {%- endif -%}
                     </div>
                   {%- endfor -%}
-                {%- else -%}
-                  {%- liquid
-                    assign slide_image = section.settings.image
-                    assign slide_image_mobile = section.settings.image_mobile
-                    assign slide_link = section.settings.link
-                    if section.settings.image_alt != blank
-                      assign slide_alt = section.settings.image_alt
-                    else
-                      assign slide_alt = 'sections.banner-kit.alt' | t
-                    endif
-                  -%}
+                {%- elsif request.design_mode -%}
                   <div class="banner-kit__slide">
-                    {%- if slide_image != blank or slide_image_mobile != blank -%}
-                      {%- if slide_link != blank -%}
-                        <a
-                          href="{{ slide_link }}"
-                          class="banner-kit__link"
-                          {% if section.settings.open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
-                        >
-                      {%- endif -%}
-                      <picture class="banner-kit__picture">
-                        {%- if slide_image_mobile != blank -%}
-                          <source
-                            media="(max-width: 767px)"
-                            srcset="
-                              {{ slide_image_mobile | image_url: width: 440 }} 440w,
-                              {{ slide_image_mobile | image_url: width: 750 }} 750w,
-                              {{ slide_image_mobile | image_url: width: 880 }} 880w
-                            "
-                            sizes="(max-width: 767px) calc(100vw - 2rem), min(93rem, 100vw)"
-                          >
-                        {%- endif -%}
-                        {%- if slide_image != blank -%}
-                          {{
-                            slide_image
-                            | image_url: width: 2976
-                            | image_tag:
-                              class: 'banner-kit__img',
-                              widths: '440, 750, 1488, 1920, 2976',
-                              sizes: '(max-width: 767px) 100vw, min(93rem, 100vw)',
-                              alt: slide_alt,
-                              loading: 'lazy'
-                          }}
-                        {%- elsif slide_image_mobile != blank -%}
-                          {{
-                            slide_image_mobile
-                            | image_url: width: 880
-                            | image_tag:
-                              class: 'banner-kit__img',
-                              widths: '440, 750, 880',
-                              sizes: '100vw',
-                              alt: slide_alt,
-                              loading: 'lazy'
-                          }}
-                        {%- endif -%}
-                      </picture>
-                      {%- if slide_link != blank -%}
-                        </a>
-                      {%- endif -%}
-                    {%- elsif request.design_mode -%}
-                      <div class="banner-kit__placeholder">
-                        {{ 'sections.banner-kit.placeholder' | t }}
-                      </div>
-                    {%- endif -%}
+                    <div class="banner-kit__placeholder">
+                      {{ 'sections.banner-kit.placeholder' | t }}
+                    </div>
                   </div>
                 {%- endif -%}
               </div>
             </div>
-
-            {%- if enable_slider and section.settings.show_arrows -%}
-              <div class="splide__arrows{% if settings.lang_direction contains request.locale.iso_code %} rtl{% endif %}">
-                <button
-                  type="button"
-                  class="banner-kit__arrow banner-kit__arrow--prev splide__arrow splide__arrow--prev none_border"
-                  aria-label="{{ 'sections.banner-kit.previous' | t }}"
-                >
-                  <span class="banner-kit__arrow-icon rotate-90 rtl:-rotate-90" aria-hidden="true">
-                    {% render 'icon-alls', icon: 'icon-caret' %}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  class="banner-kit__arrow banner-kit__arrow--next splide__arrow splide__arrow--next none_border"
-                  aria-label="{{ 'sections.banner-kit.next' | t }}"
-                >
-                  <span class="banner-kit__arrow-icon -rotate-90 rtl:rotate-90" aria-hidden="true">
-                    {% render 'icon-alls', icon: 'icon-caret' %}
-                  </span>
-                </button>
-              </div>
-            {%- endif -%}
           </div>
         </div>
       </div>
+
+      {%- if enable_slider and section.settings.show_progress -%}
+        <div class="banner-kit__progress" aria-hidden="true">
+          <div class="banner-kit__progress-track">
+            <div class="banner-kit__progress-fill" data-banner2-fill></div>
+          </div>
+        </div>
+      {%- endif -%}
     </div>
   {%- endunless -%}
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "Banner kit",
+  "name": "Banner 2",
   "tag": "section",
   "class": "section-banner-kit",
   "max_blocks": 8,
@@ -464,51 +750,24 @@
     {
       "type": "range",
       "id": "change_slides_speed",
-      "label": "Segundos por diapositiva",
+      "label": "Segundos por diapositiva (solo imagen)",
       "min": 3,
       "max": 12,
       "step": 1,
-      "default": 5
+      "default": 5,
+      "info": "Si la diapositiva tiene video, espera a que termine el video antes de pasar a la siguiente."
     },
     {
       "type": "checkbox",
-      "id": "show_arrows",
-      "label": "Mostrar flechas de navegación",
+      "id": "show_progress",
+      "label": "Mostrar barra de progreso",
       "default": true
     },
     {
-      "type": "header",
-      "content": "Imagen (legacy)",
-      "info": "Usa bloques Diapositiva abajo. Estos campos solo aplican si no hay bloques."
-    },
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Imagen (escritorio)",
-      "info": "Recomendado 1488×400 px. La altura se adapta al ancho del contenedor según la proporción de la imagen."
-    },
-    {
-      "type": "image_picker",
-      "id": "image_mobile",
-      "label": "Imagen (móvil)",
-      "info": "Recomendado 440×400 px o proporción equivalente. Si está vacía, se usa la imagen de escritorio."
-    },
-    {
-      "type": "text",
-      "id": "image_alt",
-      "label": "Texto alternativo",
-      "default": "Kit de regalo en tu primera compra"
-    },
-    {
-      "type": "url",
-      "id": "link",
-      "label": "Enlace del banner"
-    },
-    {
       "type": "checkbox",
-      "id": "open_new_window",
-      "label": "Abrir enlace en nueva pestaña",
-      "default": false
+      "id": "show_sparkles",
+      "label": "Mostrar diamantes laterales",
+      "default": true
     },
     {
       "type": "header",
@@ -517,22 +776,22 @@
     {
       "type": "range",
       "id": "banner_height",
-      "label": "Altura máxima en escritorio (px)",
-      "info": "Referencia opcional. En desktop el banner escala según el ancho del contenedor (max 93rem) y la proporción de la imagen.",
+      "label": "Altura de referencia — escritorio (px)",
       "min": 280,
       "max": 560,
       "step": 10,
-      "default": 400
+      "default": 340,
+      "info": "Define la proporción 1440×altura. El banner ocupa todo el ancho y la altura se adapta."
     },
     {
       "type": "range",
       "id": "banner_height_mobile",
-      "label": "Altura máxima en móvil (px)",
-      "info": "Solo aplica como referencia. En móvil el banner usa la proporción completa de la imagen para evitar recortes.",
-      "min": 280,
-      "max": 560,
-      "step": 10,
-      "default": 400
+      "label": "Altura de referencia — móvil (px)",
+      "min": 400,
+      "max": 800,
+      "step": 4,
+      "default": 636,
+      "info": "Solo como respaldo para videos. Las imágenes usan su proporción natural."
     },
     {
       "type": "range",
@@ -559,7 +818,7 @@
       "min": 0,
       "max": 80,
       "step": 2,
-      "default": 30
+      "default": 40
     }
   ],
   "blocks": [
@@ -568,16 +827,28 @@
       "name": "Diapositiva",
       "settings": [
         {
+          "type": "video",
+          "id": "video",
+          "label": "Video (escritorio)",
+          "info": "Recomendado 1440×340 px (ratio ~4.24:1). Si hay video, reemplaza la imagen."
+        },
+        {
+          "type": "video",
+          "id": "video_mobile",
+          "label": "Video (móvil)",
+          "info": "Recomendado 1080×1560 px (ratio ~0.69:1) para nitidez en retina. Si el archivo es <750px de ancho, el tema usa el video de escritorio. Si está vacío, también se usa el de escritorio."
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Imagen (escritorio)",
-          "info": "Recomendado 1488×400 px. La altura se adapta al ancho del contenedor según la proporción de la imagen."
+          "info": "Recomendado 1440×340 px."
         },
         {
           "type": "image_picker",
           "id": "image_mobile",
           "label": "Imagen (móvil)",
-          "info": "Recomendado 440×400 px. Si está vacía, se usa la imagen de escritorio."
+          "info": "Recomendado 1080×1560 px (no 440px: se ve pixelado en móviles)."
         },
         {
           "type": "text",
@@ -585,9 +856,26 @@
           "label": "Texto alternativo"
         },
         {
+          "type": "header",
+          "content": "Botón"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Texto del botón",
+          "info": "Si está vacío, el botón no se muestra."
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Enlace del botón",
+          "info": "Si está vacío, se usa el enlace de la diapositiva."
+        },
+        {
           "type": "url",
           "id": "link",
-          "label": "Enlace del banner"
+          "label": "Enlace de la diapositiva",
+          "info": "Si no hay botón, toda la imagen/video usa este enlace."
         },
         {
           "type": "checkbox",
@@ -600,7 +888,7 @@
   ],
   "presets": [
     {
-      "name": "Banner kit",
+      "name": "Banner 2",
       "blocks": [
         {
           "type": "slide"

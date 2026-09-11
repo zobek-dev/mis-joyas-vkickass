@@ -3,7 +3,11 @@
 {% endcomment %}
 {%- if settings.enable_cart_progress_bar and cart.item_count > 0 -%}
   {%- liquid
-    assign cart_total = cart.total_price | divided_by: 100.00
+    comment
+      Usar subtotal parcial (antes de descuentos a nivel carrito), no total estimado.
+      Los tiers se miden sobre el monto de productos, igual que el subtotal del drawer.
+    endcomment
+    assign cart_total = cart.items_subtotal_price | divided_by: 100.00
 
     assign threshold_shipping = nil
     assign freeshipping_thresholds = settings.order_amount_freeshipping | newline_to_br | strip_newlines | split: '<br />'
@@ -57,11 +61,11 @@
       assign segment_size = threshold_20 | minus: threshold_15
       assign progress_in_segment = cart_total | minus: threshold_15
       if segment_size > 0
-        assign segment_percent = progress_in_segment | times: 25.0 | divided_by: segment_size
+        assign segment_ratio = progress_in_segment | times: 33.34 | divided_by: segment_size
       else
-        assign segment_percent = 25
+        assign segment_ratio = 33.34
       endif
-      assign progress_percent = 75 | plus: segment_percent
+      assign progress_percent = 66.66 | plus: segment_ratio
       assign amount_needed = threshold_20 | minus: cart_total
     elsif cart_total >= threshold_10
       assign current_tier = 2
@@ -69,29 +73,20 @@
       assign segment_size = threshold_15 | minus: threshold_10
       assign progress_in_segment = cart_total | minus: threshold_10
       if segment_size > 0
-        assign segment_percent = progress_in_segment | times: 25.0 | divided_by: segment_size
+        assign segment_ratio = progress_in_segment | times: 33.33 | divided_by: segment_size
       else
-        assign segment_percent = 25
+        assign segment_ratio = 33.33
       endif
-      assign progress_percent = 50 | plus: segment_percent
+      assign progress_percent = 33.33 | plus: segment_ratio
       assign amount_needed = threshold_15 | minus: cart_total
     elsif cart_total >= threshold_shipping
       assign current_tier = 1
       assign next_tier_label = 'general.cart.progress_tier_2' | t
-      assign segment_size = threshold_10 | minus: threshold_shipping
-      assign progress_in_segment = cart_total | minus: threshold_shipping
-      if segment_size > 0
-        assign segment_percent = progress_in_segment | times: 25.0 | divided_by: segment_size
-      else
-        assign segment_percent = 25
-      endif
-      assign progress_percent = 25 | plus: segment_percent
+      assign progress_percent = cart_total | times: 33.33 | divided_by: threshold_10
       assign amount_needed = threshold_10 | minus: cart_total
     else
       assign next_tier_label = 'general.cart.progress_tier_1' | t
-      if threshold_shipping > 0
-        assign progress_percent = cart_total | times: 25.0 | divided_by: threshold_shipping
-      endif
+      assign progress_percent = cart_total | times: 33.33 | divided_by: threshold_10
       assign amount_needed = threshold_shipping | minus: cart_total
     endif
 
@@ -99,9 +94,27 @@
       assign progress_percent = 100
     endif
 
+    comment
+      Detener el fill justo antes del siguiente círculo no alcanzado
+      (evita que la barra invada el dot del tier pendiente).
+    endcomment
+    if current_tier == 0 or current_tier == 1
+      if cart_total < threshold_10 and progress_percent > 32.5
+        assign progress_percent = 32.5
+      endif
+    elsif current_tier == 2
+      if cart_total < threshold_15 and progress_percent > 65.8
+        assign progress_percent = 65.8
+      endif
+    elsif current_tier == 3
+      if cart_total < threshold_20 and progress_percent > 99.2
+        assign progress_percent = 99.2
+      endif
+    endif
+
     assign amount_needed_formatted = amount_needed | times: 100 | money
   -%}
-  <div class="cart-progress-bar misjoyas-cart-progress" x-data="{ active: false }" x-intersect:enter="active = true" x-intersect:leave="active = false">
+  <div class="cart-progress-bar misjoyas-cart-progress">
     {% if current_tier < 4 %}
       <p class="misjoyas-cart-progress__message">
         {{ 'general.cart.progress_message_html' | t: amount: amount_needed_formatted, benefit: next_tier_label }}
@@ -113,11 +126,11 @@
     {% endif %}
     <div class="misjoyas-cart-progress__track-wrap">
       <div class="misjoyas-cart-progress__track">
-        <div class="misjoyas-cart-progress__fill" style="width: {{ progress_percent }}%;"></div>
-        <div class="misjoyas-cart-progress__dot{% if current_tier >= 1 %} is-reached{% endif %}" style="left: 0;"></div>
-        <div class="misjoyas-cart-progress__dot{% if current_tier >= 2 %} is-reached{% endif %}" style="left: 33.33%;"></div>
-        <div class="misjoyas-cart-progress__dot{% if current_tier >= 3 %} is-reached{% endif %}" style="left: 66.66%;"></div>
-        <div class="misjoyas-cart-progress__dot{% if current_tier >= 4 %} is-reached{% endif %}" style="left: 100%;"></div>
+        <div class="misjoyas-cart-progress__fill" style="--mj-progress: {{ progress_percent }};"></div>
+        <div class="misjoyas-cart-progress__dot misjoyas-cart-progress__dot--1{% if current_tier >= 1 %} is-reached{% endif %}"></div>
+        <div class="misjoyas-cart-progress__dot misjoyas-cart-progress__dot--2{% if current_tier >= 2 %} is-reached{% endif %}"></div>
+        <div class="misjoyas-cart-progress__dot misjoyas-cart-progress__dot--3{% if current_tier >= 3 %} is-reached{% endif %}"></div>
+        <div class="misjoyas-cart-progress__dot misjoyas-cart-progress__dot--4{% if current_tier >= 4 %} is-reached{% endif %}"></div>
       </div>
       <div class="misjoyas-cart-progress__labels">
         <span class="misjoyas-cart-progress__label-first">{{ 'general.cart.progress_tier_1' | t }}</span>

@@ -17,62 +17,44 @@ function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present,
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
-// Sube el botón flotante de WhatsApp (app WhatsUp) por encima de la barra sticky
-// de "agregar al carro" en mobile, para que no se interpongan. El botón vive dentro
-// de un shadow DOM con `bottom: 16px` fijo, así que se controla via custom property
-// (las CSS custom properties sí cruzan el shadow boundary).
+// Ajusta el botón flotante de WhatsApp para que no quede bajo la barra sticky
+// de "agregar al carro" en mobile.
 (function () {
   if (window.__mjWaStickyOffset) return;
   window.__mjWaStickyOffset = true;
-  var GAP = 12; // separación entre el botón y la barra
-  var BASE_BOTTOM = 16; // bottom original del botón (app)
+  var GAP = 12;
   var isMobile = function isMobile() {
     return window.matchMedia('(max-width: 767px)').matches;
   };
   var waEl = null;
-  var styleInjected = false;
-  function injectShadowStyle(el) {
-    if (styleInjected || !el || !el.shadowRoot) return;
-    var target = el.shadowRoot.querySelector('.whatsup-whatsapp-button');
-    if (!target) return;
-    var style = document.createElement('style');
-    style.textContent = '.whatsup-whatsapp-button{bottom:var(--mj-wa-bottom,' + BASE_BOTTOM + 'px)!important;' + 'transition:bottom .3s cubic-bezier(0.075,0.82,0.165,1);}';
-    el.shadowRoot.appendChild(style);
-    styleInjected = true;
-  }
   function update() {
     if (!waEl) return;
+    waEl.style.removeProperty('--mj-wa-bottom');
     var bar = document.querySelector('[id^="sticky-add-to-cart-"]');
-    var bottom = BASE_BOTTOM;
-    if (isMobile() && bar && getComputedStyle(bar).display !== 'none') {
-      var h = bar.getBoundingClientRect().height;
-      if (h > 0) bottom = Math.round(h + GAP);
-    }
-    waEl.style.setProperty('--mj-wa-bottom', bottom + 'px');
+    if (!isMobile() || !bar || getComputedStyle(bar).display === 'none') return;
+    var h = bar.getBoundingClientRect().height;
+    if (h <= 0) return;
+    waEl.style.setProperty('--mj-wa-bottom', Math.round(h + GAP) + 'px');
   }
   function start() {
-    waEl = document.querySelector('whatsup-whatsapp-button');
+    waEl = document.querySelector('[data-mj-wa-float]');
     if (!waEl) return false;
-    injectShadowStyle(waEl);
-    if (!styleInjected) return false;
     var bar = document.querySelector('[id^="sticky-add-to-cart-"]');
     if (bar) {
       new MutationObserver(update).observe(bar, {
         attributes: true,
         attributeFilter: ['style', 'class']
       });
+      if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(update).observe(bar);
+      }
     }
     window.addEventListener('resize', update, {
-      passive: true
-    });
-    window.addEventListener('scroll', update, {
       passive: true
     });
     update();
     return true;
   }
-
-  // La app y el custom element cargan de forma diferida; reintentar hasta que existan.
   if (!start()) {
     var tries = 0;
     var timer = setInterval(function () {
@@ -81,15 +63,6 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
   }
 })();
 document.addEventListener('alpine:init', function () {
-  Alpine.store('xSearchBar', {
-    mobileOpen: false,
-    toggle: function toggle() {
-      this.mobileOpen = !this.mobileOpen;
-    },
-    close: function close() {
-      this.mobileOpen = false;
-    }
-  });
   Alpine.data('xInlineSearch', function (type, maxResults) {
     return {
       query: '',
@@ -218,6 +191,10 @@ document.addEventListener('alpine:init', function () {
       bootstrap: function bootstrap() {
         var mounted = this.claimAutoButton() || this.initWithSdk() || this.initWithCustomEvent();
         this.purgeStrayWishlist();
+        if (mounted && this._pollTimer) {
+          window.clearInterval(this._pollTimer);
+          this._pollTimer = null;
+        }
         return mounted;
       },
       isInsideWishlistSlot: function isInsideWishlistSlot(node) {
@@ -236,7 +213,7 @@ document.addEventListener('alpine:init', function () {
           return true;
         }
         var label = "".concat(((_node$getAttribute = node.getAttribute) === null || _node$getAttribute === void 0 ? void 0 : _node$getAttribute.call(node, 'aria-label')) || '', " ").concat(node.textContent || '');
-        return /wishlist|deseados|lista de deseados|añadir a favoritos|agregar a la lista|add to wishlist/i.test(label);
+        return /wishlist|deseados|lista de deseados|aÃ±adir a favoritos|agregar a la lista|add to wishlist/i.test(label);
       },
       purgeStrayWishlist: function purgeStrayWishlist() {
         var _this5 = this;
@@ -417,6 +394,41 @@ document.addEventListener('alpine:init', function () {
 /**
  * Flechas custom para featured-collection-misjoyas (Splide arrows: false).
  */
+window.syncFeaturedCollectionMjLoUltimoNav = function (root) {
+  if (!(root !== null && root !== void 0 && root.classList.contains('featured-collection-mj--lo-ultimo'))) return;
+  var nav = root.querySelector('.featured-collection-mj__nav');
+  if (!nav) return;
+  var isDesktop = window.innerWidth >= 768;
+  if (isDesktop) {
+    nav.style.removeProperty('display');
+    nav.style.removeProperty('visibility');
+    nav.style.removeProperty('pointer-events');
+  } else {
+    nav.style.setProperty('display', 'none', 'important');
+    nav.style.setProperty('visibility', 'hidden', 'important');
+    nav.style.setProperty('pointer-events', 'none', 'important');
+  }
+};
+window.bindFeaturedCollectionMjLoUltimoDrag = function (root) {
+  if (!(root !== null && root !== void 0 && root.splide) || !root.classList.contains('featured-collection-mj--lo-ultimo')) return;
+  if (root.dataset.loUltimoDragBound === '1') return;
+  root.dataset.loUltimoDragBound = '1';
+  var splide = root.splide;
+  var section = root.closest('.featured-collection-mj--lo-ultimo');
+  var setDragging = function setDragging(isDragging) {
+    root.classList.toggle('is-dragging', isDragging);
+    section === null || section === void 0 || section.classList.toggle('is-dragging', isDragging);
+  };
+  splide.on('drag', function () {
+    return setDragging(true);
+  });
+  splide.on('dragged', function () {
+    return setDragging(false);
+  });
+  splide.on('destroy', function () {
+    return setDragging(false);
+  });
+};
 window.bindFeaturedCollectionMjArrows = function (root, desktopMove, mobileMove) {
   if (!(root !== null && root !== void 0 && root.splide)) return;
   var prev = root.querySelector('[data-fc-mj-arrow="prev"]') || root.querySelector('.splide__arrow--prev');
@@ -460,6 +472,83 @@ window.bindFeaturedCollectionMjArrows = function (root, desktopMove, mobileMove)
   }
   updateDisabled();
 };
+
+/* ===== MISJOYAS PDP EXTRACTED SCRIPTS ===== */
+(function () {
+  function bindWholesale() {
+    document.querySelectorAll('.misjoyas-wholesale').forEach(function (el) {
+      if (el.dataset.bound) return;
+      el.dataset.bound = '1';
+      var btn = el.querySelector('.misjoyas-wholesale__header');
+      var toggle = el.querySelector('.misjoyas-wholesale__toggle');
+      if (!btn || !toggle) return;
+      btn.addEventListener('click', function () {
+        var open = el.getAttribute('data-open') !== 'false';
+        el.setAttribute('data-open', open ? 'false' : 'true');
+        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+        toggle.textContent = open ? '+' : '−';
+      });
+    });
+  }
+  function bindAccordion() {
+    document.querySelectorAll('.misjoyas-accordion').forEach(function (accordion) {
+      if (accordion.dataset.bound) return;
+      accordion.dataset.bound = '1';
+      accordion.querySelectorAll('.misjoyas-accordion-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var item = btn.closest('.misjoyas-item');
+          var content = item && item.querySelector('.misjoyas-content');
+          var arrow = btn.querySelector('.misjoyas-arrow');
+          if (!content || !arrow) return;
+          var isOpen = btn.getAttribute('aria-expanded') === 'true';
+          accordion.querySelectorAll('.misjoyas-accordion-btn').forEach(function (otherBtn) {
+            otherBtn.setAttribute('aria-expanded', 'false');
+            var a = otherBtn.querySelector('.misjoyas-arrow');
+            if (a) a.textContent = '+';
+          });
+          accordion.querySelectorAll('.misjoyas-content').forEach(function (c) {
+            c.style.maxHeight = null;
+            c.classList.remove('is-open');
+          });
+          if (!isOpen) {
+            btn.setAttribute('aria-expanded', 'true');
+            content.classList.add('is-open');
+            content.style.maxHeight = content.scrollHeight + 'px';
+            arrow.textContent = '−';
+          }
+        });
+      });
+    });
+  }
+  function bindDetails() {
+    document.querySelectorAll('.misjoyas-details').forEach(function (root) {
+      if (root.dataset.bound) return;
+      root.dataset.bound = '1';
+      root.querySelectorAll('.misjoyas-details__header').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var item = btn.closest('.misjoyas-details__item');
+          if (!item) return;
+          var open = item.getAttribute('data-open') !== 'false';
+          item.setAttribute('data-open', open ? 'false' : 'true');
+          btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+          var toggle = btn.querySelector('.misjoyas-details__toggle');
+          if (toggle) toggle.textContent = open ? '+' : '−';
+        });
+      });
+    });
+  }
+  function bindAll() {
+    bindWholesale();
+    bindAccordion();
+    bindDetails();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindAll);
+  } else {
+    bindAll();
+  }
+  document.addEventListener('shopify:section:load', bindAll);
+})();
 
 /***/ },
 

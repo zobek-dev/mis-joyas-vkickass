@@ -1,0 +1,332 @@
+{%- liquid
+  assign pad_x = section.settings.padding_x | default: 80
+  assign pad_x_mobile = section.settings.padding_x_mobile | default: 20
+  assign pad_y = section.settings.padding_y | default: 42
+  assign pad_y_mobile = section.settings.padding_y_mobile | default: 40
+  assign gap = section.settings.gap | default: 12
+  assign bg_color = section.settings.background_color | default: '#000000'
+  assign text_color = section.settings.text_color | default: '#ffffff'
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }},
+  .section-huincha-iconos,
+  .huincha-iconos-{{ section.id }} {
+    background: {{ bg_color }} !important;
+    background-color: {{ bg_color }} !important;
+    background-image: none !important;
+    opacity: 1 !important;
+  }
+  .huincha-iconos-{{ section.id }} {
+    width: 100%;
+    color: {{ text_color }};
+    padding: {{ pad_y_mobile }}px {{ pad_x_mobile }}px;
+    box-sizing: border-box;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    isolation: isolate;
+  }
+  @media (min-width: 768px) {
+    .huincha-iconos-{{ section.id }} {
+      padding: {{ pad_y }}px {{ pad_x }}px;
+      min-height: 237px;
+    }
+  }
+  .huincha-iconos-{{ section.id }} .huincha-iconos__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: {{ gap }}px;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    list-style: none;
+    padding: 0;
+  }
+  @media (min-width: 768px) {
+    .huincha-iconos-{{ section.id }} .huincha-iconos__list {
+      flex-direction: row;
+      align-items: stretch;
+      flex-wrap: nowrap;
+    }
+  }
+  .huincha-iconos-{{ section.id }} .huincha-iconos__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 246px;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+  @media (min-width: 768px) {
+    .huincha-iconos-{{ section.id }} .huincha-iconos__item {
+      flex: 1 1 0;
+      max-width: none;
+      padding: 0 12px;
+    }
+  }
+  .huincha-iconos-{{ section.id }} .huincha-iconos__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 40px;
+    padding-top: 8px;
+    box-sizing: border-box;
+  }
+  .huincha-iconos-{{ section.id }} .huincha-iconos__icon img,
+  .huincha-iconos-{{ section.id }} .huincha-iconos__icon svg {
+    display: block;
+    width: 32px;
+    height: 32px;
+  }
+  .huincha-iconos-{{ section.id }} .huincha-iconos__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    padding-top: 8px;
+  }
+  .huincha-iconos-{{ section.id }} .huincha-iconos__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    color: {{ text_color }};
+    text-transform: uppercase;
+  }
+  .huincha-iconos-{{ section.id }} .huincha-iconos__text {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    color: {{ text_color }};
+  }
+  .huincha-iconos-{{ section.id }} .huincha-iconos__placeholder {
+    color: {{ text_color }};
+    font-size: 0.875rem;
+    text-align: center;
+    opacity: 0.8;
+  }
+{%- endstyle -%}
+
+<div
+  class="huincha-iconos-{{ section.id }}"
+  style="background:{{ bg_color }};background-color:{{ bg_color }};color:{{ text_color }};"
+  role="region"
+  aria-label="{{ 'sections.huincha-iconos.aria_label' | t }}"
+>
+  {%- if section.blocks.size == 0 -%}
+    {%- if request.design_mode -%}
+      <p class="huincha-iconos__placeholder">{{ 'sections.huincha-iconos.placeholder' | t }}</p>
+    {%- endif -%}
+  {%- else -%}
+    <ul class="huincha-iconos__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign icon_file = block.settings.icon
+          if icon_file == blank
+            assign icon_file = 'plata-certificada.svg'
+          endif
+        -%}
+        <li class="huincha-iconos__item" {{ block.shopify_attributes }}>
+          <div class="huincha-iconos__icon" aria-hidden="true">
+            <img
+              src="{{ icon_file | asset_url }}"
+              width="32"
+              height="32"
+              alt=""
+              loading="lazy"
+            >
+          </div>
+          <div class="huincha-iconos__copy">
+            {%- if block.settings.title != blank -%}
+              <p class="huincha-iconos__title">{{ block.settings.title | escape }}</p>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <p class="huincha-iconos__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Huincha iconos",
+  "tag": "section",
+  "class": "section-huincha-iconos",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color de texto",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espacio entre ítems (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_x",
+      "label": "Padding lateral — escritorio (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mobile",
+      "label": "Padding lateral — móvil (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Padding vertical — escritorio (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mobile",
+      "label": "Padding vertical — móvil (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Ítem",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "default": "plata-certificada.svg",
+          "options": [
+            {
+              "value": "plata-certificada.svg",
+              "label": "Plata certificada"
+            },
+            {
+              "value": "libre-niquel.svg",
+              "label": "Hipoalergénico"
+            },
+            {
+              "value": "garantia.svg",
+              "label": "Garantía"
+            },
+            {
+              "value": "despachos.svg",
+              "label": "Despachos"
+            },
+            {
+              "value": "cuotas.svg",
+              "label": "Cuotas"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "PLATA 925 CERTIFICADA"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Pureza garantizada"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Huincha iconos",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "icon": "plata-certificada.svg",
+            "title": "PLATA 925 CERTIFICADA",
+            "text": "Pureza garantizada"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "libre-niquel.svg",
+            "title": "HIPOALERGÉNICO",
+            "text": "Libre de níquel"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "garantia.svg",
+            "title": "GARANTÍA",
+            "text": "Respaldo de marca"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "despachos.svg",
+            "title": "DESPACHO A TODO CHILE",
+            "text": "Gratis sobre $99.990"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "cuotas.svg",
+            "title": "HASTA 6 CUOTAS",
+            "text": "Sin interés"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

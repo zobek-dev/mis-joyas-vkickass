@@ -1,0 +1,23 @@
+{%- comment -%}
+  Resolve product.metafields.custom.tipo_de_metal to a plain string.
+  Usage:
+    {% capture metal_str %}{% render 'misjoyas-metal-str', product: product %}{% endcapture %}
+    {% assign metal_str = metal_str | strip %}
+{%- endcomment -%}
+{%- liquid
+  assign metal_str = ''
+  assign metal_mf = product.metafields.custom.tipo_de_metal
+  if metal_mf != blank
+    assign metal_str = metal_mf | metafield_text | strip
+    if metal_str == blank
+      if metal_mf.type contains 'list.'
+        assign metal_str = metal_mf.value | first | append: '' | strip
+      elsif metal_mf.value.system != blank
+        assign metal_str = metal_mf.value.label | default: metal_mf.value.name | default: metal_mf.value.value | append: '' | strip
+      else
+        assign metal_str = metal_mf.value | default: metal_mf | append: '' | strip
+      endif
+    endif
+  endif
+-%}
+{{- metal_str -}}

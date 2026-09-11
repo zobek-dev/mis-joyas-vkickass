@@ -1,0 +1,291 @@
+{% comment %}
+  MisJoyas mobile nav drawer.
+  Renders from header.liquid so items use the same button / tree_menu blocks as desktop.
+  Optional UI chrome (logo, footer) from mobile-navigation section when present.
+
+  Accepts:
+  - nav_section (header section)
+  - ui (mobile-navigation section — optional; footer settings)
+  - drawer_logo (image from mobile-navigation, resolved in header.liquid)
+{% endcomment %}
+{%- liquid
+  # Logo: drawer_logo (Mobile navigation) → asset Figma → header wordmark
+  assign nav_logo = blank
+  assign nav_logo_from_asset = false
+  if drawer_logo != blank
+    assign nav_logo = drawer_logo
+  elsif ui != blank and ui.settings.logo != blank
+    assign nav_logo = ui.settings.logo
+  else
+    assign nav_logo_from_asset = true
+  endif
+
+  if settings.lang_direction contains request.locale.iso_code
+    assign is_rtl = true
+  else
+    assign is_rtl = false
+  endif
+
+  assign menus = blank
+  if nav_section.settings.enable_highlight
+    assign menus = nav_section.settings.menus | newline_to_br | strip_newlines | split: '<br />'
+  endif
+
+  assign show_stores = true
+  assign show_footer_links = true
+  assign show_footer_login = true
+  assign show_footer_social = false
+  assign stores_text = 'sections.mobile-navigation.stores_footer' | t
+  assign stores_href = pages['tiendas'].url | default: '/pages/tiendas'
+  assign footer_link_1_text = blank
+  assign footer_link_1_url = blank
+  assign footer_link_1_show_check = false
+  assign footer_link_2_text = 'Todo para **emprender**'
+  assign footer_link_2_url = pages['todo-para-emprender'].url | default: '/pages/todo-para-emprender'
+  assign show_language = false
+
+  if ui != blank
+    assign show_stores = ui.settings.show_stores_footer | default: true, allow_false: true
+    assign show_footer_links = ui.settings.show_footer_links | default: true, allow_false: true
+    assign show_footer_login = ui.settings.show_footer_login | default: true, allow_false: true
+    assign show_footer_social = ui.settings.show_footer_social | default: false, allow_false: true
+    if ui.settings.stores_footer_text != blank
+      assign stores_text = ui.settings.stores_footer_text
+    endif
+    if ui.settings.stores_footer_link != blank
+      assign stores_href = ui.settings.stores_footer_link
+    endif
+    # Empty string in editor means hide link 1 (do not fall back to Plata 925)
+    assign footer_link_1_text = ui.settings.footer_link_1_text
+    assign footer_link_1_url = ui.settings.footer_link_1_link
+    assign footer_link_1_show_check = ui.settings.footer_link_1_show_check | default: false, allow_false: true
+    if ui.settings.footer_link_2_text != blank
+      assign footer_link_2_text = ui.settings.footer_link_2_text
+    endif
+    if ui.settings.footer_link_2_link != blank
+      assign footer_link_2_url = ui.settings.footer_link_2_link
+    endif
+    if ui.settings.show_currency_selector or ui.settings.show_language_selector
+      assign show_language = true
+    endif
+  endif
+-%}
+{%- style -%}
+  #MobileNavDrawer .text-color,
+  #MobileNavDrawer .background-header {
+    {%- if ui != blank and ui.settings.background_color.alpha != 0.0 -%}
+      background: {{ ui.settings.background_color }};
+    {%- endif -%}
+    {%- if ui != blank and ui.settings.text_color.alpha != 0.0 -%}
+      --colors-heading: {{ ui.settings.text_color.red }}, {{ ui.settings.text_color.green }}, {{ ui.settings.text_color.blue }};
+      color: {{ ui.settings.text_color }};
+      --colors-text-header: {{ ui.settings.text_color.red }}, {{ ui.settings.text_color.green }}, {{ ui.settings.text_color.blue }};
+    {%- endif -%}
+  }
+{%- endstyle -%}
+<div
+  class="z-[60] fixed top-0 h-full w-full opacity-60 bg-black"
+  x-show="$store.xMobileNav.show"
+  x-cloak
+  @click="$store.xMobileNav.close()"
+></div>
+<div
+  id="MobileNavDrawer"
+  :class="{ 'menu-opening': $store.xMobileNav.show }"
+  class="mj-mobile-nav menu-drawer fixed z-[60] top-0 bottom-0 w-full max-w-none motion-reduce invisible overflow-x-hidden{% if is_rtl %} rtl right-0 translate-x-full{% else %} ltr left-0 -translate-x-full{% endif %}"
+  x-cloak
+>
+  <div class="x-container-mobile-nav background-header gradient menu-drawer duration-300 ease-in-out overflow-hidden h-full flex flex-col">
+    <div class="mj-mobile-nav__header">
+      <a href="{{ routes.root_url }}" class="mj-mobile-nav__logo disable-effect" aria-label="{{ shop.name | escape }}">
+        {%- if nav_logo != blank -%}
+          {{
+            nav_logo
+            | image_url: width: 120
+            | image_tag:
+              widths: '50, 100, 120',
+              sizes: '50px',
+              loading: 'eager',
+              alt: shop.name,
+              class: 'mj-mobile-nav__logo-img'
+          }}
+        {%- elsif nav_logo_from_asset -%}
+          <img
+            src="{{ 'mj-mobile-nav-isotipo.png' | asset_url }}"
+            alt="{{ shop.name | escape }}"
+            width="50"
+            height="50"
+            class="mj-mobile-nav__logo-img"
+            loading="eager"
+            decoding="async"
+          >
+        {%- elsif nav_section.settings.logo != blank -%}
+          {{
+            nav_section.settings.logo
+            | image_url: width: 120
+            | image_tag:
+              widths: '50, 100, 120',
+              sizes: '50px',
+              loading: 'eager',
+              alt: shop.name,
+              class: 'mj-mobile-nav__logo-img'
+          }}
+        {%- else -%}
+          <span class="mj-mobile-nav__logo-text">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+      <button
+        type="button"
+        class="mj-mobile-nav__close"
+        aria-label="{{ 'accessibility.close' | t }}"
+        @click="$store.xMobileNav.close()"
+      >
+        {% render 'icon-alls', icon: 'icon-close' %}
+      </button>
+    </div>
+    <div
+      id="menu-navigation"
+      class="flex-1 overflow-x-hidden scrollbar-body"
+      :class="$store.xMobileNav.currentMenuLinks.length == 0 ? ' overflow-y-auto' : 'overflow-hidden'"
+    >
+      <ul
+        id="menu-level-0"
+        role="list"
+        class="menu-parent relative w-full mj-mobile-nav__list"
+      >
+        <li class="block-mobile-navigation x-header-store-selector-container pl-5 pr-5 pb-5"></li>
+        {%- for block in nav_section.blocks -%}
+          {%- if block.type == 'button' or block.type == 'tree_menu' -%}
+            {%- assign index = 'h' | append: forloop.index -%}
+            {% render 'mj-mobile-menu-item',
+              block: block,
+              section: nav_section,
+              index: index,
+              menus: menus,
+              is_rtl: is_rtl
+            %}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    {%- if show_stores or show_footer_links or show_footer_login or show_footer_social -%}
+      <div class="mj-mobile-nav__footer">
+        <div class="mj-mobile-nav__footer-body">
+          {%- if show_stores or show_footer_links or show_footer_login -%}
+            <div class="mj-mobile-nav__footer-links">
+              {%- if show_stores -%}
+                <a href="{{ stores_href }}" class="mj-mobile-nav__stores disable-effect">
+                  <span class="mj-mobile-nav__stores-icon" aria-hidden="true">
+                    <img
+                      src="{{ 'tiendas.svg' | asset_url }}"
+                      width="28"
+                      height="28"
+                      alt=""
+                      decoding="async"
+                      focusable="false"
+                    >
+                  </span>
+                  <span class="mj-mobile-nav__stores-text">
+                    {%- assign stores_parts = stores_text | split: '—' -%}
+                    {%- if stores_parts.size > 1 -%}
+                      <strong>{{ stores_parts.first | strip | escape }} — </strong>{{ stores_parts.last | strip | escape }}
+                    {%- else -%}
+                      {{ stores_text | escape }}
+                    {%- endif -%}
+                  </span>
+                </a>
+              {%- endif -%}
+
+              {%- if show_footer_links and footer_link_1_text != blank -%}
+                <a href="{{ footer_link_1_url | default: '#' }}" class="mj-mobile-nav__footer-link disable-effect">
+                  {%- if footer_link_1_show_check -%}
+                    <span class="mj-mobile-nav__footer-check" aria-hidden="true">
+                      <img
+                        src="{{ 'misjoyas-topbar-check.png' | asset_url }}"
+                        width="20"
+                        height="20"
+                        alt=""
+                        decoding="async"
+                      >
+                    </span>
+                  {%- endif -%}
+                  <span class="mj-mobile-nav__footer-link-text">
+                    {%- assign fl1_parts = footer_link_1_text | split: '**' -%}
+                    {%- if fl1_parts.size > 1 -%}
+                      {%- for part in fl1_parts -%}
+                        {%- assign fl1_mod = forloop.index0 | modulo: 2 -%}
+                        {%- if fl1_mod == 1 -%}<strong>{{ part | escape }}</strong>{%- else -%}{{ part | escape }}{%- endif -%}
+                      {%- endfor -%}
+                    {%- elsif footer_link_1_text == 'Plata 925 certificada' -%}
+                      <strong>Plata 925</strong> certificada
+                    {%- else -%}
+                      {{ footer_link_1_text | escape }}
+                    {%- endif -%}
+                  </span>
+                  <span class="mj-mobile-nav__footer-chevron" aria-hidden="true"></span>
+                </a>
+              {%- endif -%}
+
+              {%- if show_footer_links and footer_link_2_text != blank -%}
+                <a href="{{ footer_link_2_url | default: '#' }}" class="mj-mobile-nav__footer-link disable-effect">
+                  <span class="mj-mobile-nav__footer-link-text">
+                    {%- assign fl2_parts = footer_link_2_text | split: '**' -%}
+                    {%- if fl2_parts.size > 1 -%}
+                      {%- for part in fl2_parts -%}
+                        {%- assign fl2_mod = forloop.index0 | modulo: 2 -%}
+                        {%- if fl2_mod == 1 -%}<strong>{{ part | escape }}</strong>{%- else -%}{{ part | escape }}{%- endif -%}
+                      {%- endfor -%}
+                    {%- elsif footer_link_2_text == 'Todo para emprender' -%}
+                      Todo para <strong>emprender</strong>
+                    {%- else -%}
+                      {{ footer_link_2_text | escape }}
+                    {%- endif -%}
+                  </span>
+                  <span class="mj-mobile-nav__footer-chevron" aria-hidden="true"></span>
+                </a>
+              {%- endif -%}
+
+              {%- if show_footer_login and shop.customer_accounts_enabled -%}
+                <a
+                  href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+                  class="mj-mobile-nav__footer-link mj-mobile-nav__footer-link--account disable-effect"
+                  data-no-instant
+                >
+                  <span class="mj-mobile-nav__footer-account-icon" aria-hidden="true">
+                    {% render 'icon-alls', icon: 'icon-account' %}
+                  </span>
+                  <span class="mj-mobile-nav__footer-link-text">
+                    {%- if customer -%}
+                      {{ 'customer.account_fallback' | t }}
+                    {%- else -%}
+                      {{ 'customer.log_in' | t }}
+                    {%- endif -%}
+                  </span>
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if show_footer_social -%}
+            <div class="mj-mobile-nav__footer-social">
+              <ul class="mj-mobile-nav__footer-social-list" role="list">
+                {% render 'social-icons', footer: true %}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if show_language and ui != blank -%}
+      <div class="x-container-mobile-nav-language pt-1.5 pb-1.5 pl-5 pr-5 lg:flex lg:items-center z-50 background-header justify-center lg:justify-end bottom-0 left-0 max-w-sm border-t">
+        {%- render 'toolbar',
+          mobile: true,
+          show_currency_selector: ui.settings.show_currency_selector,
+          show_language_selector: ui.settings.show_language_selector
+        -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>

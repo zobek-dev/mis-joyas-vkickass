@@ -307,7 +307,7 @@
         "heading_bDtEnQ": {
           "type": "heading",
           "settings": {
-            "heading": "Los mayorista de joyas de plata número 1 en Chile.",
+            "heading": "El mayorista de joyas de plata número 1 en Chile.",
             "highlight_type": "underline",
             "heading_size": 100,
             "heading_tag": "h2"
@@ -316,7 +316,7 @@
         "text_adty8d": {
           "type": "text",
           "settings": {
-            "text": "<h6>Porque son miles de emprendedores que nos prefieren como proveedores, ya que, tenemos el catálogo online más amplio, con más de 5.000 productos e insumos de joyería con despacho express (24 Horas hábiles) a todo el país. Tenemos presencia en 9 ciudades de Chile con sucursales en Santiago, Antofagasta, La Serena, Viña del Mar, Rancagua, Talca, Concepción, Temuco, Valdivia y Osorno.</h6>",
+            "text": "<h6>Porque son miles de emprendedores que nos prefieren como proveedores, ya que, tenemos el catálogo online más amplio, con más de 5.000 productos e insumos de joyería con despacho express (24 Horas hábiles) a todo el país. Tenemos presencia en 14 ciudades de Chile con sucursales en Calama, Antofagasta, Copiapó, La Serena, Viña del Mar, Santiago, Rancagua, Curicó, Talca, Concepción, Los Ángeles, Temuco, Valdivia y Osorno</h6>",
             "number_of_lines_shown": "none",
             "read_more_label": "Read more",
             "see_less_label": "See less"

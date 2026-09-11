@@ -1,0 +1,367 @@
+{%- liquid
+  assign pad_x = section.settings.padding_x | default: 80
+  assign pad_x_mobile = section.settings.padding_x_mobile | default: 20
+  assign pad_y = section.settings.padding_y | default: 40
+  assign pad_y_mobile = section.settings.padding_y_mobile | default: 40
+  assign margin_top = section.settings.margin_top | default: 0
+  assign margin_top_mobile = section.settings.margin_top_mobile | default: 0
+  assign gap = section.settings.gap | default: 12
+  assign radius = section.settings.border_radius | default: 4
+  assign banner_h = section.settings.banner_height | default: 246
+  assign banner_h_mobile = section.settings.banner_height_mobile | default: 246
+  assign pad_x_total = pad_x | times: 2
+  assign pad_x_mobile_total = pad_x_mobile | times: 2
+-%}
+{%- capture image_sizes -%}(min-width: 768px) calc((100vw - {{ pad_x_total }}px - {{ gap }}px) / 2), calc(100vw - {{ pad_x_mobile_total }}px){%- endcapture -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    margin-top: {{ margin_top_mobile }}px;
+  }
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} {
+      margin-top: {{ margin_top }}px;
+    }
+  }
+  .banner-grid-{{ section.id }} {
+    --bg-gap: {{ gap }}px;
+    --bg-radius: {{ radius }}px;
+    --bg-ratio-mobile: 400 / {{ banner_h_mobile }};
+    --bg-ratio-desktop: 634 / {{ banner_h }};
+    width: 100%;
+    padding: {{ pad_y_mobile }}px {{ pad_x_mobile }}px;
+    box-sizing: border-box;
+  }
+  @media (min-width: 768px) {
+    .banner-grid-{{ section.id }} {
+      padding: {{ pad_y }}px {{ pad_x }}px;
+    }
+  }
+  .banner-grid-{{ section.id }} .banner-grid__inner {
+    width: 100%;
+  }
+  .banner-grid-{{ section.id }} .banner-grid__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--bg-gap);
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    .banner-grid-{{ section.id }} .banner-grid__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .banner-grid-{{ section.id }} .banner-grid__card {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: var(--bg-ratio-mobile);
+    border-radius: var(--bg-radius);
+    overflow: hidden;
+    text-decoration: none;
+    background: #eae3d9;
+  }
+  @media (min-width: 768px) {
+    .banner-grid-{{ section.id }} .banner-grid__card {
+      aspect-ratio: var(--bg-ratio-desktop);
+    }
+  }
+  .banner-grid-{{ section.id }} .banner-grid__media,
+  .banner-grid-{{ section.id }} .banner-grid__picture,
+  .banner-grid-{{ section.id }} .banner-grid__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .banner-grid-{{ section.id }} .banner-grid__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .banner-grid-{{ section.id }} .banner-grid__img {
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1);
+    transition: transform 0.45s ease;
+  }
+  @media (hover: hover) {
+    .banner-grid-{{ section.id }} .banner-grid__card:hover .banner-grid__img,
+    .banner-grid-{{ section.id }} .banner-grid__card:focus-visible .banner-grid__img {
+      transform: scale(1.04);
+    }
+  }
+  .banner-grid-{{ section.id }} .banner-grid__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: {{ banner_h_mobile }}px;
+    background: #eae3d9;
+    color: #222;
+    font-size: 0.875rem;
+    text-align: center;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+  @media (min-width: 768px) {
+    .banner-grid-{{ section.id }} .banner-grid__placeholder {
+      min-height: {{ banner_h }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  class="banner-grid-{{ section.id }}"
+  role="region"
+  aria-label="{{ 'sections.banner-grid.aria_label' | t }}"
+>
+  <div class="banner-grid__inner">
+    {%- if section.blocks.size == 0 -%}
+      {%- if request.design_mode -%}
+        <div class="banner-grid__placeholder">
+          {{ 'sections.banner-grid.placeholder' | t }}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="banner-grid__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign card_image = block.settings.image
+            assign card_image_mobile = block.settings.image_mobile
+            assign card_link = block.settings.link
+            assign has_media = false
+            if card_image != blank or card_image_mobile != blank
+              assign has_media = true
+            endif
+
+            if block.settings.image_alt != blank
+              assign card_alt = block.settings.image_alt
+            else
+              assign card_alt = 'sections.banner-grid.card_alt' | t
+            endif
+          -%}
+
+          {%- capture card_inner -%}
+            {%- if has_media -%}
+              <div class="banner-grid__media">
+                <picture class="banner-grid__picture">
+                  {%- if card_image_mobile != blank -%}
+                    <source
+                      media="(max-width: 767px)"
+                      srcset="
+                        {{ card_image_mobile | image_url: width: 800 }} 800w,
+                        {{ card_image_mobile | image_url: width: 1200 }} 1200w
+                      "
+                      sizes="100vw"
+                    >
+                  {%- endif -%}
+                  {%- if card_image != blank -%}
+                    {{
+                      card_image
+                      | image_url: width: 1600
+                      | image_tag:
+                        class: 'banner-grid__img',
+                        widths: '400, 640, 800, 1200, 1600',
+                        sizes: image_sizes,
+                        alt: card_alt,
+                        loading: 'lazy'
+                    }}
+                  {%- elsif card_image_mobile != blank -%}
+                    {{
+                      card_image_mobile
+                      | image_url: width: 1200
+                      | image_tag:
+                        class: 'banner-grid__img',
+                        widths: '400, 800, 1200',
+                        sizes: '100vw',
+                        alt: card_alt,
+                        loading: 'lazy'
+                    }}
+                  {%- endif -%}
+                </picture>
+              </div>
+            {%- elsif request.design_mode -%}
+              <div class="banner-grid__placeholder">
+                {{ 'sections.banner-grid.block_placeholder' | t }}
+              </div>
+            {%- endif -%}
+          {%- endcapture -%}
+
+          {%- if card_link != blank -%}
+            <a
+              class="banner-grid__card disable-effect"
+              href="{{ card_link }}"
+              {% if block.settings.open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
+              {{ block.shopify_attributes }}
+            >
+              {{ card_inner }}
+            </a>
+          {%- else -%}
+            <div class="banner-grid__card" {{ block.shopify_attributes }}>
+              {{ card_inner }}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner grid",
+  "tag": "section",
+  "class": "section-banner-grid",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Margin top — escritorio (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "label": "Margin top — móvil (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Separación entre banners (px)",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Radio de esquinas (px)",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "label": "Altura — escritorio (px)",
+      "min": 160,
+      "max": 360,
+      "step": 2,
+      "default": 246
+    },
+    {
+      "type": "range",
+      "id": "banner_height_mobile",
+      "label": "Altura — móvil (px)",
+      "min": 160,
+      "max": 360,
+      "step": 2,
+      "default": 246
+    },
+    {
+      "type": "range",
+      "id": "padding_x",
+      "label": "Padding lateral — escritorio (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mobile",
+      "label": "Padding lateral — móvil (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Padding vertical — escritorio (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mobile",
+      "label": "Padding vertical — móvil (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen (escritorio)",
+          "info": "Recomendado 634×246 px. Título y textos van en la imagen."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Imagen (móvil)",
+          "info": "Recomendado 400×246 px. Si se deja vacío, se usa la de escritorio."
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Texto alternativo"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_window",
+          "label": "Abrir enlace en nueva pestaña",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner grid",
+      "blocks": [
+        {
+          "type": "banner"
+        },
+        {
+          "type": "banner"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

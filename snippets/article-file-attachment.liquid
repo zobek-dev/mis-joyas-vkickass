@@ -1,0 +1,27 @@
+{%- liquid
+  assign attachment_metafield = article.metafields.custom.archivo_adjunto
+  assign attachment_url = ''
+
+  if attachment_metafield.value != blank
+    if attachment_metafield.value.url != blank
+      assign attachment_url = attachment_metafield.value.url
+    else
+      assign attachment_url = attachment_metafield | file_url
+    endif
+  elsif attachment_metafield != blank
+    assign attachment_url = attachment_metafield | file_url
+  endif
+-%}
+{%- if attachment_url != blank -%}
+  <div class="tw-mt-6">
+    <a
+      href="{{ attachment_url }}"
+      class="button button-solid leading-normal inline-block text-center pl-4 pr-4 pt-2.5 pb-2.5 md:pl-6 md:pr-6"
+      download
+      target="_blank"
+      rel="noopener"
+    >
+      {{ 'blogs.article.download_attachment' | t }}
+    </a>
+  </div>
+{%- endif -%}

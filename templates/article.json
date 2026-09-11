@@ -137,6 +137,14 @@
             "text_size": 100
           }
         },
+        "attachment": {
+          "type": "file_attachment",
+          "settings": {
+            "metafield_namespace": "custom",
+            "metafield_key": "archivo_adjunto",
+            "button_label": "Descargar archivo"
+          }
+        },
         "button": {
           "type": "button",
           "settings": {
@@ -149,6 +157,7 @@
       "block_order": [
         "title",
         "content",
+        "attachment",
         "button"
       ],
       "settings": {

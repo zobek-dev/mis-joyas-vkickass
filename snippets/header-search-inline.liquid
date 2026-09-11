@@ -2,7 +2,7 @@
   assign search_type = 'query,' | append: settings.search_type
 -%}
 <div
-  class="hidden lg:flex items-center relative lg:!tw-w-[345px]"
+  class="mj-header-search hidden lg:flex tw-items-center tw-relative tw-w-[500px] tw-max-w-[min(500px,42vw)]"
   x-data="xInlineSearch('{{ search_type }}', {{ settings.search_desktop_maximun_results | default: 6 }})"
   @click.away="closeResults()"
   @keyup.escape="closeResults()"
@@ -11,7 +11,7 @@
     action="{{ routes.search_url }}"
     method="get"
     role="search"
-    class="tw-flex tw-items-center tw-h-[42px] lg:tw-w-[345px] tw-bg-white tw-border tw-border-[#2d2d2d] tw-rounded-[4px] tw-px-3 tw-gap-2"
+    class="tw-flex tw-items-center tw-h-[50px] tw-w-full tw-bg-white tw-border-[0.5px] tw-border-black tw-rounded-[4px] tw-pl-3 tw-pr-[5px] tw-gap-3"
   >
     <input type="hidden" name="options[prefix]" value="last">
     <input
@@ -20,17 +20,24 @@
       x-model="query"
       @input="keyUp()"
       @focus="focusForm()"
-      class="flex-1 min-w-0 bg-transparent outline-none text-[16px] leading-[22px] text-black placeholder:text-[#737373] placeholder:opacity-70 [appearance:none] [-webkit-appearance:none]"
+      class="tw-flex-1 tw-min-w-0 tw-bg-transparent tw-outline-none tw-text-base tw-leading-[22px] tw-text-[#2d2d2d] placeholder:tw-text-[#2d2d2d] placeholder:tw-opacity-70 [appearance:none] [-webkit-appearance:none]"
       placeholder="{{ 'general.search.placeholder' | t }}"
       autocomplete="off"
       aria-label="{{ 'general.search.search' | t }}"
     >
     <button
       type="submit"
-      class="shrink-0 w-[18px] h-[18px] opacity-60 hover:opacity-100 tw-transition-opacity"
+      class="mj-header-search__btn tw-shrink-0 tw-flex tw-items-center tw-justify-center tw-w-10 tw-h-10 tw-rounded-full tw-bg-[#f8f4f0] tw-text-black hover:tw-opacity-90 tw-transition-opacity"
       aria-label="{{ 'general.search.search' | t }}"
     >
-      {%- render 'icon-alls', icon: 'icon-search' -%}
+      <img
+        src="{{ 'misjoyas-search-icon.svg' | asset_url }}"
+        alt=""
+        width="18"
+        height="18"
+        class="tw-w-[18px] tw-h-[18px] tw-block"
+        loading="lazy"
+      >
     </button>
   </form>
 
@@ -39,7 +46,7 @@
       x-show="openResults"
       x-cloak
       x-html="result"
-      class="absolute top-full tw-mt-[6px] left-0 lg:tw-w-[345px] z-50 bg-white shadow-md rounded-[4px] border border-black/10 max-h-96 overflow-y-auto text-[rgb(var(--colors-text))]"
+      class="tw-absolute tw-top-full tw-mt-1.5 tw-left-0 tw-w-full tw-z-50 tw-bg-white tw-shadow-md tw-rounded-[4px] tw-border tw-border-black/10 tw-max-h-96 tw-overflow-y-auto text-[rgb(var(--colors-text))]"
     ></div>
   {%- endif -%}
 </div>

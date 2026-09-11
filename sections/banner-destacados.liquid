@@ -1,0 +1,677 @@
+{%- liquid
+  assign pad_x = section.settings.padding_x | default: 80
+  assign pad_x_mobile = section.settings.padding_x_mobile | default: 20
+  assign pad_y = section.settings.padding_y | default: 40
+  assign pad_y_mobile = section.settings.padding_y_mobile | default: 50
+  assign margin_top = section.settings.margin_top | default: 0
+  assign margin_top_mobile = section.settings.margin_top_mobile | default: 0
+  assign gap = section.settings.gap | default: 12
+  assign radius = section.settings.border_radius | default: 4
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    margin-top: {{ margin_top_mobile }}px;
+  }
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} {
+      margin-top: {{ margin_top }}px;
+    }
+  }
+  .banner-destacados-{{ section.id }} {
+    --bd-gap: {{ gap }}px;
+    --bd-radius: {{ radius }}px;
+    width: 100%;
+    padding: {{ pad_y_mobile }}px {{ pad_x_mobile }}px;
+    box-sizing: border-box;
+  }
+  @media (min-width: 768px) {
+    .banner-destacados-{{ section.id }} {
+      padding: {{ pad_y }}px {{ pad_x }}px;
+    }
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__inner {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    margin-bottom: 30px;
+    color: #000;
+  }
+  @media (max-width: 767px) {
+    .banner-destacados-{{ section.id }} .banner-destacados__header {
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__eyebrow {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    text-transform: uppercase;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__heading {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 32px;
+  }
+  @media (min-width: 768px) {
+    .banner-destacados-{{ section.id }} .banner-destacados__heading {
+      font-size: 32px;
+      line-height: 40px;
+    }
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--bd-gap);
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    .banner-destacados-{{ section.id }} .banner-destacados__grid {
+      grid-template-columns: minmax(0, 763fr) minmax(0, 506fr);
+      grid-template-rows: auto auto auto;
+    }
+    .banner-destacados-{{ section.id }} .banner-destacados__card--large {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+    }
+    .banner-destacados-{{ section.id }} .banner-destacados__card--medium {
+      grid-column: 2;
+    }
+    .banner-destacados-{{ section.id }} .banner-destacados__card--wide {
+      grid-column: 1 / -1;
+      grid-row: 3;
+    }
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__card {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    border-radius: var(--bd-radius);
+    overflow: hidden;
+    text-decoration: none;
+    color: #fff;
+    background: #1a1a1a;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__card--large {
+    aspect-ratio: 400 / 504;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__card--medium,
+  .banner-destacados-{{ section.id }} .banner-destacados__card--wide {
+    aspect-ratio: 400 / 246;
+  }
+  @media (min-width: 768px) {
+    .banner-destacados-{{ section.id }} .banner-destacados__card--large {
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 0;
+      align-self: stretch;
+    }
+    .banner-destacados-{{ section.id }} .banner-destacados__card--medium {
+      aspect-ratio: 506 / 246;
+      min-height: 0;
+    }
+    .banner-destacados-{{ section.id }} .banner-destacados__card--wide {
+      aspect-ratio: 1282 / 246;
+      min-height: 0;
+    }
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__picture,
+  .banner-destacados-{{ section.id }} .banner-destacados__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__img {
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1);
+    transition: transform 0.45s ease;
+    will-change: transform;
+  }
+  @media (hover: hover) {
+    .banner-destacados-{{ section.id }} .banner-destacados__card:hover .banner-destacados__img,
+    .banner-destacados-{{ section.id }} .banner-destacados__card:focus-visible .banner-destacados__img {
+      transform: scale(1.04);
+    }
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__shade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 46%;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.44) 0%, rgba(0, 0, 0, 0) 100%);
+    border-radius: 0 0 var(--bd-radius) var(--bd-radius);
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__content {
+    position: absolute;
+    z-index: 2;
+    left: 20px;
+    right: 20px;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    color: #fff;
+  }
+  @media (min-width: 768px) {
+    .banner-destacados-{{ section.id }} .banner-destacados__card--large .banner-destacados__content {
+      left: 4%;
+      right: 4%;
+      bottom: 5.75%;
+    }
+    .banner-destacados-{{ section.id }} .banner-destacados__card--medium .banner-destacados__content,
+    .banner-destacados-{{ section.id }} .banner-destacados__card--wide .banner-destacados__content {
+      left: 2.6%;
+      right: auto;
+      bottom: 12%;
+      max-width: 460px;
+    }
+    .banner-destacados-{{ section.id }} .banner-destacados__card--wide .banner-destacados__content {
+      left: 2.57%;
+      bottom: 13.8%;
+      max-width: 460px;
+    }
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__badge {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 32px;
+    color: #fff;
+  }
+  @media (min-width: 768px) {
+    .banner-destacados-{{ section.id }} .banner-destacados__title {
+      font-size: 32px;
+      line-height: 40px;
+    }
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__cta {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+    margin-top: 0;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__cta-label {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #fff;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__cta-motion {
+    display: inline-flex;
+    align-items: stretch;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__cta-line {
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 50px;
+    padding: 14px 16px 12px 10px;
+    border-bottom: 2px solid #fff;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    color: transparent;
+    white-space: nowrap;
+    user-select: none;
+    transition: padding-right 0.28s ease;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__cta-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 48px;
+    min-height: 50px;
+    margin-left: 4px;
+    border-bottom: 2px solid #f83785;
+  }
+  @media (hover: hover) {
+    .banner-destacados-{{ section.id }} .banner-destacados__card:hover .banner-destacados__cta-line,
+    .banner-destacados-{{ section.id }} .banner-destacados__card:focus-visible .banner-destacados__cta-line {
+      padding-right: 26px;
+    }
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__cta-arrow img,
+  .banner-destacados-{{ section.id }} .banner-destacados__cta-arrow svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+  }
+  .banner-destacados-{{ section.id }} .banner-destacados__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 246px;
+    border-radius: var(--bd-radius);
+    background: #eae3d9;
+    color: #222;
+    font-size: 0.875rem;
+    text-align: center;
+    padding: 1.5rem;
+  }
+{%- endstyle -%}
+
+<div
+  class="banner-destacados-{{ section.id }}"
+  role="region"
+  aria-label="{{ 'sections.banner-destacados.aria_label' | t }}"
+>
+  <div class="banner-destacados__inner">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+      <header class="banner-destacados__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="banner-destacados__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="banner-destacados__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    {%- if section.blocks.size == 0 -%}
+      {%- if request.design_mode -%}
+        <div class="banner-destacados__placeholder">
+          {{ 'sections.banner-destacados.placeholder' | t }}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="banner-destacados__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign card_layout = block.settings.card_layout | default: 'medium'
+            if card_layout == blank
+              if forloop.index == 1
+                assign card_layout = 'large'
+              elsif forloop.index == 4
+                assign card_layout = 'wide'
+              else
+                assign card_layout = 'medium'
+              endif
+            endif
+
+            assign card_image = block.settings.image
+            assign card_image_mobile = block.settings.image_mobile
+            assign card_link = block.settings.link
+            assign has_media = false
+            if card_image != blank or card_image_mobile != blank
+              assign has_media = true
+            endif
+
+            if block.settings.image_alt != blank
+              assign card_alt = block.settings.image_alt
+            elsif block.settings.heading != blank
+              assign card_alt = block.settings.heading
+            else
+              assign card_alt = 'sections.banner-destacados.card_alt' | t
+            endif
+
+          -%}
+          {%- capture card_inner -%}
+            {%- if has_media -%}
+              <div class="banner-destacados__media">
+                <picture class="banner-destacados__picture">
+                  {%- if card_image_mobile != blank -%}
+                    <source
+                      media="(max-width: 767px)"
+                      srcset="
+                        {{ card_image_mobile | image_url: width: 800 }} 800w,
+                        {{ card_image_mobile | image_url: width: 1200 }} 1200w
+                      "
+                      sizes="100vw"
+                    >
+                  {%- endif -%}
+                  {%- if card_image != blank -%}
+                    {{
+                      card_image
+                      | image_url: width: 1600
+                      | image_tag:
+                        class: 'banner-destacados__img',
+                        widths: '400, 600, 800, 1200, 1600',
+                        sizes: '(min-width: 768px) 50vw, 100vw',
+                        alt: card_alt,
+                        loading: 'lazy'
+                    }}
+                  {%- elsif card_image_mobile != blank -%}
+                    {{
+                      card_image_mobile
+                      | image_url: width: 1200
+                      | image_tag:
+                        class: 'banner-destacados__img',
+                        widths: '400, 800, 1200',
+                        sizes: '100vw',
+                        alt: card_alt,
+                        loading: 'lazy'
+                    }}
+                  {%- endif -%}
+                </picture>
+              </div>
+            {%- elsif request.design_mode -%}
+              <div class="banner-destacados__placeholder">
+                {{ 'sections.banner-destacados.block_placeholder' | t }}
+              </div>
+            {%- endif -%}
+
+            {%- if card_layout == 'large' or block.settings.show_gradient -%}
+              <span class="banner-destacados__shade" aria-hidden="true"></span>
+            {%- endif -%}
+
+            {%- if block.settings.badge != blank or block.settings.heading != blank or block.settings.button_label != blank -%}
+              <div class="banner-destacados__content">
+                {%- if block.settings.badge != blank -%}
+                  <p class="banner-destacados__badge">{{ block.settings.badge | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.heading != blank -%}
+                  <p class="banner-destacados__title">{{ block.settings.heading | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.button_label != blank -%}
+                  <span class="banner-destacados__cta">
+                    <span class="banner-destacados__cta-label">{{ block.settings.button_label | escape }}</span>
+                    <span class="banner-destacados__cta-motion" aria-hidden="true">
+                      <span class="banner-destacados__cta-line">{{ block.settings.button_label | escape }}</span>
+                      <span class="banner-destacados__cta-arrow">
+                        <img
+                          src="{{ 'banner-destacados-arrow.svg' | asset_url }}"
+                          width="18"
+                          height="18"
+                          alt=""
+                          loading="lazy"
+                        >
+                      </span>
+                    </span>
+                  </span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endcapture -%}
+
+          {%- if card_link != blank -%}
+            <a
+              class="banner-destacados__card banner-destacados__card--{{ card_layout }}"
+              href="{{ card_link }}"
+              {% if block.settings.open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
+              {{ block.shopify_attributes }}
+            >
+              {{ card_inner }}
+            </a>
+          {%- else -%}
+            <div
+              class="banner-destacados__card banner-destacados__card--{{ card_layout }}"
+              {{ block.shopify_attributes }}
+            >
+              {{ card_inner }}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner destacados",
+  "tag": "section",
+  "class": "section-banner-destacados",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "por ocasión"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Colecciones destacadas"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Margin top — escritorio (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "label": "Margin top — móvil (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espacio entre tarjetas (px)",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Radio de esquinas (px)",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_x",
+      "label": "Padding lateral — escritorio (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mobile",
+      "label": "Padding lateral — móvil (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Padding vertical — escritorio (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mobile",
+      "label": "Padding vertical — móvil (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 50
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Tarjeta",
+      "settings": [
+        {
+          "type": "select",
+          "id": "card_layout",
+          "label": "Tamaño",
+          "default": "medium",
+          "options": [
+            {
+              "value": "large",
+              "label": "Grande (izquierda)"
+            },
+            {
+              "value": "medium",
+              "label": "Mediana (derecha)"
+            },
+            {
+              "value": "wide",
+              "label": "Ancha (abajo)"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen (escritorio)",
+          "info": "Grande: 763×504. Mediana: 506×246. Ancha: 1282×246."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Imagen (móvil)",
+          "info": "Grande: 400×504. Mediana/ancha: 400×246."
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Texto alternativo"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_window",
+          "label": "Abrir enlace en nueva pestaña",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge",
+          "default": "Nueva colección"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Día del niño"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Texto del CTA",
+          "default": "Ver colección"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_gradient",
+          "label": "Mostrar gradiente inferior",
+          "default": false,
+          "info": "La tarjeta grande siempre muestra gradiente."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner destacados",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "card_layout": "large",
+            "badge": "Nueva colección",
+            "heading": "Día del niño",
+            "button_label": "Ver colección",
+            "show_gradient": true
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_layout": "medium",
+            "badge": "Anticípate",
+            "heading": "Licenciatura",
+            "button_label": "Ver productos"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_layout": "medium",
+            "badge": "Las que más brillan",
+            "heading": "Moissanita",
+            "button_label": "Ver productos"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_layout": "wide",
+            "badge": "Descuentos por poco tiempo",
+            "heading": "Rebajas de invierno",
+            "button_label": "Renueva tu stock"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

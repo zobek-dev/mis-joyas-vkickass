@@ -1,4 +1,4 @@
-{% liquid 
+{% liquid
   if settings.lang_direction contains request.locale.iso_code
     assign class_rtl = 'rtl'
     assign is_rtl = true
@@ -13,7 +13,11 @@
       {% render 'toolbar', show_social_icons: section.settings.show_social_icons %}
     </div>
   {%- endif -%}
-  {%- if section.blocks.size > 0 or section.settings.newsletter_enable or section.settings.show_social or section.settings.enable_follow_on_shop -%}
+  {%- if section.blocks.size > 0
+    or section.settings.newsletter_enable
+    or section.settings.show_social
+    or section.settings.enable_follow_on_shop
+  -%}
     <div class="flex-wrap md:mb-5 md:border-b md:border-b-solid md:pt-12 md:pb-7">
       {%- if section.blocks.size > 0 -%}
         {%- liquid
@@ -24,12 +28,15 @@
             {%- liquid
               assign number = forloop.index | modulo: number_col_footer
             -%}
-          <div class="footer-col--{{ forloop.index }}{% if is_rtl %} md:pl-5 md:first:pr-0{% else %} md:pr-5 md:first:pl-0{% endif %} md:mb-7{% if number == 1 %}{% if is_rtl %} md:pr-0{% else %} md:pl-0{% endif %}{% else %}{% if is_rtl %} md:pr-10{% else %} md:pl-10{% endif %}{% endif %} w-full md:w-1/{{ section.settings.columns_desktop }} {{ class_rtl }}" {{ block.shopify_attributes }}>
+            <div
+              class="footer-col--{{ forloop.index }}{% if is_rtl %} md:pl-5 md:first:pr-0{% else %} md:pr-5 md:first:pl-0{% endif %} md:mb-7{% if number == 1 %}{% if is_rtl %} md:pr-0{% else %} md:pl-0{% endif %}{% else %}{% if is_rtl %} md:pr-10{% else %} md:pl-10{% endif %}{% endif %} w-full md:w-1/{{ section.settings.columns_desktop }} {{ class_rtl }}"
+              {{ block.shopify_attributes }}
+            >
               {%- case block.type -%}
                 {%- when 'text' -%}
                   <div class="py-4 border-b border-b-solid md:border-none">
                     {%- if block.settings.heading_text != blank -%}
-                    <div class="relative{% if is_rtl %} pl-5{% else %} pr-5{% endif %}">
+                      <div class="relative{% if is_rtl %} pl-5{% else %} pr-5{% endif %}">
                         <p class="h6 text-[115%]">{{- block.settings.heading_text | escape -}}</p>
                       </div>
                     {%- endif -%}
@@ -45,39 +52,76 @@
                         {% endstyle %}
                         {% assign image_tags = block.settings.image_width | times: 1.1 | ceil | append: '' %}
                         {%- if block.settings.link_image_footer != blank -%}
-                          <a href="{{ block.settings.link_image_footer }}"{% if block.settings.open_new_window %} target="_blank"{% endif %} class="image-{{ block.id }} h-full inline-block overflow-hidden{% if block.settings.heading_text != blank %} mt-6{% endif %}{% if settings.edges_type == 'rounded_corners' %} rounded-[10px]{% endif %}">
-                            {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: widths: image_tags,
-                              height: block.settings.image.height,
-                              class: "image-hover",
-                              width: block.settings.image.width,
-                              sizes: sizes,
-                              loading: 'lazy',
-                              alt: block.settings.image.alt | escape
+                          <a
+                            href="{{ block.settings.link_image_footer }}"
+                            {% if block.settings.open_new_window %}
+                              target="_blank"
+                            {% endif %}
+                            class="image-{{ block.id }} h-full inline-block overflow-hidden{% if block.settings.heading_text != blank %} mt-6{% endif %}{% if settings.edges_type == 'rounded_corners' %} rounded-[10px]{% endif %}"
+                          >
+                            {{
+                              block.settings.image
+                              | image_url: width: block.settings.image.width
+                              | image_tag:
+                                widths: image_tags,
+                                height: block.settings.image.height,
+                                class: 'image-hover',
+                                width: block.settings.image.width,
+                                sizes: sizes,
+                                loading: 'lazy',
+                                alt: block.settings.image.alt
+                              | escape
                             }}
                           </a>
                         {%- else -%}
                           <div class="image-{{ block.id }} h-full inline-block overflow-hidden{% if block.settings.heading_text != blank %} mt-6{% endif %}{% if settings.edges_type == 'rounded_corners' %} rounded-[10px]{% endif %}">
-                            {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: widths: image_tags,
-                              height: block.settings.image.height,
-                              class: "image-hover",
-                              width: block.settings.image.width,
-                              sizes: sizes,
-                              loading: 'lazy',
-                              alt: block.settings.image.alt | escape
+                            {{
+                              block.settings.image
+                              | image_url: width: block.settings.image.width
+                              | image_tag:
+                                widths: image_tags,
+                                height: block.settings.image.height,
+                                class: 'image-hover',
+                                width: block.settings.image.width,
+                                sizes: sizes,
+                                loading: 'lazy',
+                                alt: block.settings.image.alt
+                              | escape
                             }}
                           </div>
                         {%- endif -%}
                       {%- endif -%}
-                      <div class="rte{% if block.settings.image != blank %} mt-2{% else %} mt-6{% endif %}">{{ block.settings.subtext }}</div>
+                      <div class="rte{% if block.settings.image != blank %} mt-2{% else %} mt-6{% endif %}">
+                        {{ block.settings.subtext }}
+                      </div>
                       {%- if block.settings.show_social_icons -%}
                         <div class="mt-2">
-                          {% render 'toolbar', enable_footer: true, show_social_icons: block.settings.show_social_icons, social_icons_layout: block.settings.icon_layout %}
+                          {% render 'toolbar',
+                            enable_footer: true,
+                            show_social_icons: block.settings.show_social_icons,
+                            social_icons_layout: block.settings.icon_layout
+                          %}
                         </div>
                       {%- endif -%}
                       {%- if forloop.first -%}
-                        <div class="tw-hidden md:tw-flex tw-flex-col tw-gap-2 tw-mt-4">
-                          <img src="{{ 'ccs-cyber-2026.png' | asset_url }}" alt="Empresa Oficial CCS Cyber 2026" width="103" height="103" loading="lazy">
-                          <img src="{{ 'ccs-confianza.png' | asset_url }}" alt="Sello Confianza Ecommerce CCS" width="112" height="118" loading="lazy">
+                        <div class="tw-hidden md:tw-flex tw-flex-row tw-items-start tw-gap-5 tw-mt-4">
+                          {% comment %} <img src="{{ 'ccs-cyber-2026.png' | asset_url }}" alt="Empresa Oficial CCS Cyber 2026" width="103" height="103" loading="lazy"> {% endcomment %}
+                          <img
+                            src="{{ 'ccs-confianza.png' | asset_url }}"
+                            alt="Sello Confianza Ecommerce CCS"
+                            width="112"
+                            height="118"
+                            loading="lazy"
+                            class="tw-w-[112px] tw-h-[118px] tw-object-contain"
+                          >
+                          <img
+                            src="{{ 'sello-estandar_MJ.png' | asset_url }}"
+                            alt="Sello Estándar MisJoyas"
+                            width="112"
+                            height="118"
+                            loading="lazy"
+                            class="tw-w-[112px] tw-h-[118px] tw-object-contain"
+                          >
                         </div>
                       {%- endif -%}
                     </div>
@@ -93,14 +137,29 @@
                       <ul class="mt-6">
                         {%- for link in block.settings.menu.links -%}
                           <li class="mb-1 first:pt-0 pt-2">
-                            <a href="{{ link.url }}" class="hover-text-link nav-link relative block lg:inline-block">
+                            {% assign open_in_new_tab = false %}
+                            {% if link.url contains 'drive.google.com/file/d/1stNa4K17A7htbf1P383OBR3HscnyHbbn' %}
+                              {% assign open_in_new_tab = true %}
+                            {% elsif link.url contains 'Landing_Page_Sorteo_Gift_cards__Agosto_2026.pdf' %}
+                              {% assign open_in_new_tab = true %}
+                            {% endif %}
+                            <a
+                              href="{{ link.url }}"
+                              {% if open_in_new_tab %}
+                                target="_blank" rel="noopener noreferrer"
+                              {% endif %}
+                              class="hover-text-link nav-link relative block lg:inline-block"
+                            >
                               {{ link.title }}
                             </a>
                           </li>
                         {%- endfor -%}
                         {%- if block.settings.show_social_icons -%}
                           <div class="mt-2">
-                            {% render 'toolbar', enable_footer: true, show_social_icons: block.settings.show_social_icons %}
+                            {% render 'toolbar',
+                              enable_footer: true,
+                              show_social_icons: block.settings.show_social_icons
+                            %}
                           </div>
                         {%- endif -%}
                       </ul>
@@ -119,36 +178,52 @@
                       {% endstyle %}
                       {% assign image_tags = block.settings.image_width | times: 1.1 | ceil | append: '' %}
                       {%- if block.settings.link_image_footer != blank -%}
-                        <a href="{{ block.settings.link_image_footer }}"{% if block.settings.open_new_window %} target="_blank"{% endif %} class="image-{{ block.id }} h-full inline-block overflow-hidden{% if block.settings.rounded_corner_image %} rounded-[10px]{% endif %}">
-                          {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: widths: image_tags,
-                            height: 'auto',
-                            class: "image-hover",
-                            width: block.settings.image_width,
-                            sizes: sizes,
-                            loading: 'lazy',
-                            alt: block.settings.image.alt | escape
+                        <a
+                          href="{{ block.settings.link_image_footer }}"
+                          {% if block.settings.open_new_window %}
+                            target="_blank"
+                          {% endif %}
+                          class="image-{{ block.id }} h-full inline-block overflow-hidden{% if block.settings.rounded_corner_image %} rounded-[10px]{% endif %}"
+                        >
+                          {{
+                            block.settings.image
+                            | image_url: width: block.settings.image.width
+                            | image_tag:
+                              widths: image_tags,
+                              height: 'auto',
+                              class: 'image-hover',
+                              width: block.settings.image_width,
+                              sizes: sizes,
+                              loading: 'lazy',
+                              alt: block.settings.image.alt
+                            | escape
                           }}
                         </a>
                       {%- else -%}
                         <div class="image-{{ block.id }} h-full inline-block overflow-hidden{% if block.settings.rounded_corner_image %} rounded-[10px]{% endif %}">
-                          {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: widths: image_tags,
-                            height: 'auto',
-                            class: "image-hover",
-                            width: block.settings.image_width,
-                            sizes: sizes,
-                            loading: 'lazy',
-                            alt: block.settings.image.alt | escape
+                          {{
+                            block.settings.image
+                            | image_url: width: block.settings.image.width
+                            | image_tag:
+                              widths: image_tags,
+                              height: 'auto',
+                              class: 'image-hover',
+                              width: block.settings.image_width,
+                              sizes: sizes,
+                              loading: 'lazy',
+                              alt: block.settings.image.alt
+                            | escape
                           }}
                         </div>
                       {%- endif -%}
                     {%- else -%}
                       {% liquid
                         assign class_img = 'max-w-[13rem] bg-neutral-200'
-                        if block.settings.rounded_corner_image 
+                        if block.settings.rounded_corner_image
                           assign class_img = class_img | append: ' rounded-[10px]'
                         endif
                       %}
-                      {{ 'image' | placeholder_svg_tag: class_img }}  
+                      {{ 'image' | placeholder_svg_tag: class_img }}
                     {%- endif -%}
                     {% if block.settings.text != blank %}
                       {% style %}
@@ -190,28 +265,51 @@
                               {% elsif form.posted_successfully? %}
                                 aria-describedby="ContactFooter-success"
                               {% endif %}
-                                placeholder="{{ 'newsletter.label' | t }}"
-                                required>
-                            <label class="absolute top-1/2{% if is_rtl %} right-2.5{% else %} left-2.5{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-2.5 input_not_empty:top-2.5 input_not_empty:text-xs" for="NewsletterForm--{{ section.id }}">
+                              placeholder="{{ 'newsletter.label' | t }}"
+                              required
+                            >
+                            <label
+                              class="absolute top-1/2{% if is_rtl %} right-2.5{% else %} left-2.5{% endif %} -translate-y-1/2 input_focus:text-xs input_focus:top-2.5 input_not_empty:top-2.5 input_not_empty:text-xs"
+                              for="NewsletterForm--{{ section.id }}"
+                            >
                               {{ 'newsletter.label' | t }}
                             </label>
                           </div>
                           <div>
-                            <button type="submit" class="rounded-none border-solid border-current ml-1 w-12 h-full flex justify-center items-center bg-transparent border-b-2 border-b-solid border-x-0 border-t-0" style="border-bottom-color: #f83785;" name="commit" aria-label="{{ 'newsletter.button_label' | t }}">
-                              <span class="{% if is_rtl %} rotate-180{% endif %}"> 
+                            <button
+                              type="submit"
+                              class="rounded-none border-solid border-current ml-1 w-12 h-full flex justify-center items-center bg-transparent border-b-2 border-b-solid border-x-0 border-t-0"
+                              style="border-bottom-color: #f83785;"
+                              name="commit"
+                              aria-label="{{ 'newsletter.button_label' | t }}"
+                            >
+                              <span class="{% if is_rtl %} rotate-180{% endif %}">
                                 {% render 'icon-alls', icon: 'icon-arrow', enable_email_footer: true %}
                               </span>
                             </button>
                           </div>
                           {%- if form.errors -%}
-                            <div class="flex items-center text-left px-4 py-3 mt-4 bg-[rgba(var(--color-error),0.1)] selection:bg-[rgba(var(--color-error),0.2)]{% if settings.edges_type == 'rounded_corners' %} rounded-md{% endif %}" id="Newsletter-error--{{ section.id }}">
-                              <span class="inline-block w-6 mr-2 text-[rgba(var(--color-error))]">{% render 'icon-alls', icon: 'icon-error' %} </span>
-                              <p class="flex-1">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+                            <div
+                              class="flex items-center text-left px-4 py-3 mt-4 bg-[rgba(var(--color-error),0.1)] selection:bg-[rgba(var(--color-error),0.2)]{% if settings.edges_type == 'rounded_corners' %} rounded-md{% endif %}"
+                              id="Newsletter-error--{{ section.id }}"
+                            >
+                              <span class="inline-block w-6 mr-2 text-[rgba(var(--color-error))]">
+                                {%- render 'icon-alls', icon: 'icon-error' %}
+                              </span>
+                              <p class="flex-1">
+                                {{ form.errors.translated_fields.email | capitalize }}
+                                {{ form.errors.messages.email }}
+                              </p>
                             </div>
                           {%- endif -%}
                         </div>
                         {%- if form.posted_successfully? -%}
-                          <div class="flex items-center text-left px-3 py-3 mt-4 bg-[rgba(var(--color-success),0.1)] selection:bg-[rgba(var(--color-success),0.2)] focus:shadown-none focus-visible:outline-none focus:outline-none focus-visible:shadow-none" id="Newsletter-success--{{ section.id }}" tabindex="-1" autofocus>
+                          <div
+                            class="flex items-center text-left px-3 py-3 mt-4 bg-[rgba(var(--color-success),0.1)] selection:bg-[rgba(var(--color-success),0.2)] focus:shadown-none focus-visible:outline-none focus:outline-none focus-visible:shadow-none"
+                            id="Newsletter-success--{{ section.id }}"
+                            tabindex="-1"
+                            autofocus
+                          >
                             <span class="inline-block w-6 mr-2 text-[rgba(var(--color-success))]">
                               {%- render 'icon-alls', icon: 'icon-success' -%}
                             </span>
@@ -226,9 +324,12 @@
                       {% endif %}
                       {%- if block.settings.show_social_icons -%}
                         <div class="mt-4">
-                          {% render 'toolbar', enable_footer: true, show_social_icons: block.settings.show_social_icons %}
+                          {% render 'toolbar',
+                            enable_footer: true,
+                            show_social_icons: block.settings.show_social_icons
+                          %}
                         </div>
-                      {%- endif -%}  
+                      {%- endif -%}
                     </div>
                   </div>
                 {% when 'contact' %}
@@ -242,10 +343,15 @@
                       {% if block.settings.icon_1 != 'none' or block.settings.title_1 or block.settings.text_1 %}
                         <div class="mb-4 flex items-center gap-x-4">
                           {% if block.settings.icon_1 != 'none' %}
-                            {% unless block.settings.custom_icon == blank and block.settings.another_icon_1 == blank and block.settings.icon_1 == 'another_icon' %}
+                            {% unless block.settings.custom_icon == blank
+                              and block.settings.another_icon_1 == blank
+                              and block.settings.icon_1 == 'another_icon'
+                            %}
                               <span class="inline-block h-6 w-6 lg:h-9 lg:w-9 min-w-[24px] lg:min-w-[36px]">
                                 {% if block.settings.custom_icon == blank %}
-                                  {% if block.settings.another_icon_1 != blank and block.settings.icon_1 == 'another_icon' %}
+                                  {% if block.settings.another_icon_1 != blank
+                                    and block.settings.icon_1 == 'another_icon'
+                                  %}
                                     {% render 'icon-new-alls', icon: block.settings.another_icon_1 %}
                                   {% else %}
                                     {% render 'icon-labels-bags', icon: block.settings.icon_1 %}
@@ -260,7 +366,11 @@
                             <div>
                               <p class="empty:hidden p-break-words">{{ block.settings.title_1 | escape }}</p>
                               {% if block.settings.text_link_1 != blank %}
-                                <a href="{{ block.settings.text_link_1 }}"{% if block.settings.open_new_window_1 %} target="_blank"{% endif %}
+                                <a
+                                  href="{{ block.settings.text_link_1 }}"
+                                  {% if block.settings.open_new_window_1 %}
+                                    target="_blank"
+                                  {% endif %}
                                   class="font-semibold p-break-words empty:hidden{% if block.settings.enable_text_link_1 %} text-[rgb(var(--colors-text-link))]{% endif %} hover-text-link nav-link relative"
                                 >
                                   {{ block.settings.text_1 | escape }}
@@ -269,7 +379,7 @@
                                 <p class="font-semibold p-break-words empty:hidden{% if block.settings.enable_text_link_1 %} text-[rgb(var(--colors-text-link))]{% endif %}">
                                   {{ block.settings.text_1 | escape }}
                                 </p>
-                              {% endif %} 
+                              {% endif %}
                             </div>
                           {% endif %}
                         </div>
@@ -277,10 +387,15 @@
                       {% if block.settings.icon_2 != 'none' or block.settings.title_2 or block.settings.text_2 %}
                         <div class="mb-4 flex items-center gap-x-4">
                           {% if block.settings.icon_2 != 'none' %}
-                            {% unless block.settings.custom_icon_2 == blank and block.settings.another_icon_2 == blank and block.settings.icon_2 == 'another_icon' %}
+                            {% unless block.settings.custom_icon_2 == blank
+                              and block.settings.another_icon_2 == blank
+                              and block.settings.icon_2 == 'another_icon'
+                            %}
                               <span class="inline-block min-w-[24px] lg:min-w-[36px] h-6 w-6 lg:h-9 lg:w-9">
                                 {% if block.settings.custom_icon_2 == blank %}
-                                  {% if block.settings.another_icon_2 != blank and block.settings.icon_2 == 'another_icon' %}
+                                  {% if block.settings.another_icon_2 != blank
+                                    and block.settings.icon_2 == 'another_icon'
+                                  %}
                                     {% render 'icon-new-alls', icon: block.settings.another_icon_2 %}
                                   {% else %}
                                     {% render 'icon-labels-bags', icon: block.settings.icon_2 %}
@@ -295,7 +410,11 @@
                             <div>
                               <p class="empty:hidden">{{ block.settings.title_2 | escape }}</p>
                               {% if block.settings.text_link_2 != blank %}
-                                <a href="{{ block.settings.text_link_2 }}"{% if block.settings.open_new_window_2 %} target="_blank"{% endif %}
+                                <a
+                                  href="{{ block.settings.text_link_2 }}"
+                                  {% if block.settings.open_new_window_2 %}
+                                    target="_blank"
+                                  {% endif %}
                                   class="font-semibold p-break-words empty:hidden{% if block.settings.enable_text_link_2 %} text-[rgb(var(--colors-text-link))]{% endif %} hover-text-link nav-link relative"
                                 >
                                   {{ block.settings.text_2 | escape }}
@@ -304,7 +423,7 @@
                                 <p class="font-semibold p-break-words empty:hidden{% if block.settings.enable_text_link_2 %} text-[rgb(var(--colors-text-link))]{% endif %}">
                                   {{ block.settings.text_2 | escape }}
                                 </p>
-                              {% endif %} 
+                              {% endif %}
                             </div>
                           {% endif %}
                         </div>
@@ -312,10 +431,15 @@
                       {% if block.settings.icon_3 != 'none' or block.settings.title_3 or block.settings.text_3 %}
                         <div class="mb-4 flex items-center gap-x-4">
                           {% if block.settings.icon_3 != 'none' %}
-                            {% unless block.settings.custom_icon_3 == blank and block.settings.another_icon_3 == blank and block.settings.icon_3 == 'another_icon' %}
+                            {% unless block.settings.custom_icon_3 == blank
+                              and block.settings.another_icon_3 == blank
+                              and block.settings.icon_3 == 'another_icon'
+                            %}
                               <span class="inline-block h-6 w-6 lg:h-9 lg:w-9 min-w-[24px] lg:min-w-[36px]">
                                 {% if block.settings.custom_icon_3 == blank %}
-                                  {% if block.settings.another_icon_3 != blank and block.settings.icon_3 == 'another_icon' %}
+                                  {% if block.settings.another_icon_3 != blank
+                                    and block.settings.icon_3 == 'another_icon'
+                                  %}
                                     {% render 'icon-new-alls', icon: block.settings.another_icon_3 %}
                                   {% else %}
                                     {% render 'icon-labels-bags', icon: block.settings.icon_3 %}
@@ -330,7 +454,11 @@
                             <div>
                               <p class="empty:hidden">{{ block.settings.title_3 | escape }}</p>
                               {% if block.settings.text_link_3 != blank %}
-                                <a href="{{ block.settings.text_link_3 }}"{% if block.settings.open_new_window_3 %} target="_blank"{% endif %}
+                                <a
+                                  href="{{ block.settings.text_link_3 }}"
+                                  {% if block.settings.open_new_window_3 %}
+                                    target="_blank"
+                                  {% endif %}
                                   class="font-semibold p-break-words empty:hidden{% if block.settings.enable_text_link_3 %} text-[rgb(var(--colors-text-link))]{% endif %} hover-text-link nav-link relative"
                                 >
                                   {{ block.settings.text_3 | escape }}
@@ -364,49 +492,108 @@
       {% comment %}theme-check-disable{% endcomment %}
       {{ shop | login_button: action: 'follow' }}
       {% comment %}theme-check-enable{% endcomment %}
-    </div>  
+    </div>
   {%- endif -%}
-  <div class="additional-footer {{ class_rtl }}{% if section.settings.additional_layout == 'horizontal' %} x-page-width page-width mx-auto lg:flex lg:flex-row lg:justify-between items-center{% else %} mx-5{% endif -%}"
-  >
+  <div class="additional-footer {{ class_rtl }}{% if section.settings.additional_layout == 'horizontal' %} x-page-width page-width mx-auto lg:flex lg:flex-row lg:justify-between items-center{% else %} mx-5{% endif -%}">
     <div class="{% if section.settings.additional_layout == 'horizontal' %}flex flex-col lg:flex lg:flex-row gap-x-7 items-center w-full justify-between{% else %}flex flex-col{% endif %}">
-      <div class="tw-flex md:tw-hidden tw-flex-col tw-gap-2 tw-mb-4">
-        <img src="{{ 'ccs-cyber-2026.png' | asset_url }}" alt="Empresa Oficial CCS Cyber 2026" width="103" height="103" loading="lazy">
-        <img src="{{ 'ccs-confianza.png' | asset_url }}" alt="Sello Confianza Ecommerce CCS" width="112" height="118" loading="lazy">
+      {%- comment -%} Mobile: sellos + etiquetas + medios de pago (Figma 1601:10909) {%- endcomment -%}
+      <div class="tw-flex md:tw-hidden tw-flex-col tw-gap-5 tw-items-start tw-self-start tw-w-full tw-mb-4">
+        <div class="tw-flex tw-flex-row tw-items-start tw-gap-5">
+          <img
+            src="{{ 'ccs-confianza.png' | asset_url }}"
+            alt="Sello Confianza Ecommerce CCS"
+            width="112"
+            height="118"
+            loading="lazy"
+            class="tw-w-[112px] tw-h-[118px] tw-object-contain"
+          >
+          <img
+            src="{{ 'sello-estandar_MJ.png' | asset_url }}"
+            alt="Sello Estándar MisJoyas"
+            width="112"
+            height="118"
+            loading="lazy"
+            class="tw-w-[112px] tw-h-[118px] tw-object-contain"
+          >
+        </div>
+        <div class="tw-flex tw-flex-row tw-flex-wrap tw-items-center tw-gap-2.5">
+          <span
+            class="tw-inline-flex tw-items-center tw-justify-center tw-h-[30px] tw-px-2 tw-rounded tw-text-sm tw-font-semibold tw-leading-5 tw-whitespace-nowrap tw-text-white"
+            style="background-color: #737373;"
+          >
+            Plata fina certificada • Ley 925
+          </span>
+          <span
+            class="tw-inline-flex tw-items-center tw-justify-center tw-h-[30px] tw-px-2 tw-rounded tw-text-sm tw-font-semibold tw-leading-5 tw-whitespace-nowrap"
+            style="background-color: #fcdf97; color: #222222;"
+          >
+            Baño de oro • 18 kilates
+          </span>
+        </div>
+        {%- if section.settings.payment_enable -%}
+          {% render 'misjoyas-payment-logos',
+            webpay_logo: 'webpay_blanco.png',
+            mp_logo: 'mercado-pago_blanco.png',
+            transfer_logo: 'transferencia-blanco.png'
+          %}
+        {%- endif -%}
       </div>
-      <div class="tw-flex tw-items-center tw-gap-1.5 tw-rounded-md tw-px-2.5 tw-py-1.5 tw-my-2 lg:tw-my-0 tw-shrink-0" style="background-color: #222222;">
-        <span class="tw-block tw-w-5 tw-h-5 tw-shrink-0">{% render 'icon-alls', icon: 'icon-success' %}</span>
-        <span class="tw-text-xs tw-font-semibold tw-text-white tw-whitespace-nowrap" style="letter-spacing: 0.2px;">Plata fina certificada • Ley 925</span>
+
+      {%- comment -%} Desktop: etiquetas (sellos van en la columna de marca) {%- endcomment -%}
+      <div class="tw-hidden md:tw-flex tw-flex-wrap tw-items-center tw-justify-center tw-gap-3">
+        <span
+          class="tw-inline-flex tw-items-center tw-justify-center tw-h-[30px] tw-px-2 tw-rounded tw-text-sm tw-font-semibold tw-leading-5 tw-whitespace-nowrap tw-text-white"
+          style="background-color: #737373;"
+        >
+          Plata fina certificada • Ley 925
+        </span>
+        <span
+          class="tw-inline-flex tw-items-center tw-justify-center tw-h-[30px] tw-px-2 tw-rounded tw-text-sm tw-font-semibold tw-leading-5 tw-whitespace-nowrap"
+          style="background-color: #fcdf97; color: #222222;"
+        >
+          Baño de oro • 18 kilates
+        </span>
       </div>
       {%- if section.settings.show_language_selector or section.settings.show_currency_selector -%}
         <div class="mb-3 md:mb-2{% if section.settings.additional_layout == 'vertical' %} lg:mb-2{% else %} lg:mb-0{% endif %}">
-        {% render 'toolbar', enable_footer: true, show_currency_selector: section.settings.show_currency_selector, show_language_selector: section.settings.show_language_selector %}
+          {% render 'toolbar',
+            enable_footer: true,
+            show_currency_selector: section.settings.show_currency_selector,
+            show_language_selector: section.settings.show_language_selector
+          %}
         </div>
       {%- endif -%}
       <div class="flex flex-col items-center{% if section.settings.additional_layout == 'vertical' %} lg:mt-2 order-last{% else %} lg:mb-0 order-last md:order-none{% endif %}{% if section.settings.additional_layout == 'horizontal' %} lg:pl-14 lg:max-w-3xl{% endif %}">
         <div class="{% if section.settings.show_copyright %}mt-4 md:mt-4 base-link text-center lg:mt-0{% unless section.settings.additional_layout == 'vertical' %} lg:text-right{% endunless %}{% endif %} p-break-words">
           {%- if section.settings.show_copyright -%}
-          <p class="inline-block">&copy; {{ 'now' | date: "%Y" }}{% unless is_rtl %}, {% endunless %}</p>
+            <p class="inline-block">
+              &copy; {{ 'now' | date: '%Y' -}}
+              {%- unless is_rtl %}, {% endunless %}
+            </p>
             {{ shop.name | link_to: routes.root_url }}.
             {%- if section.settings.add_copyright_text != blank -%}
               <div class="ml-1 inline-block">
-                {{ section.settings.add_copyright_text | replace: '<a href="https://omnithemes.com', '<a rel="nofollow" href="https://omnithemes.com' }}
+                {{
+                  section.settings.add_copyright_text
+                  | replace: '<a href="https://omnithemes.com', '<a rel="nofollow" href="https://omnithemes.com'
+                }}
               </div>
             {%- endif -%}
           {%- endif -%}
           {% if section.settings.show_powered %}
-            <p class="mt-3{% if section.settings.show_copyright %} md:mt-0{% else %} md:mt-4{% endif %} md:ml-1 block md:inline-block">{{ powered_by_link }}</p>
+            <p class="mt-3{% if section.settings.show_copyright %} md:mt-0{% else %} md:mt-4{% endif %} md:ml-1 block md:inline-block">
+              {{ powered_by_link }}
+            </p>
           {% endif %}
         </div>
       </div>
       {%- if section.settings.payment_enable -%}
-        <img
-          src="{{ 'footer-medios-pago.png' | asset_url }}"
-          alt="Medios de pago: Visa, Mastercard, American Express, Diners Club, RedCompra"
-          loading="lazy"
-          width="410"
-          height="126"
-          class="footer-medios-pago tw-mt-4 md:tw-mt-0"
-        >
+        {% render 'misjoyas-payment-logos',
+          class: 'tw-hidden md:tw-flex',
+          webpay_logo: 'webpay_blanco.png',
+          mp_logo: 'mercado-pago_blanco.png',
+          transfer_logo: 'transferencia-blanco.png'
+        %}
       {%- endif -%}
     </div>
   </div>

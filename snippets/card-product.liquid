@@ -288,19 +288,19 @@
         {% render 'card-product-static-badges', product: card_product %}
       {%- endif -%}
 
-      {% comment %} Tag de promociones Cyber {% endcomment %}
-       {% if card_product.tags contains 'cyber-2026' %}
+      {% comment %} Aqui tag de promociones Cyber {% endcomment %}
+       {% comment %} {% if card_product.tags contains 'cyber-2026' %}
         <div class="cyber-badge-container">
           <img
             width="100"
             height="100"
             loading="lazy"
             alt="Cyber"
-            src="{{ 'logo_cyber.jpg' | asset_url }}"
+            src="{{ 'revancha.jpg' | asset_url }}"
           >
         </div>
-       {% endif %} 
-
+       {% endif %}  {% endcomment %}
+      {% comment %} Aqui termina tag de promociones Cyber {% endcomment %}
       <div class="w-full h-full z-0 overflow-hidden absolute top-0 left-0{% if is_recommendations_card %} static-card-image{% elsif animation_loading and loading != 'eager' %} animate_transition_card__image{% endif %}">
         <div
           id="x-slideshow-card-product-{{ section_id }}-{{ product_card_id }}-{{ index | minus: 1 }}"
@@ -511,6 +511,7 @@
           {%- endif -%}
         </div>
       </div>
+      {% render 'misjoyas-metal-tag', product: card_product, context: 'card' %}
       {% unless disable_quickview %}
         <div class="md:list-layout:hidden" x-show="$store.xQuickView" :class="$store.xQuickView && $store.xQuickView.btn_atc_bottom ? 'mobile-bottom':''">
           {%- unless settings.hide_cart -%} 
@@ -831,7 +832,8 @@
                 misjoyas_context: 'card'
               -%}
             {% elsif card_product.has_only_default_variant %}
-              {% render 'price', priceID: priceID, product: card_product, product_complementary: product_complementary, show_price_range: show_price_range, misjoyas_context: 'card' %}
+              <div class="loox-rating" data-id="{{ card_product.id }}" data-rating="{{ card_product.metafields.loox.avg_rating }}" data-raters="{{ card_product.metafields.loox.num_reviews }}"></div>
+{% render 'price', priceID: priceID, product: card_product, product_complementary: product_complementary, show_price_range: show_price_range, misjoyas_context: 'card' %}
             {% else %}
               {%- render 'price',
                 product: card_product,
@@ -962,8 +964,15 @@
                             endif
                           %}
                           <span class="flex items-center justify-center gap-2">
-                            {% render 'button-label', button_label: button_label, show_button_style: 'primary' %}
-                            <span class="tw-w-5 tw-h-5 tw-flex tw-items-center tw-justify-center tw-shrink-0">{% render 'icon-cart-all', icon: 'icon-cart-quick-add' %}</span>
+                            {%- if can_show_preorder -%}
+                              {% render 'button-label', button_label: button_label, show_button_style: 'primary' %}
+                            {%- else -%}
+                              <span class="button-text is-focus-button:opacity-0 card-product-atc-btn__label">
+                                <span class="card-product-atc-btn__label-short">{{ 'products.product.add_to_cart_short' | t }}</span>
+                                <span class="card-product-atc-btn__label-full">{{ button_label | escape }}</span>
+                              </span>
+                            {%- endif -%}
+                            <span class="tw-w-5 tw-h-5 tw-flex tw-items-center tw-justify-center tw-shrink-0" aria-hidden="true">{% render 'icon-cart-all', icon: 'icon-cart-quick-add' %}</span>
                           </span>
                         {%- else -%}
                           {{ 'products.product.sold_out' | t }}
@@ -973,8 +982,11 @@
                           assign button_label = 'products.product.add_to_cart' | t
                         %}
                         <span class="flex items-center justify-center gap-2">
-                          {% render 'button-label', button_label: button_label, show_button_style: 'primary' %}
-                          <span class="tw-w-5 tw-h-5 tw-flex tw-items-center tw-justify-center tw-shrink-0">{% render 'icon-cart-all', icon: 'icon-cart-quick-add' %}</span>
+                          <span class="button-text is-focus-button:opacity-0 card-product-atc-btn__label">
+                            <span class="card-product-atc-btn__label-short">{{ 'products.product.add_to_cart_short' | t }}</span>
+                            <span class="card-product-atc-btn__label-full">{{ button_label | escape }}</span>
+                          </span>
+                          <span class="tw-w-5 tw-h-5 tw-flex tw-items-center tw-justify-center tw-shrink-0" aria-hidden="true">{% render 'icon-cart-all', icon: 'icon-cart-quick-add' %}</span>
                         </span>
                       {%- endif -%}
                     </span>

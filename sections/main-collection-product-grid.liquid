@@ -1,3 +1,13 @@
+{%- liquid
+  assign subcollection_hub_handles = 'descuento-invierno,descuentos-invierno' | split: ','
+  assign is_subcollection_hub = false
+  if subcollection_hub_handles contains collection.handle
+    assign is_subcollection_hub = true
+  endif
+-%}
+{%- if is_subcollection_hub -%}
+  {% render 'collection-subcollections-hub-by-handle' %}
+{%- else -%}
 {%- style -%}
   {% if section.settings.sticky_filtering %}
     :root{
@@ -383,6 +393,7 @@
   </script>
 {% endif %}
 <script src="{{ 'preview-color-swatches.js' | asset_url }}" defer></script>
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",

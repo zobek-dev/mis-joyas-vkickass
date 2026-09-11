@@ -3080,6 +3080,22 @@
         "info_above": "Only applies to Above layout"
       }
     },
+    "cart-drawer": {
+      "name": "Cart drawer",
+      "settings": {
+        "apps_info": "Add app blocks below cart items via Customize → Overlay → Cart drawer. Candy Rack upsells: create offers with Cart page → Pop-up (triggered on checkout). You can also use Custom liquid blocks."
+      },
+      "blocks": {
+        "heading": {
+          "name": "Upsells heading",
+          "settings": {
+            "heading": {
+              "label": "Heading"
+            }
+          }
+        }
+      }
+    },
     "main-cart-items": {
       "name": "Items",
       "settings": {

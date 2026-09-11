@@ -1,0 +1,55 @@
+{%- comment -%}
+  Hub de subcolecciones vinculado por handle de la colección padre.
+  Se usa cuando el admin no permite asignar la plantilla alternativa.
+{%- endcomment -%}
+{%- liquid
+  assign hub_subcollection_handles = 'argollas,apegados,trepadores-y-earcuff,descuento-invierno-anillos,descuento-invierno-collares,colgantes-micro-circon-y-circon,colgantes-plata-sola,colgantes-y-collares-religiosos,descuento-invierno-pulseras,descuento-invierno-bano-oro' | split: ','
+
+  assign ratio = 100
+  assign max_columns = 5
+  assign min_columns_mobile = 2
+  assign columns_desktop = 5
+  assign rendered_count = 0
+-%}
+{%- style -%}
+  .spacing--{{ collection.handle }}-hub {
+    gap: 20px;
+  }
+  @media screen and (min-width: 768px) {
+    .spacing--{{ collection.handle }}-hub {
+      gap: 28px;
+    }
+  }
+{%- endstyle -%}
+<div class="collection-list-page x-page-width page-width pt-[32px] md:pt-[36px] pb-[32px] md:pb-[36px]">
+  <ul class="collection-list grid grid-cols-{{ min_columns_mobile }} md:grid-cols-{{ max_columns }} spacing--{{ collection.handle }}-hub" role="list">
+    {%- for sub_handle in hub_subcollection_handles -%}
+      {%- assign sub_collection = collections[sub_handle] -%}
+      {%- if sub_collection != blank -%}
+        {%- assign rendered_count = rendered_count | plus: 1 -%}
+        <li class="collection-list-item overflow-hidden">
+          {% render 'card-collection',
+            card_collection: sub_collection,
+            block_type: 'featured_collection',
+            image_ratio: 'square',
+            ratio: ratio,
+            title_size: 80,
+            content_alignment: 'center',
+            content_position: 'bottom',
+            text_overlay: false,
+            image_overlay_opacity: 5,
+            columns_desktop: columns_desktop,
+            columns_mobile: min_columns_mobile,
+            show_item_count: true
+          %}
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+
+  {%- if rendered_count == 0 and request.design_mode -%}
+    <p class="tw-text-center tw-text-sm tw-p-8 tw-text-[#737373]">
+      No hay subcolecciones visibles para <strong>{{ collection.handle }}</strong>. Verifica que los handles existan en la tienda.
+    </p>
+  {%- endif -%}
+</div>

@@ -3,70 +3,187 @@
   assign cards_gap_mobile = section.settings.gap_mobile
   assign cards_padding_y = section.settings.padding_y
   assign cards_padding_y_mobile = section.settings.padding_y_mobile
-  assign card_max_width = section.settings.card_max_width
-  assign card_width_mobile = section.settings.card_width_mobile
-  assign enable_mobile_carousel = false
-  if section.blocks.size > 1
-    assign enable_mobile_carousel = true
+  assign cards_padding_x = section.settings.padding_x
+  assign cards_padding_x_mobile = section.settings.padding_x_mobile
+  if cards_padding_x == blank
+    assign cards_padding_x = 80
   endif
-  assign show_heading = false
-  if section.settings.heading != blank
-    assign show_heading = true
+  if cards_padding_x_mobile == blank
+    assign cards_padding_x_mobile = 20
+  endif
+  assign card_max_width = section.settings.card_max_width
+
+  assign switch_plata = section.settings.switch_label_plata
+  if switch_plata == blank
+    assign switch_plata = 'Plata 925'
+  endif
+  assign switch_oro = section.settings.switch_label_oro
+  if switch_oro == blank
+    assign switch_oro = 'Baño de oro 18K'
+  endif
+  assign cta_label_plata = section.settings.cta_label_plata
+  if cta_label_plata == blank
+    assign cta_label_plata = 'Ver todo Plata 925'
+  endif
+  assign cta_label_oro = section.settings.cta_label_oro
+  if cta_label_oro == blank
+    assign cta_label_oro = 'Ver todo Baño de oro 18K'
   endif
 -%}
 
 {%- style -%}
+  #shopify-section-{{ section.id }},
   .category-cards-{{ section.id }} {
     --category-cards-gap: {{ cards_gap }}px;
     --category-cards-gap-mobile: {{ cards_gap_mobile }}px;
     --category-cards-padding-y: {{ cards_padding_y }}px;
     --category-cards-padding-y-mobile: {{ cards_padding_y_mobile }}px;
+    --category-cards-padding-x: {{ cards_padding_x }}px;
+    --category-cards-padding-x-mobile: {{ cards_padding_x_mobile }}px;
     --category-cards-max-width: {{ card_max_width }}px;
-    --category-cards-width-mobile: {{ card_width_mobile }}px;
+  }
+  .category-cards-{{ section.id }} {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     padding-top: var(--category-cards-padding-y-mobile);
     padding-bottom: var(--category-cards-padding-y-mobile);
+    padding-left: var(--category-cards-padding-x-mobile);
+    padding-right: var(--category-cards-padding-x-mobile);
   }
   @media (min-width: 768px) {
     .category-cards-{{ section.id }} {
       padding-top: var(--category-cards-padding-y);
       padding-bottom: var(--category-cards-padding-y);
+      padding-left: var(--category-cards-padding-x); /* default 80px */
+      padding-right: var(--category-cards-padding-x);
     }
+  }
+  .category-cards-{{ section.id }} .category-cards__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .category-cards-{{ section.id }} .category-cards__header {
+      gap: 16px;
+    }
+  }
+  .category-cards-{{ section.id }} .category-cards__eyebrow {
+    margin: 0;
+    color: #000;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+  .category-cards-{{ section.id }} .category-cards__heading {
+    margin: 0;
+    color: #000;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 32px;
+  }
+  @media (min-width: 768px) {
+    .category-cards-{{ section.id }} .category-cards__heading {
+      font-size: 32px;
+      line-height: 40px;
+    }
+  }
+  .category-cards-{{ section.id }} .category-cards__switch {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 30px;
+    background: #e0e0e0;
+  }
+  .category-cards-{{ section.id }} .category-cards__switch-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 8px 22px;
+    border: 0;
+    border-radius: 30px;
+    background: transparent;
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+  @media (min-width: 768px) {
+    .category-cards-{{ section.id }} .category-cards__switch-btn {
+      font-size: 18px;
+      padding: 8px 28px;
+    }
+    .category-cards-{{ section.id }} .category-cards__switch-btn--oro {
+      padding-left: 22px;
+      padding-right: 22px;
+    }
+  }
+  .category-cards-{{ section.id }} .category-cards__switch-btn.is-active {
+    background: #f83785;
+    color: #fff;
   }
   .category-cards-{{ section.id }} .category-cards__carousel {
     position: relative;
     width: 100%;
   }
   .category-cards-{{ section.id }} .category-cards__track {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0;
+    padding-right: 0;
   }
-  @media (min-width: 768px) {
-    .category-cards-{{ section.id }} .category-cards__track {
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }
-  .category-cards-{{ section.id }} .preload-slide-{{ section.id }} {
-    margin-right: var(--category-cards-gap-mobile);
-  }
-  @media (min-width: 768px) {
-    .category-cards-{{ section.id }} .preload-slide-{{ section.id }} {
-      margin-right: 0;
-    }
+  .category-cards-{{ section.id }} .category-cards__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--category-cards-gap-mobile);
+    width: 100%;
   }
   .category-cards-{{ section.id }} .category-cards__item {
-    width: min(var(--category-cards-width-mobile), calc(100vw - 5.5rem));
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+  .category-cards-{{ section.id }} .category-cards__set {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.55s ease, visibility 0.55s ease;
+    z-index: 0;
+  }
+  .category-cards-{{ section.id }} .category-cards__set.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 1;
   }
   .category-cards-{{ section.id }} .category-cards__card {
     display: block;
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     border-radius: 4px;
     overflow: hidden;
     line-height: 0;
     text-decoration: none;
+    color: inherit;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+  .category-cards-{{ section.id }} .category-cards__card img {
+    -webkit-user-drag: none;
+    pointer-events: none;
   }
   .category-cards-{{ section.id }} .category-cards__media {
     position: absolute;
@@ -93,35 +210,40 @@
     object-position: center;
     border-radius: 4px;
   }
+  .category-cards-{{ section.id }} .category-cards__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 4px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 59.6%, rgba(0, 0, 0, 0.4) 100%);
+    pointer-events: none;
+  }
   .category-cards-{{ section.id }} .category-cards__label {
     position: absolute;
     left: 50%;
-    bottom: 5.56%;
+    bottom: 14px;
     transform: translateX(-50%);
     z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: calc(100% - 2rem);
-    padding: 11px 32px 12px;
-    border-radius: 4px;
-    background-color: #000000;
-    color: #ffffff;
-    font-size: 1rem;
-    line-height: 1.375rem;
-    font-weight: 400;
-    text-transform: uppercase;
+    margin: 0;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
     text-align: center;
     white-space: nowrap;
     pointer-events: none;
-    transition: background-color 0.3s ease;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.2s ease;
   }
   @media (hover: hover) {
-    .category-cards-{{ section.id }} .category-cards__card:hover .category-cards__label {
-      background-color: #F83785;
-    }
     .category-cards-{{ section.id }} .category-cards__card--has-hover:hover .category-cards__picture--hover {
       opacity: 1;
+    }
+    .category-cards-{{ section.id }} .category-cards__card:hover .category-cards__label {
+      text-decoration: underline;
+      text-decoration-color: #fff;
     }
   }
   .category-cards-{{ section.id }} .category-cards__placeholder {
@@ -137,86 +259,145 @@
     text-align: center;
     padding: 1rem;
   }
-  .category-cards-{{ section.id }} .category-cards__heading {
-    margin-bottom: 1.5rem;
-    text-align: center;
-    font-size: 1.5rem;
-    line-height: 1.2;
-    text-transform: uppercase;
+  .category-cards-{{ section.id }} .category-cards__footer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    min-height: 50px;
   }
   @media (min-width: 768px) {
-    .category-cards-{{ section.id }} .splide__list.category-cards__list {
-      display: flex !important;
-      flex-wrap: wrap;
-      justify-content: center;
+    .category-cards-{{ section.id }} .category-cards__footer {
+      margin-top: 30px;
+    }
+  }
+  .category-cards-{{ section.id }} .category-cards__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 50px;
+    padding: 10px 30px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    background: transparent;
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      opacity 0.55s ease,
+      visibility 0.55s ease;
+  }
+  .category-cards-{{ section.id }} .category-cards__cta.is-faded {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .category-cards-{{ section.id }} .category-cards__cta:not(.is-faded):hover {
+    background: #000;
+    color: #fff;
+  }
+  @media (min-width: 768px) {
+    .category-cards-{{ section.id }} .category-cards__list {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: stretch;
+      align-items: stretch;
       gap: var(--category-cards-gap);
+      width: 100%;
     }
     .category-cards-{{ section.id }} .category-cards__item {
-      width: auto !important;
+      width: auto;
+      height: auto;
       flex: 1 1 0;
       min-width: 0;
       max-width: var(--category-cards-max-width);
-      margin-right: 0 !important;
+      aspect-ratio: 1 / 1;
     }
   }
 {%- endstyle -%}
 
 <div
-  class="category-cards-{{ section.id }} tw-w-full"
+  class="category-cards-{{ section.id }}"
   role="region"
   aria-label="{{ 'sections.category-cards.aria_label' | t }}"
->
-  {%- if show_heading -%}
-    <div class="x-page-width page-width">
+  x-data="{
+    material: 'plata',
+    timer: null,
+    startAuto() {
+      this.stopAuto();
+      this.timer = setInterval(() => {
+        this.material = this.material === 'plata' ? 'oro' : 'plata';
+      }, 5000);
+    },
+    stopAuto() {
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = null;
+      }
+    },
+    setMaterial(value) {
+      this.material = value;
+      {% comment %} this.startAuto(); {% endcomment %}
+    }
+  }"
+  {% comment %} x-init="startAuto()"
+  @mouseenter="window.matchMedia('(hover: hover)').matches && stopAuto()"
+  @mouseleave="window.matchMedia('(hover: hover)').matches && startAuto()" {% endcomment %}
+> 
+  <div class="category-cards__header">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="category-cards__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
       <h2 class="category-cards__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    <div class="category-cards__switch" role="group" aria-label="{{ 'sections.category-cards.switch_aria' | t }}">
+      <button
+        type="button"
+        class="category-cards__switch-btn"
+        :class="{ 'is-active': material === 'plata' }"
+        @click="setMaterial('plata')"
+        :aria-pressed="(material === 'plata').toString()"
+      >
+        {{ switch_plata | escape }}
+      </button>
+      <button
+        type="button"
+        class="category-cards__switch-btn category-cards__switch-btn--oro"
+        :class="{ 'is-active': material === 'oro' }"
+        @click="setMaterial('oro')"
+        :aria-pressed="(material === 'oro').toString()"
+      >
+        {{ switch_oro | escape }}
+      </button>
     </div>
-  {%- endif -%}
+  </div>
 
   <div
     id="category-cards-{{ section.id }}"
-    class="category-cards__carousel x-page-width page-width carousel-mobile{% if enable_mobile_carousel %} x-splide splide visible{% endif %}"
-    {% if enable_mobile_carousel %}
-      x-intersect.once.margin.200px='$store.xSplide.load($el, {
-        "autoWidth": true,
-        "height": "{{ card_width_mobile }}px",
-        "focus": 0,
-        "type": "slide",
-        "mediaQuery": "min",
-        "gap": "{{ cards_gap_mobile }}px",
-        "arrows": false,
-        "pagination": false,
-        "drag": true,
-        "trimSpace": false,
-        "breakpoints": {
-          768: {
-            "destroy": true
-          }
-        },
-        "classes": {
-          "pagination": "hidden"
-        }
-      })'
-    {% endif %}
+    class="category-cards__carousel"
   >
-    {% if enable_mobile_carousel %}
-      <div class="splide__track category-cards__track overflow-hidden w-full">
-        <div class="splide__list category-cards__list w-full h-full">
-    {% else %}
-      <div class="category-cards__track">
-        <div class="category-cards__list tw-flex tw-flex-wrap tw-justify-center" style="gap: {{ cards_gap }}px;">
-    {% endif %}
+    <div class="category-cards__track">
+      <div class="category-cards__list">
       {%- for block in section.blocks -%}
         {%- liquid
-          assign card_image = block.settings.image
-          assign card_image_mobile = block.settings.image_mobile
-          assign card_image_hover = block.settings.image_hover
-          assign card_image_hover_mobile = block.settings.image_hover_mobile
-          assign card_link = block.settings.link
+          assign image_plata = block.settings.image_plata
+          assign image_plata_hover = block.settings.image_plata_hover
+          assign link_plata = block.settings.link_plata
+          assign image_oro = block.settings.image_oro
+          assign image_oro_hover = block.settings.image_oro_hover
+          assign link_oro = block.settings.link_oro
+
           assign card_label = block.settings.label
-          assign has_hover_image = false
-          if card_image_hover != blank or card_image_hover_mobile != blank
-            assign has_hover_image = true
-          endif
           if block.settings.image_alt != blank
             assign card_alt = block.settings.image_alt
           elsif card_label != blank
@@ -224,95 +405,178 @@
           else
             assign card_alt = 'sections.category-cards.card_alt' | t
           endif
+
+          assign has_hover_plata = false
+          if image_plata_hover != blank
+            assign has_hover_plata = true
+          endif
+          assign has_hover_oro = false
+          if image_oro_hover != blank
+            assign has_hover_oro = true
+          endif
         -%}
         <div
-          class="category-cards__item{% if enable_mobile_carousel %} splide__slide x-splide-slide preload-slide-{{ section.id }}{% endif %}"
+          class="category-cards__item"
           {{ block.shopify_attributes }}
         >
-          {%- if card_image != blank -%}
-            {%- if card_link != blank -%}
-              <a
-                href="{{ card_link }}"
-                class="category-cards__card{% if has_hover_image %} category-cards__card--has-hover{% endif %}"
-                {% if block.settings.open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
-              >
-            {%- else -%}
-              <div class="category-cards__card{% if has_hover_image %} category-cards__card--has-hover{% endif %}">
-            {%- endif -%}
-            <div class="category-cards__media">
-              <picture class="category-cards__picture category-cards__picture--default">
-                {%- if card_image_mobile != blank -%}
-                  <source
-                    media="(max-width: 767px)"
-                    srcset="{{ card_image_mobile | image_url: width: 800 }}"
-                  >
-                {%- endif -%}
-                {{
-                  card_image
-                  | image_url: width: 800
-                  | image_tag:
-                    class: 'category-cards__img',
-                    widths: '360, 480, 720, 800',
-                    sizes: '(max-width: 767px) min(280px, calc(100vw - 5.5rem)), 360px',
-                    alt: card_alt,
-                    loading: 'lazy'
-                }}
-              </picture>
-              {%- if has_hover_image -%}
-                {%- liquid
-                  assign hover_fallback = card_image_hover
-                  if hover_fallback == blank
-                    assign hover_fallback = card_image_hover_mobile
-                  endif
-                -%}
-                <picture class="category-cards__picture category-cards__picture--hover">
-                  {%- if card_image_hover_mobile != blank -%}
-                    <source
-                      media="(max-width: 767px)"
-                      srcset="{{ card_image_hover_mobile | image_url: width: 800 }}"
-                    >
-                  {%- endif -%}
-                  {{
-                    hover_fallback
-                    | image_url: width: 800
-                    | image_tag:
-                      class: 'category-cards__img',
-                      widths: '360, 480, 720, 800',
-                      sizes: '(max-width: 767px) min(280px, calc(100vw - 5.5rem)), 360px',
-                      alt: '',
-                      loading: 'lazy'
-                  }}
-                </picture>
+          {%- comment -%} Plata set {%- endcomment -%}
+          <div
+            class="category-cards__set category-cards__set--plata is-active"
+            :class="{ 'is-active': material === 'plata' }"
+          >
+            {%- if image_plata != blank -%}
+              {%- if link_plata != blank -%}
+                <a
+                  href="{{ link_plata }}"
+                  class="category-cards__card{% if has_hover_plata %} category-cards__card--has-hover{% endif %}"
+                  {% if block.settings.open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
+                >
+              {%- else -%}
+                <div class="category-cards__card{% if has_hover_plata %} category-cards__card--has-hover{% endif %}">
               {%- endif -%}
-            </div>
-            {%- if card_label != blank -%}
-              <span class="category-cards__label">{{ card_label | escape }}</span>
-            {%- endif -%}
-            {%- if card_link != blank -%}
-              </a>
-            {%- else -%}
+                <div class="category-cards__media">
+                  <picture class="category-cards__picture category-cards__picture--default">
+                    {{
+                      image_plata
+                      | image_url: width: 800
+                      | image_tag:
+                        class: 'category-cards__img',
+                        widths: '246, 360, 480, 720, 800',
+                        sizes: '(max-width: 767px) 50vw, 360px',
+                        alt: card_alt,
+                        loading: 'lazy'
+                    }}
+                  </picture>
+                  {%- if has_hover_plata -%}
+                    <picture class="category-cards__picture category-cards__picture--hover">
+                      {{
+                        image_plata_hover
+                        | image_url: width: 800
+                        | image_tag:
+                          class: 'category-cards__img',
+                          widths: '246, 360, 480, 720, 800',
+                          sizes: '(max-width: 767px) 50vw, 360px',
+                          alt: '',
+                          loading: 'lazy'
+                      }}
+                    </picture>
+                  {%- endif -%}
+                </div>
+                <span class="category-cards__shade" aria-hidden="true"></span>
+                {%- if card_label != blank -%}
+                  <span class="category-cards__label">{{ card_label | escape }}</span>
+                {%- endif -%}
+              {%- if link_plata != blank -%}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            {%- elsif request.design_mode -%}
+              <div class="category-cards__card">
+                <p class="category-cards__placeholder">{{ 'sections.category-cards.placeholder' | t }} (Plata)</p>
+                {%- if card_label != blank -%}
+                  <span class="category-cards__label">{{ card_label | escape }}</span>
+                {%- endif -%}
               </div>
             {%- endif -%}
-          {%- elsif request.design_mode -%}
-            <div class="category-cards__card">
-              <p class="category-cards__placeholder">
-                {{ 'sections.category-cards.placeholder' | t }}
-              </p>
-              {%- if card_label != blank -%}
-                <span class="category-cards__label">{{ card_label | escape }}</span>
+          </div>
+
+          {%- comment -%} Oro set {%- endcomment -%}
+          <div
+            class="category-cards__set category-cards__set--oro"
+            :class="{ 'is-active': material === 'oro' }"
+          >
+            {%- if image_oro != blank -%}
+              {%- if link_oro != blank -%}
+                <a
+                  href="{{ link_oro }}"
+                  class="category-cards__card{% if has_hover_oro %} category-cards__card--has-hover{% endif %}"
+                  {% if block.settings.open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
+                >
+              {%- else -%}
+                <div class="category-cards__card{% if has_hover_oro %} category-cards__card--has-hover{% endif %}">
               {%- endif -%}
-            </div>
-          {%- endif -%}
+                <div class="category-cards__media">
+                  <picture class="category-cards__picture category-cards__picture--default">
+                    {{
+                      image_oro
+                      | image_url: width: 800
+                      | image_tag:
+                        class: 'category-cards__img',
+                        widths: '246, 360, 480, 720, 800',
+                        sizes: '(max-width: 767px) 50vw, 360px',
+                        alt: card_alt,
+                        loading: 'lazy'
+                    }}
+                  </picture>
+                  {%- if has_hover_oro -%}
+                    <picture class="category-cards__picture category-cards__picture--hover">
+                      {{
+                        image_oro_hover
+                        | image_url: width: 800
+                        | image_tag:
+                          class: 'category-cards__img',
+                          widths: '246, 360, 480, 720, 800',
+                          sizes: '(max-width: 767px) 50vw, 360px',
+                          alt: '',
+                          loading: 'lazy'
+                      }}
+                    </picture>
+                  {%- endif -%}
+                </div>
+                <span class="category-cards__shade" aria-hidden="true"></span>
+                {%- if card_label != blank -%}
+                  <span class="category-cards__label">{{ card_label | escape }}</span>
+                {%- endif -%}
+              {%- if link_oro != blank -%}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            {%- elsif request.design_mode -%}
+              <div class="category-cards__card">
+                <p class="category-cards__placeholder">{{ 'sections.category-cards.placeholder' | t }} (Baño de oro)</p>
+                {%- if card_label != blank -%}
+                  <span class="category-cards__label">{{ card_label | escape }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
         </div>
       {%- endfor -%}
-    {% if enable_mobile_carousel %}
-        </div>
-      </div>
-    {% else %}
-        </div>
-      </div>
-    {% endif %}
+    </div>
   </div>
+  </div>
+
+  {%- if section.settings.cta_link_plata != blank or section.settings.cta_link_oro != blank or cta_label_plata != blank -%}
+    <div class="category-cards__footer">
+      {%- if section.settings.cta_link_plata != blank -%}
+        <a
+          href="{{ section.settings.cta_link_plata }}"
+          class="category-cards__cta"
+          :class="{ 'is-faded': material !== 'plata' }"
+          {% if section.settings.cta_open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
+        >
+          {{ cta_label_plata | escape }}
+        </a>
+      {%- else -%}
+        <span class="category-cards__cta" :class="{ 'is-faded': material !== 'plata' }">{{ cta_label_plata | escape }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.cta_link_oro != blank -%}
+        <a
+          href="{{ section.settings.cta_link_oro }}"
+          class="category-cards__cta is-faded"
+          :class="{ 'is-faded': material !== 'oro' }"
+          {% if section.settings.cta_open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
+        >
+          {{ cta_label_oro | escape }}
+        </a>
+      {%- else -%}
+        <span class="category-cards__cta is-faded" :class="{ 'is-faded': material !== 'oro' }">{{ cta_label_oro | escape }}</span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 </div>
 
 {% schema %}
@@ -324,9 +588,67 @@
   "settings": [
     {
       "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Explora por tipo"
+    },
+    {
+      "type": "text",
       "id": "heading",
-      "label": "Título de sección",
-      "info": "Opcional. El diseño Figma no incluye título."
+      "label": "Título",
+      "default": "Nuestras categorías"
+    },
+    {
+      "type": "header",
+      "content": "Switch de material"
+    },
+    {
+      "type": "text",
+      "id": "switch_label_plata",
+      "label": "Label — Plata",
+      "default": "Plata 925"
+    },
+    {
+      "type": "text",
+      "id": "switch_label_oro",
+      "label": "Label — Baño de oro",
+      "default": "Baño de oro 18K"
+    },
+    {
+      "type": "header",
+      "content": "Botón Ver todo"
+    },
+    {
+      "type": "text",
+      "id": "cta_label_plata",
+      "label": "Texto CTA — Plata",
+      "default": "Ver todo Plata 925"
+    },
+    {
+      "type": "url",
+      "id": "cta_link_plata",
+      "label": "Enlace CTA — Plata"
+    },
+    {
+      "type": "text",
+      "id": "cta_label_oro",
+      "label": "Texto CTA — Baño de oro",
+      "default": "Ver todo Baño de oro 18K"
+    },
+    {
+      "type": "url",
+      "id": "cta_link_oro",
+      "label": "Enlace CTA — Baño de oro"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_open_new_window",
+      "label": "Abrir CTA en nueva pestaña",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
     },
     {
       "type": "range",
@@ -335,7 +657,7 @@
       "min": 8,
       "max": 40,
       "step": 2,
-      "default": 16
+      "default": 12
     },
     {
       "type": "range",
@@ -348,12 +670,30 @@
     },
     {
       "type": "range",
+      "id": "padding_x",
+      "label": "Padding lateral — escritorio (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mobile",
+      "label": "Padding lateral — móvil (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
       "id": "padding_y",
       "label": "Padding vertical — escritorio (px)",
       "min": 0,
       "max": 80,
       "step": 2,
-      "default": 30
+      "default": 40
     },
     {
       "type": "range",
@@ -362,26 +702,16 @@
       "min": 0,
       "max": 80,
       "step": 2,
-      "default": 30
+      "default": 40
     },
     {
       "type": "range",
       "id": "card_max_width",
       "label": "Ancho máximo por tarjeta — escritorio (px)",
       "min": 200,
-      "max": 480,
-      "step": 10,
+      "max": 400,
+      "step": 2,
       "default": 360
-    },
-    {
-      "type": "range",
-      "id": "card_width_mobile",
-      "label": "Ancho de tarjeta — móvil (px)",
-      "info": "Más bajo = se ve más la siguiente tarjeta (sugerido 280 px).",
-      "min": 220,
-      "max": 360,
-      "step": 10,
-      "default": 280
     }
   ],
   "blocks": [
@@ -390,34 +720,10 @@
       "name": "Categoría",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Imagen",
-          "info": "Cuadrada 360×360 px recomendado."
-        },
-        {
-          "type": "image_picker",
-          "id": "image_mobile",
-          "label": "Imagen (móvil)",
-          "info": "Opcional."
-        },
-        {
-          "type": "image_picker",
-          "id": "image_hover",
-          "label": "Imagen hover",
-          "info": "Se muestra al pasar el mouse. Cuadrada 360×360 px recomendado."
-        },
-        {
-          "type": "image_picker",
-          "id": "image_hover_mobile",
-          "label": "Imagen hover (móvil)",
-          "info": "Opcional. Si no se sube, en móvil se mantiene la imagen normal."
-        },
-        {
           "type": "text",
           "id": "label",
-          "label": "Etiqueta del botón",
-          "default": "categoría"
+          "label": "Nombre (Aros, Anillos…)",
+          "default": "Categoría"
         },
         {
           "type": "text",
@@ -425,8 +731,42 @@
           "label": "Texto alternativo de la imagen"
         },
         {
+          "type": "header",
+          "content": "Plata 925"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_plata",
+          "label": "Imagen",
+          "info": "Cuadrada ~246×246 px recomendado."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_plata_hover",
+          "label": "Imagen hover"
+        },
+        {
           "type": "url",
-          "id": "link",
+          "id": "link_plata",
+          "label": "Enlace"
+        },
+        {
+          "type": "header",
+          "content": "Baño de oro 18K"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_oro",
+          "label": "Imagen"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_oro_hover",
+          "label": "Imagen hover"
+        },
+        {
+          "type": "url",
+          "id": "link_oro",
           "label": "Enlace"
         },
         {
@@ -442,10 +782,12 @@
     {
       "name": "Category cards",
       "blocks": [
-        { "type": "category", "settings": { "label": "aros" } },
-        { "type": "category", "settings": { "label": "anillos" } },
-        { "type": "category", "settings": { "label": "cadenas" } },
-        { "type": "category", "settings": { "label": "pulseras" } }
+        { "type": "category", "settings": { "label": "Aros" } },
+        { "type": "category", "settings": { "label": "Anillos" } },
+        { "type": "category", "settings": { "label": "Cadenas" } },
+        { "type": "category", "settings": { "label": "Colgantes" } },
+        { "type": "category", "settings": { "label": "Pulseras" } },
+        { "type": "category", "settings": { "label": "Conjuntos" } }
       ]
     }
   ]

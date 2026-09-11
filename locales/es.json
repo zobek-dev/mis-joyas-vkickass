@@ -72,7 +72,7 @@
     },
     "search": {
       "search": "Buscar...",
-      "placeholder": "¿Qué estás buscando?"
+      "placeholder": "¿Qué joya estás buscando?"
     },
     "cart": {
       "item_added_to_cart": "Artículo agregado al carro",
@@ -141,6 +141,7 @@
       "message": "Comentario",
       "post": "Publicar comentario",
       "back_to_blog": "volver al blog",
+      "download_attachment": "Descargar archivo",
       "share": "Comparte este artículo",
       "success": "¡Tu comentario fue publicado exitosamente! ¡Gracias!",
       "success_moderated": "Tu comentario fue publicado exitosamente. Lo publicaremos en un rato, ya que nuestro blog está moderado.",
@@ -163,6 +164,12 @@
       "quick_view_label": "Vista rápida",
       "button_quickview": "Vista rápida de botones",
       "add_to_cart": "Añadir al carro",
+      "add_to_cart_short": "Añadir",
+      "metal_plata_925": "Plata 925",
+      "metal_bano_oro_18k": "Baño de oro 18K",
+      "metal_plata_bano_oro_18k": "Plata 925 con baño de oro 18K",
+      "metal_acero": "Acero quirúrgico",
+      "precio_mayorista": "Precio mayorista",
       "add_all_to_cart": "Añadir todo al carro",
       "pre_order": "Hacer un pedido",
       "choose_options": "Elige opciones",
@@ -336,16 +343,31 @@
       "aria_label": "Banner principal",
       "slide_alt": "Banner promocional",
       "placeholder": "Sube la imagen de escritorio (recomendado 1920×580 px) en este bloque.",
+      "no_active_slides": "No hay diapositivas activas para la fecha y hora actuales. Revisa la programación de cada diapositiva.",
       "previous": "Diapositiva anterior",
       "next": "Siguiente diapositiva"
     },
     "banner-kit": {
-      "aria_label": "Banner promocional kit de regalo",
-      "alt": "Kit de regalo en tu primera compra",
-      "slide_alt": "Banner promocional kit de regalo",
-      "placeholder": "Sube la imagen de escritorio (recomendado 1488×400 px) y la de móvil (recomendado 440×400 px).",
+      "aria_label": "Banner 2",
+      "alt": "Banner promocional",
+      "slide_alt": "Banner promocional",
+      "placeholder": "Sube un video o imagen de escritorio (~1440×340 px) y de móvil (~440×634 px).",
       "previous": "Diapositiva anterior",
       "next": "Diapositiva siguiente"
+    },
+    "banner-pequeno": {
+      "aria_label": "Banner promocional pequeño",
+      "alt": "Banner promocional",
+      "placeholder": "Sube la imagen de escritorio (1280×246 px) y la de móvil (400×550 px)."
+    },
+    "banner-grid": {
+      "aria_label": "Banners promocionales",
+      "placeholder": "Agrega banners a esta sección.",
+      "block_placeholder": "Sube una imagen para este banner (634×246 px escritorio, 400×246 px móvil).",
+      "card_alt": "Banner promocional"
+    },
+    "misjoyas-whatsapp-float": {
+      "aria_label": "Chatear por WhatsApp"
     },
     "countdown-timer": {
       "aria_label": "Contador regresivo",
@@ -364,7 +386,8 @@
     "category-cards": {
       "aria_label": "Tarjetas de categorías",
       "card_alt": "Categoría",
-      "placeholder": "Sube una imagen cuadrada (recomendado 360×360 px) en este bloque."
+      "switch_aria": "Filtrar por material",
+      "placeholder": "Sube una imagen cuadrada (recomendado 246×246 px) en este bloque."
     },
     "featured-collection-misjoyas": {
       "aria_label": "Colección destacada",
@@ -373,10 +396,17 @@
       "previous": "Productos anteriores",
       "next": "Siguientes productos"
     },
+    "product-recommendations": {
+      "design_mode_hint": "Solo vista previa — las recomendaciones reales aparecen en la página del producto.",
+      "previous": "Productos anteriores",
+      "next": "Siguientes productos",
+      "aria_label": "Recomendaciones de productos"
+    },
     "recently-viewed-products": {
       "name": "Últimos vistos",
       "aria_label": "Productos vistos recientemente",
       "placeholder": "Visita productos para verlos aquí.",
+      "design_mode_hint": "Solo vista previa — los productos vistos aparecen después de navegar la tienda.",
       "previous": "Productos anteriores",
       "next": "Siguientes productos",
       "remove": "Quitar de últimos vistos"
@@ -387,8 +417,22 @@
       "boxes_block_placeholder": "Sube una imagen para esta columna.",
       "boxes_card_alt": "Imagen promocional"
     },
+    "banner-destacados": {
+      "aria_label": "Banner destacados",
+      "placeholder": "Agrega tarjetas a esta sección.",
+      "block_placeholder": "Sube una imagen para esta tarjeta.",
+      "card_alt": "Colección destacada"
+    },
+    "huincha-iconos": {
+      "aria_label": "Huincha de iconos",
+      "placeholder": "Agrega ítems con icono a esta sección."
+    },
+    "cuadro-footer": {
+      "aria_label": "Club MisJoyas"
+    },
     "mobile-navigation": {
-      "my_cart": "Mi carro"
+      "my_cart": "Mi carro",
+      "stores_footer": "Tiendas — 37 en todo Chile"
     },
     "cart": {
       "title": "Tu carro",
@@ -814,7 +858,8 @@
         "vat_label_html": " "
       },
       "shipping": {
-        "no_rates_for_cart_or_destination_notice": "No hay métodos de envío disponibles para tu carro o dirección"
+        "no_rates_for_cart_or_destination_notice": "No hay métodos de envío disponibles para tu carro o dirección",
+        "shipping_method_title": "Métodos de envío (Si no tienes cobertura contáctanos)"
       },
       "payment": {
         "subscription_agreement_label": "Uno o varios artículos del carro son una compra diferida o recurrente.  a la continuar con el pago, aceptas que se aplicarán cargos a la forma de pago automática según el precio y la frecuencia indicados en esta página hasta que termino o la canceles.  Todas las cancelaciones están sujetas a {{ cancellation_policy_label }}",
@@ -917,7 +962,7 @@
         "gift_card_price_must_be_greater_than_zero": "El producto {{ name }} del paquete no se puede agregar al carro.",
         "cart_too_large": "El carro es demasiado grande",
         "only_one_added_to_cart": "Debido a la disponibilidad, solo se añadió un artículo al carro.",
-        "only_n_added_to_cart": "Debido a la disponibilidad, solo se añadieron {{ quuantity }} artículos al carro",
+        "only_n_added_to_cart": "Debido a la disponibilidad, solo se añadieron {{ quantity }} artículos al carro",
         "maximum_available_quantity_reached": "Tu carro ya tiene la cantidad máxima de este artículo",
         "cart_attributes_error": "Los atributos del carro incluyen datos no válidos"
       }

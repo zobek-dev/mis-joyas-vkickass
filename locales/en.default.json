@@ -72,7 +72,7 @@
     },
     "search": {
       "search": "Search...",
-      "placeholder": "What are you looking for?"
+      "placeholder": "What jewelry are you looking for?"
     },
     "cart": {
       "item_added_to_cart": "Item added to cart",
@@ -141,6 +141,7 @@
       "message": "Comment",
       "post": "Post comment",
       "back_to_blog": "Back to blog",
+      "download_attachment": "Download file",
       "share": "Share this article",
       "success": "Your comment was posted successfully! Thank you!",
       "success_moderated": "Your comment was posted successfully. We will publish it in a little while, as our blog is moderated.",
@@ -163,6 +164,12 @@
       "quick_view_label": "Quick view",
       "button_quickview": "Button quickview",
       "add_to_cart": "Add to cart",
+      "add_to_cart_short": "Add",
+      "metal_plata_925": "Plata 925",
+      "metal_bano_oro_18k": "Baño de oro 18K",
+      "metal_plata_bano_oro_18k": "Plata 925 con baño de oro 18K",
+      "metal_acero": "Acero quirúrgico",
+      "precio_mayorista": "Precio mayorista",
       "add_all_to_cart": "Add all to cart",
       "pre_order": "Pre-order",
       "choose_options": "Choose options",
@@ -336,16 +343,31 @@
       "aria_label": "Main banner",
       "slide_alt": "Promotional banner",
       "placeholder": "Upload a desktop image (1920×580 px recommended) in this slide block.",
+      "no_active_slides": "No slides are active for the current date and time. Check each slide's schedule settings.",
       "previous": "Previous slide",
       "next": "Next slide"
     },
     "banner-kit": {
-      "aria_label": "Gift kit promotional banner",
-      "alt": "Gift kit on your first purchase",
-      "slide_alt": "Gift kit promotional banner",
-      "placeholder": "Upload a desktop image (1488×400 px recommended) and a mobile image (440×400 px recommended).",
+      "aria_label": "Banner 2",
+      "alt": "Promotional banner",
+      "slide_alt": "Promotional banner",
+      "placeholder": "Upload a video or image for desktop (~1440×340 px) and mobile (~440×634 px).",
       "previous": "Previous slide",
       "next": "Next slide"
+    },
+    "banner-pequeno": {
+      "aria_label": "Small promotional banner",
+      "alt": "Promotional banner",
+      "placeholder": "Upload a desktop image (1280×246 px) and a mobile image (400×550 px)."
+    },
+    "banner-grid": {
+      "aria_label": "Promotional banners",
+      "placeholder": "Add banners to this section.",
+      "block_placeholder": "Upload an image for this banner (634×246 px desktop, 400×246 px mobile).",
+      "card_alt": "Promotional banner"
+    },
+    "misjoyas-whatsapp-float": {
+      "aria_label": "Chat on WhatsApp"
     },
     "countdown-timer": {
       "aria_label": "Countdown timer",
@@ -364,7 +386,8 @@
     "category-cards": {
       "aria_label": "Category cards",
       "card_alt": "Category",
-      "placeholder": "Upload a square image (360×360 px recommended) in this block."
+      "switch_aria": "Filter by material",
+      "placeholder": "Upload a square image (246×246 px recommended) in this block."
     },
     "featured-collection-misjoyas": {
       "aria_label": "Featured collection",
@@ -373,10 +396,17 @@
       "previous": "Previous products",
       "next": "Next products"
     },
+    "product-recommendations": {
+      "design_mode_hint": "Preview only — real recommendations appear on the live product page.",
+      "previous": "Previous products",
+      "next": "Next products",
+      "aria_label": "Product recommendations"
+    },
     "recently-viewed-products": {
       "name": "Recently viewed",
       "aria_label": "Recently viewed products",
       "placeholder": "Browse products to see them here.",
+      "design_mode_hint": "Preview only — recently viewed products appear after browsing the store.",
       "previous": "Previous products",
       "next": "Next products",
       "remove": "Remove from recently viewed"
@@ -387,8 +417,22 @@
       "boxes_block_placeholder": "Upload an image for this column.",
       "boxes_card_alt": "Promotional image"
     },
+    "banner-destacados": {
+      "aria_label": "Featured banners",
+      "placeholder": "Add cards to this section.",
+      "block_placeholder": "Upload an image for this card.",
+      "card_alt": "Featured collection"
+    },
+    "huincha-iconos": {
+      "aria_label": "Benefits bar",
+      "placeholder": "Add icon items to this section."
+    },
+    "cuadro-footer": {
+      "aria_label": "Club MisJoyas"
+    },
     "mobile-navigation": {
-      "my_cart": "My cart"
+      "my_cart": "My cart",
+      "stores_footer": "Stores — 37 across Chile"
     },
     "cart": {
       "title": "Your cart",

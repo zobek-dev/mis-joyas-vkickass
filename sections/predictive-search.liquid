@@ -195,9 +195,12 @@
     
   </div>
   {% if settings.search_show_view_more and results_size > 0 %}
-    <button class="background-header shadow-[0_0_6px_-4px_rgba(var(--colors-text))] pt-5 pb-5 pl-6 pr-6 lg:pl-9 lg:pr-9 border-solid rounded-none inline-block cursor-pointer hover-text-link text-center w-full text-current border-t">
-      {{ 'templates.search.view_all' | t }} 
-    </button>
+    <a
+      href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&options[prefix]=last"
+      class="background-header shadow-[0_0_6px_-4px_rgba(var(--colors-text))] pt-5 pb-5 pl-6 pr-6 lg:pl-9 lg:pr-9 border-solid rounded-none inline-block cursor-pointer hover-text-link text-center w-full text-current border-t"
+    >
+      {{ 'templates.search.view_all' | t }}
+    </a>
   {%- endif -%}
 </div>
 {%- endif -%}

@@ -1,0 +1,48 @@
+{%- comment -%}
+  Devuelve "true" o "false" según programación opcional de la diapositiva.
+  Parámetros: schedule_enabled, schedule_start, schedule_end
+{%- endcomment -%}
+{%- liquid
+  assign banner_slide_visible = true
+
+  if schedule_enabled
+    assign start_s = schedule_start | strip
+    assign end_s = schedule_end | strip
+
+    unless start_s contains ' '
+      if start_s != blank
+        assign start_s = start_s | append: ' 00:00:00'
+      endif
+    endunless
+
+    unless end_s contains ' '
+      if end_s != blank
+        assign end_s = end_s | append: ' 23:59:59'
+      endif
+    endunless
+
+    assign banner_slide_visible = false
+
+    if request.design_mode
+      assign banner_slide_visible = true
+    elsif start_s != blank and end_s != blank
+      assign current_time = 'now' | date: '%Y-%m-%d %H:%M:%S'
+      if current_time >= start_s and current_time <= end_s
+        assign banner_slide_visible = true
+      endif
+    elsif start_s == blank and end_s != blank
+      assign current_time = 'now' | date: '%Y-%m-%d %H:%M:%S'
+      if current_time <= end_s
+        assign banner_slide_visible = true
+      endif
+    elsif start_s != blank and end_s == blank
+      assign current_time = 'now' | date: '%Y-%m-%d %H:%M:%S'
+      if current_time >= start_s
+        assign banner_slide_visible = true
+      endif
+    else
+      assign banner_slide_visible = true
+    endif
+  endif
+-%}
+{%- if banner_slide_visible -%}true{%- else -%}false{%- endif -%}

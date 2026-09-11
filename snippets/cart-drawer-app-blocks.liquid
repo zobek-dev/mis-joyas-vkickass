@@ -1,0 +1,35 @@
+{% comment %}
+  Bloques de apps (Candy Rack, etc.) dentro del cart drawer Mis Joyas.
+  Requiere: {% render 'cart-drawer-app-blocks', section: section %}
+{% endcomment %}
+{%- if section != blank and section.blocks.size > 0 and cart != empty -%}
+  <div
+    id="misjoyas-cart-app-blocks"
+    class="misjoyas-cart__apps pl-5 pr-5 lg:pl-0 lg:pr-0"
+    data-misjoyas-cart-apps
+  >
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when '@app' -%}
+          <div
+            class="misjoyas-cart__app-block"
+            {{ block.shopify_attributes }}
+          >
+            {% render block %}
+          </div>
+        {%- when 'heading' -%}
+          {%- if block.settings.heading != blank -%}
+            <p class="misjoyas-cart__apps-heading" {{ block.shopify_attributes }}>
+              {{ block.settings.heading | escape }}
+            </p>
+          {%- endif -%}
+        {%- when 'custom_liquid' -%}
+          {%- if block.settings.custom_liquid != blank -%}
+            <div class="misjoyas-cart__app-custom" {{ block.shopify_attributes }}>
+              {{ block.settings.custom_liquid }}
+            </div>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

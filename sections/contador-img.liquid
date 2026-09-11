@@ -1,0 +1,585 @@
+{% assign desktop_image = section.settings.desktop_image %}
+{% assign mobile_image = section.settings.mobile_image %}
+
+<div class="page-width section-{{ section.id }}-padding">
+  <div
+    class="countdown-container"
+    id="countdown-container-{{ section.id }}"
+    data-target-date="{{ section.settings.target_date | default: '2025-12-31' }}"
+    data-target-time="{{ section.settings.target_time | default: '23:59' }}"
+    data-hide-when-expired="{{ section.settings.hide_when_expired }}"
+  >
+    <div
+      class="countdown-image{% if desktop_image != blank and mobile_image != blank %} countdown-image--split{% elsif desktop_image == blank and mobile_image != blank %} countdown-image--only-mobile{% endif %}"
+    >
+      {%- if desktop_image != blank and mobile_image != blank -%}
+        <picture>
+          <source
+            media="(max-width: 749px)"
+            srcset="{{ mobile_image | image_url: width: 375 }} 375w, {{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 768 }} 768w"
+            sizes="100vw"
+          >
+          <img
+            src="{{ desktop_image | image_url: width: 1080 }}"
+            srcset="{{ desktop_image | image_url: width: 750 }} 750w, {{ desktop_image | image_url: width: 1080 }} 1080w"
+            sizes="100vw"
+            alt="{{ desktop_image.alt | default: mobile_image.alt | default: 'Cuenta Regresiva' }}"
+            loading="lazy"
+            decoding="async"
+            class="countdown-image-img countdown-image-desktop"
+            width="{{ desktop_image.width }}"
+            height="{{ desktop_image.height }}"
+          >
+        </picture>
+      {%- elsif desktop_image != blank -%}
+        <img
+          src="{{ desktop_image | image_url: width: 1080 }}"
+          srcset="{{ desktop_image | image_url: width: 750 }} 750w, {{ desktop_image | image_url: width: 1080 }} 1080w"
+          sizes="100vw"
+          alt="{{ desktop_image.alt | default: 'Cuenta Regresiva' }}"
+          loading="lazy"
+          decoding="async"
+          class="countdown-image-img countdown-image-desktop"
+          width="{{ desktop_image.width }}"
+          height="{{ desktop_image.height }}"
+        >
+      {%- elsif mobile_image != blank -%}
+        <img
+          src="{{ mobile_image | image_url: width: 768 }}"
+          srcset="{{ mobile_image | image_url: width: 375 }} 375w, {{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 768 }} 768w"
+          sizes="100vw"
+          alt="{{ mobile_image.alt | default: 'Cuenta Regresiva' }}"
+          loading="lazy"
+          decoding="async"
+          class="countdown-image-img countdown-image-mobile"
+          width="{{ mobile_image.width }}"
+          height="{{ mobile_image.height }}"
+        >
+      {%- endif -%}
+    </div>
+    <div class="countdown-wrapper">
+      {% if section.settings.title != blank %}
+        <h2 class="countdown-title">{{ section.settings.title }}</h2>
+      {% endif %}
+      <div class="countdown-timer">
+        <div class="countdown-item">
+          <div
+            id="countdown-hours"
+            class="countdown-number"
+            style="color: {{ section.settings.number_color }};"
+          >
+            00
+          </div>
+          <div class="countdown-label">
+            {{ section.settings.hours_label | default: 'HORAS' }}
+          </div>
+        </div>
+
+        <div class="countdown-item">
+          <div
+            id="countdown-minutes"
+            class="countdown-number"
+            style="color: {{ section.settings.number_color }};"
+          >
+            00
+          </div>
+          <div class="countdown-label">
+            {{ section.settings.minutes_label | default: 'MIN.' }}
+          </div>
+        </div>
+
+        <div class="countdown-item">
+          <div
+            id="countdown-seconds"
+            class="countdown-number"
+            style="color: {{ section.settings.number_color }};"
+          >
+            00
+          </div>
+          <div class="countdown-label">
+            {{ section.settings.seconds_label | default: 'SEG.' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="expired-message" class="expired-message hidden">
+      <div class="expired-message-content">
+        {{
+          section.settings.expired_message
+          | default: '¡La cuenta regresiva ha terminado!'
+        }}
+      </div>
+    </div>
+
+    {% if section.settings.cta_text != blank
+      and section.settings.cta_url != blank
+    %}
+      <div class="cta-container">
+        <a href="{{ section.settings.cta_url }}" class="cta-button">
+          {{ section.settings.cta_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const countdownContainer = document.getElementById('countdown-container-{{ section.id }}')
+    if (!countdownContainer) return
+
+    const sectionEl = document.getElementById('shopify-section-{{ section.id }}')
+    const hoursEl = countdownContainer.querySelector('#countdown-hours')
+    const minutesEl = countdownContainer.querySelector('#countdown-minutes')
+    const secondsEl = countdownContainer.querySelector('#countdown-seconds')
+    const countdownTimer = countdownContainer.querySelector('.countdown-timer')
+    const expiredMessage = countdownContainer.querySelector('#expired-message')
+    const hideWhenExpired = countdownContainer.dataset.hideWhenExpired === 'true'
+
+    const targetDateStr = countdownContainer.dataset.targetDate
+    const targetTimeStr = countdownContainer.dataset.targetTime
+    const targetDate = new Date(`${targetDateStr}T${targetTimeStr}:00`)
+
+    function updateCountdown() {
+      const now = new Date().getTime()
+      const distance = targetDate.getTime() - now
+
+      if (distance < 0) {
+        clearInterval(interval)
+        if (hideWhenExpired) {
+          if (sectionEl) sectionEl.style.display = 'none'
+          else countdownContainer.classList.add('hidden')
+        } else {
+          if (countdownTimer) countdownTimer.classList.add('hidden')
+          if (expiredMessage) expiredMessage.classList.remove('hidden')
+        }
+        return
+      }
+
+      const hours = Math.floor(distance / (1000 * 60 * 60))
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+      if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0')
+      if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0')
+      if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0')
+    }
+
+    const interval = setInterval(updateCountdown, 1000)
+    updateCountdown()
+  })
+</script>
+
+<style>
+  .hidden {
+    display: none !important;
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: section.settings.padding_top | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: section.settings.padding_top_mobile }}px;
+    }
+  }
+
+  /*
+    Móvil (por defecto): columna — imagen arriba, luego “Quedan” + timer.
+    Desktop (min-width: 750px): dos columnas.
+  */
+  #countdown-container-{{ section.id }} {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    #countdown-container-{{ section.id }} .countdown-image {
+      order: 1;
+      width: 100%;
+    }
+
+    #countdown-container-{{ section.id }} .countdown-wrapper {
+      order: 2;
+    }
+
+    #countdown-container-{{ section.id }} #expired-message {
+      order: 3;
+    }
+
+    #countdown-container-{{ section.id }} .cta-container {
+      order: 4;
+    }
+  }
+
+  #countdown-container-{{ section.id }} .countdown-image-img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: bottom;
+    display: block;
+  }
+
+  #countdown-container-{{ section.id }} .countdown-image-desktop {
+    display: block;
+  }
+
+  #countdown-container-{{ section.id }} .countdown-image-mobile {
+    display: none;
+  }
+
+  /* Solo asset móvil: visible en todos los anchos */
+  #countdown-container-{{ section.id }} .countdown-image--only-mobile .countdown-image-mobile {
+    display: block;
+  }
+
+  /* Split usa <picture>: el browser elige fuente; el img siempre visible */
+  #countdown-container-{{ section.id }} .countdown-image--split .countdown-image-desktop {
+    display: block;
+  }
+
+  /*
+    Escala proporcional (móvil): 1rem = unidad base del bloque.
+    Título 1.75em, números 5.75em, etiquetas 1.5em, huecos 1em — mismas ratios en desktop vía --cd-num.
+  */
+  .countdown-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+
+  /* Sans geométrica ~medium (tipo Montserrat/Lato Medium); usa la fuente de títulos del tema */
+  .countdown-title {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-style: var(--font-heading-style);
+    font-size: 1.25em;
+    font-weight: 500;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #546e7a;
+    text-align: center;
+    width: 100%;
+  }
+
+  .countdown-timer {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    justify-content: center;
+  }
+
+  .countdown-item {
+    text-align: center;
+    min-width: 0;
+    flex: 1 1 0;
+  }
+
+  .countdown-number {
+    font-size: 42px;
+    line-height: 1.05;
+    font-weight: 600;
+  }
+
+  .countdown-label {
+    font-size: 9.5px;
+    color: #4B5563;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.4em;
+  }
+
+  /* --- Textos promocionales --- */
+  .promo-text {
+    display: block;
+  }
+
+  .left-text-content {
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  .right-text-content {
+    font-size: 1.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+
+  .expired-message-content {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #DC2626;
+  }
+
+
+  .cta-container {
+    margin-top: 2rem;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .cta-button:hover {
+    background-color: #1F2937;
+  }
+
+  /* --- Media Queries --- */
+  @media screen and (min-width: 750px) {
+    /* Imagen ~60%, timer ~40% (3:2) */
+    #countdown-container-{{ section.id }} {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      align-items: stretch;
+      justify-items: stretch;
+      gap: 1rem 1.5rem;
+      text-align: center;
+    }
+
+    #countdown-container-{{ section.id }} .countdown-image {
+      order: unset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+      width: 100%;
+      min-width: 0;
+    }
+
+    #countdown-container-{{ section.id }} .countdown-wrapper {
+      order: unset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      margin-bottom: 0;
+      padding-inline: 0.25rem;
+      /* Escala todo el bloque; em mantiene las mismas proporciones que en móvil */
+      --cd-num: clamp(1.55rem, 3.6vw, 3.1rem);
+      font-size: calc(var(--cd-num) / 5.75);
+    }
+
+    #countdown-container-{{ section.id }} .countdown-wrapper .countdown-number {
+      font-size: 10em;
+      line-height: 1.05;
+      font-weight: 600;
+    }
+
+    #countdown-container-{{ section.id }} .countdown-wrapper .countdown-title {
+      font-size: 3.25em;
+    }
+
+    #countdown-container-{{ section.id }} .countdown-wrapper .countdown-label {
+      font-size: 1.5em;
+      margin-top: 0.4em;
+    }
+
+    #countdown-container-{{ section.id }} .countdown-wrapper .countdown-timer {
+      gap: 1em;
+      justify-content: center;
+      width: 100%;
+    }
+
+    #countdown-container-{{ section.id }} .countdown-wrapper .countdown-item {
+      min-width: 0;
+      flex: 1 1 0;
+    }
+
+    #countdown-container-{{ section.id }} #expired-message,
+    #countdown-container-{{ section.id }} .cta-container {
+      order: unset;
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .promo-text {
+      display: block;
+      flex: 1;
+    }
+    .promo-text-right {
+      text-align: right;
+    }
+    .expired-message-content {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .left-text-content {
+      font-size: 4.5rem;
+    }
+    .right-text-content {
+      font-size: 3rem;
+      max-width: 35rem;
+    }
+  }
+
+  /* --- CAMBIO AQUÍ: Eliminé las clases de color .color-* porque ya no son necesarias --- */
+</style>
+
+{% schema %}
+{
+  "name": "Countdown Timer img",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Countdown Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Quedan:"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Image Desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "target_date",
+      "label": "Target Date (YYYY-MM-DD)",
+      "default": "2025-12-31",
+      "info": "Format: YYYY-MM-DD (e.g., 2024-12-31)"
+    },
+    {
+      "type": "text",
+      "id": "target_time",
+      "label": "Target Time (24h format)",
+      "default": "23:59",
+      "info": "Format: HH:MM (e.g., 14:30 for 2:30 PM)"
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+
+    {
+      "type": "text",
+      "id": "hours_label",
+      "label": "Hours Label",
+      "default": "HORAS"
+    },
+    {
+      "type": "text",
+      "id": "minutes_label",
+      "label": "Minutes Label",
+      "default": "MIN."
+    },
+    {
+      "type": "text",
+      "id": "seconds_label",
+      "label": "Seconds Label",
+      "default": "SEG."
+    },
+    {
+      "type": "header",
+      "content": "Promotional Text (Desktop Layout)"
+    },
+
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "color",
+      "id": "number_color",
+      "label": "Number Color",
+      "default": "#00CEBA"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+
+    {
+      "type": "header",
+      "content": "Expired State"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_when_expired",
+      "label": "Ocultar sección al terminar el tiempo",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "expired_message",
+      "label": "Mensaje al terminar (si no se oculta)",
+      "default": "The countdown has ended!"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding Mobile",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown Timer img"
+    }
+  ]
+}
+{% endschema %}

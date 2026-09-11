@@ -530,21 +530,26 @@ video {
 .tw-top-full {
   top: 100%;
 }
+.tw-z-50 {
+  z-index: 50;
+}
 .tw-z-\[60\] {
   z-index: 60;
-}
-.tw-my-2 {
-  margin-top: 8px;
-  margin-bottom: 8px;
 }
 .tw-mb-4 {
   margin-bottom: 16px;
 }
+.tw-mt-1\.5 {
+  margin-top: 6px;
+}
+.tw-mt-2 {
+  margin-top: 8px;
+}
 .tw-mt-4 {
   margin-top: 16px;
 }
-.tw-mt-\[6px\] {
-  margin-top: 6px;
+.tw-mt-6 {
+  margin-top: 24px;
 }
 .tw-block {
   display: block;
@@ -552,32 +557,65 @@ video {
 .tw-flex {
   display: flex;
 }
+.tw-inline-flex {
+  display: inline-flex;
+}
 .tw-hidden {
   display: none;
 }
 .tw-aspect-square {
   aspect-ratio: 1 / 1;
 }
+.tw-h-10 {
+  height: 40px;
+}
+.tw-h-3 {
+  height: 12px;
+}
 .tw-h-5 {
   height: 20px;
+}
+.tw-h-\[118px\] {
+  height: 118px;
 }
 .tw-h-\[18px\] {
   height: 18px;
 }
-.tw-h-\[42px\] {
-  height: 42px;
+.tw-h-\[30px\] {
+  height: 30px;
 }
-.tw-h-\[44px\] {
-  height: 44px;
+.tw-h-\[50px\] {
+  height: 50px;
+}
+.tw-h-full {
+  height: 100%;
+}
+.tw-max-h-96 {
+  max-height: 384px;
 }
 .tw-max-h-\[55vh\] {
   max-height: 55vh;
 }
+.tw-w-1\/2 {
+  width: 50%;
+}
+.tw-w-10 {
+  width: 40px;
+}
+.tw-w-3\/4 {
+  width: 75%;
+}
 .tw-w-5 {
   width: 20px;
 }
+.tw-w-\[112px\] {
+  width: 112px;
+}
 .tw-w-\[18px\] {
   width: 18px;
+}
+.tw-w-\[500px\] {
+  width: 500px;
 }
 .tw-w-\[56px\] {
   width: 56px;
@@ -588,11 +626,17 @@ video {
 .tw-min-w-0 {
   min-width: 0px;
 }
+.tw-max-w-\[min\(500px\,42vw\)\] {
+  max-width: min(500px, 42vw);
+}
 .tw-flex-1 {
   flex: 1 1 0%;
 }
 .tw-shrink-0 {
   flex-shrink: 0;
+}
+.tw-flex-row {
+  flex-direction: row;
 }
 .tw-flex-col {
   flex-direction: column;
@@ -600,17 +644,32 @@ video {
 .tw-flex-wrap {
   flex-wrap: wrap;
 }
+.tw-items-start {
+  align-items: flex-start;
+}
 .tw-items-center {
   align-items: center;
 }
 .tw-justify-center {
   justify-content: center;
 }
-.tw-gap-1\.5 {
-  gap: 6px;
-}
 .tw-gap-2 {
   gap: 8px;
+}
+.tw-gap-2\.5 {
+  gap: 10px;
+}
+.tw-gap-3 {
+  gap: 12px;
+}
+.tw-gap-5 {
+  gap: 20px;
+}
+.tw-self-start {
+  align-self: flex-start;
+}
+.tw-overflow-hidden {
+  overflow: hidden;
 }
 .tw-overflow-y-auto {
   overflow-y: auto;
@@ -618,31 +677,41 @@ video {
 .tw-whitespace-nowrap {
   white-space: nowrap;
 }
+.tw-rounded {
+  border-radius: 4px;
+}
 .tw-rounded-\[4px\] {
   border-radius: 4px;
 }
-.tw-rounded-md {
-  border-radius: 6px;
+.tw-rounded-full {
+  border-radius: 9999px;
 }
 .tw-border {
   border-width: 1px;
 }
+.tw-border-\[0\.5px\] {
+  border-width: 0.5px;
+}
 .tw-border-t {
   border-top-width: 1px;
 }
-.tw-border-\[\#2d2d2d\] {
+.tw-border-dashed {
+  border-style: dashed;
+}
+.tw-border-black {
   --tw-border-opacity: 1;
-  border-color: rgb(45 45 45 / var(--tw-border-opacity, 1));
+  border-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
 }
 .tw-border-black\/10 {
   border-color: rgb(0 0 0 / 0.1);
 }
-.tw-border-black\/\[0\.15\] {
-  border-color: rgb(0 0 0 / 0.15);
-}
 .tw-bg-\[\#f2f2f2\] {
   --tw-bg-opacity: 1;
   background-color: rgb(242 242 242 / var(--tw-bg-opacity, 1));
+}
+.tw-bg-\[\#f8f4f0\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 244 240 / var(--tw-bg-opacity, 1));
 }
 .tw-bg-transparent {
   background-color: transparent;
@@ -651,31 +720,37 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
+.tw-object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
 .tw-p-4 {
   padding: 16px;
 }
 .tw-p-8 {
   padding: 32px;
 }
-.tw-px-2\.5 {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-.tw-px-3 {
-  padding-left: 12px;
-  padding-right: 12px;
+.tw-px-2 {
+  padding-left: 8px;
+  padding-right: 8px;
 }
 .tw-px-4 {
   padding-left: 16px;
   padding-right: 16px;
 }
-.tw-py-1\.5 {
-  padding-top: 6px;
-  padding-bottom: 6px;
+.tw-px-5 {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .tw-py-3 {
   padding-top: 12px;
   padding-bottom: 12px;
+}
+.tw-pl-3 {
+  padding-left: 12px;
+}
+.tw-pr-\[5px\] {
+  padding-right: 5px;
 }
 .tw-text-center {
   text-align: center;
@@ -688,12 +763,18 @@ video {
   font-size: 14px;
   line-height: 20px;
 }
-.tw-text-xs {
-  font-size: 12px;
-  line-height: 16px;
-}
 .tw-font-semibold {
   font-weight: 600;
+}
+.tw-leading-5 {
+  line-height: 20px;
+}
+.tw-leading-\[22px\] {
+  line-height: 22px;
+}
+.tw-text-\[\#2d2d2d\] {
+  --tw-text-opacity: 1;
+  color: rgb(45 45 45 / var(--tw-text-opacity, 1));
 }
 .tw-text-\[\#737373\] {
   --tw-text-opacity: 1;
@@ -706,9 +787,6 @@ video {
 .tw-text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-}
-.tw-opacity-60 {
-  opacity: 0.6;
 }
 .tw-shadow-md {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -754,29 +832,97 @@ video {
   expected behavior inside the upstream theme components.
 */
 
+/*
+  Figma Familias Tipográficas (1947:7484):
+  Fustat Regular (400) — títulos, cuerpo, descripciones
+  Fustat SemiBold (600) — CTAs, precios, links
+*/
+:root {
+  --font-button-weight: 600;
+}
+
+.font-medium,
+.md\:font-medium {
+  font-weight: 400;
+}
+
+.font-bold,
+.font-semibold,
+.tw-font-semibold,
+.tw-font-bold,
+strong,
+b {
+  font-weight: 600;
+}
+
+/* Migas de pan: sin fondo */
+[class*="bg-breadcrumb--"] {
+  background: transparent !important;
+}
+
 /* Footer: forzar 4 columnas en desktop (md:w-1/4 no está en el CSS upstream del tema) */
 @media (min-width: 768px) {
   .section-footer div[class*="footer-col--"] {
     width: 25% !important;
   }
+
+  /* Mantener gutters 80px (page-width del tema baja a 20px al achicar el viewport) */
+  .section-footer .page-width,
+  .section-footer .x-page-width {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+
+  .section-footer .additional-footer:not(.page-width) {
+    margin-left: 80px;
+    margin-right: 80px;
+  }
+
+  /* PLP / colecciones: mismos gutters 80px */
+  .theme-template-collection .page-width,
+  .theme-template-collection .x-page-width,
+  .theme-template-collection .full-width {
+    padding-left: 80px !important;
+    padding-right: 80px !important;
+  }
 }
 
-/* Medios de pago — Figma: mobile 364×62, desktop 410×126 */
-.footer-medios-pago {
-  display: block;
-  width: 364px;
+/* Medios de pago footer / PDP — Webpay, Mercado Pago, Transferencia
+   (display vía Tailwind: no forzar aquí o pisa tw-hidden en mobile) */
+.misjoyas-payment-logos {
+  min-width: 0;
   max-width: 100%;
-  height: 62px;
+}
+
+.misjoyas-payment-logos__logo {
+  display: block;
+  height: 40px;
+  width: auto;
   -o-object-fit: contain;
      object-fit: contain;
-  -o-object-position: left center;
-     object-position: left center;
+}
+
+.misjoyas-payment-logos__logo--webpay {
+  max-width: 120px;
+}
+
+.misjoyas-payment-logos__logo--mp,
+.misjoyas-payment-logos__logo--transfer {
+  width: 100px;
 }
 
 @media (min-width: 768px) {
-  .footer-medios-pago {
-    width: 410px;
-    height: 126px;
+  .misjoyas-payment-logos__logo {
+    height: 48px;
+  }
+
+  .misjoyas-payment-logos__logo--webpay {
+    max-width: 140px;
+  }
+
+  .misjoyas-payment-logos__logo--mp,
+  .misjoyas-payment-logos__logo--transfer {
+    width: 120px;
   }
 }
 
@@ -812,6 +958,26 @@ video {
   line-height: 1;
 }
 
+/* Figma 1813:9345 / 2755:8965 — label + prices stack (gap 2px) */
+.section-product-info .misjoyas-price--pdp .misjoyas-price__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  line-height: normal;
+}
+
+.section-product-info .misjoyas-price--pdp .misjoyas-price__label {
+  margin: 0;
+  padding: 0;
+  color: #000;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
 .section-product-info .misjoyas-price__row {
   display: flex;
   align-items: center;
@@ -822,8 +988,9 @@ video {
 .section-product-info .misjoyas-price--pdp .misjoyas-price__current {
   font-weight: 600;
   color: #f83785;
-  font-size: 36px;
-  line-height: 42px;
+  /* Figma 1813:9322 / 1870:17658 */
+  font-size: 26px;
+  line-height: 32px;
   white-space: nowrap;
 }
 
@@ -832,10 +999,10 @@ video {
 }
 
 .section-product-info .misjoyas-price--pdp .misjoyas-price__compare {
-  font-size: 22px;
-  line-height: 28px;
+  font-size: 16px;
+  line-height: normal;
   font-weight: 400;
-  color: #2d2d2d;
+  color: #000;
   text-decoration: line-through;
   white-space: nowrap;
 }
@@ -845,15 +1012,16 @@ video {
   align-items: center;
   justify-content: center;
   min-width: 44px;
-  height: 25px;
-  padding: 5px 12px 6px;
-  background: #0060F9;
+  height: 26px;
+  padding: 5px 7px 6px;
+  background: #f83785;
   color: #fff;
-  font-size: 12.5px;
+  font-size: 14px;
   font-weight: 600;
-  line-height: 18.72px;
+  line-height: 20px;
   white-space: nowrap;
   box-sizing: border-box;
+  border-radius: 4px;
 }
 
 .section-product-info .misjoyas-price--pdp .misjoyas-price__unit {
@@ -886,7 +1054,7 @@ video {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 8px;
 }
 
 .card-product .misjoyas-price--card .misjoyas-price__current,
@@ -906,24 +1074,157 @@ video {
 .card-product .misjoyas-price--card .misjoyas-price__compare,
 .x-card-price .misjoyas-price--card .misjoyas-price__compare {
   font-size: 14px;
-  line-height: 16px;
-  font-weight: 400;
-  color: #2d2d2d;
+  line-height: 20px;
+  font-weight: 600;
+  color: #222222;
   text-decoration: line-through;
+  white-space: nowrap;
+}
+
+/* % descuento junto al precio — Figma desktop 1813:9947 / mobile 1823:11419 */
+.card-product .misjoyas-price--card .misjoyas-price__badge,
+.x-card-price .misjoyas-price--card .misjoyas-price__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 26px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: #f83785;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
   white-space: nowrap;
 }
 
 @media (max-width: 767px) {
   .card-product .misjoyas-price--card .misjoyas-price__row,
   .x-card-price .misjoyas-price--card .misjoyas-price__row {
-    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    -moz-column-gap: 6px;
+         column-gap: 6px;
+    row-gap: 4px;
+  }
+
+  .card-product .misjoyas-price--card .misjoyas-price__current,
+  .x-card-price .misjoyas-price--card .misjoyas-price__current {
+    font-size: 18px;
+    line-height: 24px;
+    order: 0;
+  }
+
+  .card-product .misjoyas-price--card .misjoyas-price__compare,
+  .x-card-price .misjoyas-price--card .misjoyas-price__compare {
+    font-size: 14px;
+    line-height: 20px;
+    order: 0;
+  }
+
+  /*
+    Pantallas chicas (2 cards):
+    Línea 1 — precio rosado + tachado
+    Línea 2 — tag % dcto (tamaño natural, sin recorte ni barra full-width)
+  */
+  .card-product .misjoyas-price--card .misjoyas-price__row::before,
+  .x-card-price .misjoyas-price--card .misjoyas-price__row::before {
+    content: '';
+    flex: 0 0 100%;
+    width: 100%;
+    height: 0;
+    order: 1;
+  }
+
+  .card-product .misjoyas-price--card .misjoyas-price__badge,
+  .x-card-price .misjoyas-price--card .misjoyas-price__badge {
+    order: 2;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+    min-height: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 2px;
+    font-size: 12px;
+    line-height: 16px;
+    justify-content: center;
   }
 }
 
-/* Card title — 1rem (theme default: 0.9rem con title_size_card: 90) */
+/* Card / PLP title — Figma Body S-regular 16/22 */
 .card-product .x-card-title,
 .card-product [class*="card-product-title-text-"] {
-  font-size: 1rem !important;
+  font-size: 16px !important;
+  line-height: 22px;
+}
+
+/*
+  Recomendaciones / últimos vistos (móvil): alinear precio, atributos y variante
+  aunque falte oferta, material o selector. Desktop conserva peek y equal-height.
+*/
+@media (max-width: 767px) {
+  .product-recommendations .card-product .card__heading,
+  .recently-viewed-section .card-product .card__heading {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    min-height: 2.5rem; /* 2 líneas × ~1.25 line-height */
+    margin-bottom: 0.75rem;
+  }
+
+  /* Ranura de atributos destacados (material, etc.) aunque empty:hidden la oculte */
+  .product-recommendations .card-info-inner > div[class*="gap-[3px]"],
+  .recently-viewed-section .card-info-inner > div[class*="gap-[3px]"] {
+    min-height: 30px;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .product-recommendations .card-info-inner > div[class*="gap-[3px]"]:empty,
+  .recently-viewed-section .card-info-inner > div[class*="gap-[3px]"]:empty {
+    display: flex !important;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Reserva altura de 2 líneas (precios + tag) para alinear cards con/sin oferta */
+  .product-recommendations .card-product .x-card-price,
+  .recently-viewed-section .card-product .x-card-price {
+    min-height: 48px;
+    align-content: flex-start;
+  }
+
+  .product-recommendations .card-product-equal-height .card-product-atc-wrapper .card-product-variant-area,
+  .recently-viewed-section .card-product-equal-height .card-product-atc-wrapper .card-product-variant-area {
+    min-height: 40px;
+  }
+}
+
+/*
+ * PDP gutters — align with banner-pequeno
+ * mobile: 20px | desktop: 80px
+ */
+.theme-template-product .section-custom-liquid .custom-liquid.page-width {
+  max-width: none;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+.theme-template-product .misjoyas-details,
+.theme-template-product .misjoyas-estandar {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .theme-template-product .section-custom-liquid .custom-liquid.page-width {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
 }
 
 /* PDP mobile: márgenes 20px (Figma Product Info Container) */
@@ -945,26 +1246,29 @@ video {
     text-align: left;
   }
 
-  /* PDP price — Figma mobile (node 366:8522) */
+  /* PDP price — same Figma scale on mobile (1870:17658) */
   .section-product-info .misjoyas-price--pdp .misjoyas-price__current {
-    font-size: 30px;
-    line-height: 36px;
+    font-size: 26px;
+    line-height: 32px;
   }
 
   .section-product-info .misjoyas-price--pdp .misjoyas-price__compare {
-    font-size: 20px;
-    line-height: 26px;
+    font-size: 16px;
+    line-height: normal;
   }
 
   .section-product-info .misjoyas-price--pdp .misjoyas-price__badge {
-    min-width: 43px;
-    height: 24px;
+    min-width: 44px;
+    height: 26px;
+    font-size: 14px;
+    line-height: 20px;
   }
 
-  /* Galería: imagen grande sin miniaturas + flechas overlay (Figma Product Image) */
-  .section-product-info .product-media-container {
-    padding-left: 20px;
-    padding-right: 20px;
+  /* Galería full-bleed del tema → forzar gutter 20px como banner-pequeno */
+  .section-product-info .ltr.full-width-mobile .product-media-container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box;
   }
 
   .section-product-info .product-media-container [id^="x-product-thumbnail-"] {
@@ -1171,7 +1475,186 @@ video {
   }
 }
 
-/* ===== PDP: título + compartir (Figma desktop + mobile) ===== */
+/* ===== PDP spacing — Figma info-column (1813:9322 / 1870:17658) ===== */
+
+/* Columna: 20px entre bloques */
+.section-product-info .product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-product-info .product-info > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.section-product-info .product-info > *:empty,
+.section-product-info .misjoyas-product-sku:empty,
+.section-product-info [id^='sku-']:empty {
+  display: none !important;
+}
+
+/* Header: metal → título = 6px */
+.section-product-info .x-block-product-title {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.section-product-info .x-block-product-title .misjoyas-metal-tag--pdp {
+  margin-bottom: 0;
+}
+
+/* Precio → cuotas = 8px */
+.section-product-info .misjoyas-price--pdp .misjoyas-price__unit {
+  margin-top: 8px !important;
+}
+
+/* Variantes: sin pb-5 extra */
+.section-product-info .product-form__input {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.section-product-info .product-form__input + .product-form__input {
+  margin-top: 12px !important;
+}
+
+.section-product-info .options-container {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Label → control = 6px */
+.section-product-info .product-form__input > legend,
+.section-product-info .product-form__input > label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Figma action-bar: sin label “Cantidad” */
+.section-product-info .product-form__quantity > label {
+  display: none !important;
+}
+
+.section-product-info .product-form__quantity .inline-flex {
+  margin-top: 0 !important;
+}
+
+/* Qty + ATC en fila (Figma action-bar, gap 12px).
+   flex-end: si GPO/opciones (ej. Grabado) van arriba del ATC,
+   el qty se alinea con el botón y no “se sube” al centro. */
+.section-product-info .mj-pdp-action-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.section-product-info .mj-pdp-action-bar .product-form__quantity {
+  flex: 0 0 134px;
+  width: 134px;
+  max-width: 134px;
+  margin-bottom: 0 !important;
+}
+
+.section-product-info .mj-pdp-action-bar .button-product {
+  flex: 1 1 auto;
+  width: auto !important;
+  min-width: 0;
+  margin-bottom: 0 !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.section-product-info .mj-pdp-action-bar .button-product form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 100%;
+}
+
+.section-product-info .mj-pdp-action-bar .button-product .add_to_cart_button {
+  height: 50px;
+  min-height: 50px;
+  margin-bottom: 0 !important;
+}
+
+.section-product-info .product-form__quantity > .w-full {
+  width: 100% !important;
+  height: 100%;
+}
+
+.section-product-info .product-form__quantity .inline-flex {
+  box-sizing: border-box;
+  width: 100%;
+  height: 50px;
+  min-height: 50px;
+  border-color: #2d2d2d !important;
+  border-radius: 4px;
+}
+
+.section-product-info .product-form__quantity .inline-flex input[type='number'] {
+  width: 40px;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.section-product-info .button-product .add_to_cart_button {
+  min-height: 50px;
+  height: 100%;
+}
+
+/* Descripción / RTE */
+.section-product-info .x-block-description .rte,
+.section-product-info .x-block-description .rte p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.section-product-info .x-block-description .rte p + p {
+  margin-top: 8px !important;
+}
+
+/* Acordeones: párrafos 8px; ítems 12px (Figma delivery-methods) */
+.section-product-info .misjoyas-content p {
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+  line-height: 1.5 !important;
+}
+
+.section-product-info .misjoyas-content p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.section-product-info .misjoyas-accordion,
+.section-product-info .custom-html {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.section-product-info .misjoyas-accordion {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+
+.section-product-info .misjoyas-item {
+  margin: 0 !important;
+}
+
+.section-product-info .misjoyas-item + .misjoyas-item {
+  margin-top: 0 !important;
+}
+
+/* ===== PDP: título + compartir (Figma 1813:9322 / 1870:17658) ===== */
 
 .misjoyas-product-title-row {
   display: flex;
@@ -1185,9 +1668,13 @@ video {
   text-align: center;
 }
 
-.misjoyas-product-title-row__title {
+.misjoyas-product-title-row__title,
+.section-product-info .product-title.misjoyas-product-title-row__title {
   flex: 1;
   min-width: 0;
+  font-size: 26px !important;
+  line-height: 32px !important;
+  font-weight: 600;
 }
 
 .misjoyas-product-title-row__actions {
@@ -1356,6 +1843,14 @@ video {
 .section-product-info .add_to_cart_button.button-solid:not(:disabled):hover .button-text::after,
 .section-product-info .add_to_cart_button.button-solid:not(:disabled):focus-visible .button-text::after {
   background-color: #ffffff !important;
+}
+
+/* Sin subrayado junto al icono del carrito (Figma action-bar) */
+.section-product-info .button-product .add_to_cart_button .button-text::after,
+.section-product-info .button-product .add_to_cart_button:hover .button-text::after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
 }
 
 .misjoyas-share {
@@ -1531,9 +2026,16 @@ video {
 
 /* ===== Tarjeta de producto: diseño Figma ===== */
 
-/* Borde gris claro en cada tarjeta */
+/* Borde + radio 4px; sin espacio bajo el botón ATC (anula pb-4 / md:pb-5 / rounded-[10px]) */
 .card-product {
   border: 1px solid #e0e0e0;
+  border-radius: 4px !important;
+  overflow: hidden;
+  padding-bottom: 0.5rem !important;
+}
+
+.card-product .card-info-inner {
+  margin-bottom: 0 !important;
 }
 
 /* Botón ATC: texto 16px, negro default, rosa Mis Joyas en hover */
@@ -1543,6 +2045,23 @@ video {
   color: #ffffff !important;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+/* Mobile: "Añadir" | Desktop: "Añadir al carro" */
+.card-product-atc-btn__label-short {
+  display: inline !important;
+}
+.card-product-atc-btn__label-full {
+  display: none !important;
+}
+@media (min-width: 768px) {
+  .card-product-atc-btn__label-short {
+    display: none !important;
+  }
+  .card-product-atc-btn__label-full {
+    display: inline !important;
+  }
 }
 .card-product-atc-btn.button-solid,
 .card-product-atc-btn.button-solid:before {
@@ -1561,6 +2080,15 @@ video {
 .card-product-atc-btn *,
 .card-product-atc-btn:hover * {
   text-decoration: none !important;
+}
+
+/* Sin subrayado de animación global (settings.buttons_animation = underline) */
+.card-product-atc-btn .button-text::after,
+.card-product-atc-btn:hover .button-text::after,
+.card-product:hover .card-product-atc-btn .button-text::after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
 }
 
 /* Selector de variante en tarjeta */
@@ -1674,65 +2202,147 @@ video {
   height: auto;
 }
 
-/* ===== Badges en tarjetas: esquina, sin borde (Figma Cyber Day) ===== */
+/* ===== Metal type tag — Figma cards / PLP / PDP ===== */
+.misjoyas-metal-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.misjoyas-metal-tag__swatch {
+  display: block;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #a5a5a5;
+}
+
+.misjoyas-metal-tag--oro .misjoyas-metal-tag__swatch {
+  background-color: #fcdf97;
+}
+
+.misjoyas-metal-tag--plata-oro .misjoyas-metal-tag__swatch {
+  /* Left silver / right gold (Figma split swatch) */
+  background: linear-gradient(90deg, #a5a5a5 50%, #fcdf97 50%);
+}
+
+/* Acero quirúrgico — Figma 2474:9379 */
+.misjoyas-metal-tag--acero .misjoyas-metal-tag__swatch {
+  background-color: #000000;
+}
+
+.misjoyas-metal-tag__label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  color: #000000;
+  white-space: nowrap;
+}
+
+/* Cards + PLP grid: overlaid bottom-left of product image */
+.misjoyas-metal-tag--card {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  top: auto;
+  right: auto;
+  z-index: 21;
+  max-width: calc(100% - 16px);
+}
+
+.misjoyas-metal-tag--card .misjoyas-metal-tag__swatch {
+  width: 12px;
+  height: 12px;
+}
+
+.misjoyas-metal-tag--card .misjoyas-metal-tag__label {
+  font-size: 12px;
+  line-height: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.misjoyas-metal-tag--pdp {
+  position: relative;
+  margin-bottom: 0;
+}
+
+.misjoyas-metal-tag--pdp .misjoyas-metal-tag__label {
+  margin-left: 2px;
+}
+
+/* PDP SKU — Figma 12px (no change) */
+.section-product-info .misjoyas-product-sku,
+.section-product-info [id^='sku-'] {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+@media (max-width: 767px) {
+  .misjoyas-metal-tag--card {
+    left: 4px;
+    bottom: 4px;
+    max-width: calc(100% - 8px);
+  }
+
+  .misjoyas-metal-tag--card .misjoyas-metal-tag__swatch {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* ===== Badges en tarjetas — Figma 1813:9947 ===== */
 
 .card-product .label-container,
 .card-product .x-badge-container {
   gap: 0;
 }
 
-/* Sobre la imagen del producto */
+/* Nuevo + promociones: arriba izquierda, fila, margen ligero */
 .card-product .link-product-variant .top-left-container,
 .card-product .link-product-variant .label-top-left,
 .card-product .top-left-container,
 .card-product .label-top-left {
-  top: 0 !important;
-  left: 0 !important;
+  top: 5px !important;
+  left: 6px !important;
   right: auto !important;
   bottom: auto !important;
   transform: none !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 4px !important;
+  max-width: calc(100% - 12px);
+  row-gap: 4px;
 }
 
-.card-product .label-top-left:not(.label-flag) {
-  top: 0 !important;
-}
-
-/* Descuento: esquina inferior izquierda de la imagen, sin margen */
-.card-product .link-product-variant .bottom-left-container,
-.card-product .link-product-variant .label-bottom-left,
-.card-product .bottom-left-container,
-.card-product .label-bottom-left {
-  top: auto !important;
-  left: 0 !important;
+.card-product .top-left-container .x-badge-container,
+.card-product .label-top-left .x-badge-container {
+  position: relative !important;
+  left: auto !important;
   right: auto !important;
-  bottom: 0 !important;
-  transform: none !important;
+  top: auto !important;
+  bottom: auto !important;
+  width: -moz-max-content;
+  width: max-content;
 }
 
-.card-product .label-bottom-left:not(.label-bottom-flag) {
-  bottom: 0 !important;
+/* Ocultar % descuento sobre la imagen (ahora va junto al precio) */
+.card-product .bottom-left-container,
+.card-product .label-bottom-left,
+.card-product .link-product-variant .bottom-left-container,
+.card-product .link-product-variant .label-bottom-left {
+  display: none !important;
 }
 
-/* Badge % descuento en cards — desktop 20px, mobile proporcional (ratio PDP 30/36) */
-.card-product .bottom-left-container .x-badge-content.x-badge-text {
-  background-color: #0060F9 !important;
-  color: #ffffff !important;
-  font-size: calc(20px * 5 / 6) !important;
-  line-height: 1.2 !important;
-  
-}
-
-@media (min-width: 768px) {
-  .card-product .bottom-left-container .x-badge-content.x-badge-text {
-    font-size: 20px !important;
-  }
-}
-
-/* Logo Cyber en cards — desktop 100px, mobile proporcional (ratio 5/6) */
+/* Logo Cyber / promo imagen: mismo margen superior izquierdo */
 .card-product .link-product-variant .cyber-badge-container {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 5px;
+  left: 6px;
   z-index: 20;
   width: auto;
   height: auto;
@@ -1745,6 +2355,7 @@ video {
   width: calc(100px * 5 / 6);
   height: auto;
   max-width: 100%;
+  border-radius: 4px;
 }
 
 @media (min-width: 768px) {
@@ -1757,38 +2368,64 @@ video {
   }
 }
 
-/* Posición personalizada en imagen: anclar abajo-izquierda (descuentos) */
+/* Badges de imagen sueltos → arriba izquierda */
 .card-product .link-product-variant > .x-badge-container.absolute.w-max {
-  left: 0 !important;
-  top: auto !important;
-  bottom: 0 !important;
+  left: 6px !important;
+  top: 5px !important;
+  bottom: auto !important;
   transform: none !important;
 }
 
-/* Imagen de etiqueta (ej. Cyber Day): mantener arriba-izquierda */
 .card-product .link-product-variant > .x-badge-container.absolute.w-max:has(.label-img) {
-  top: 0 !important;
+  top: 5px !important;
   bottom: auto !important;
-  left: 0 !important;
+  left: 6px !important;
   transform: none !important;
 }
 
 .card-product .x-badge-content.x-badge-text {
   border: none !important;
-  border-radius: 0 !important;
-  padding: 5px 12px;
-  font-size: 12.5px;
-  line-height: 1.5;
+  border-radius: 4px !important;
+  padding: 3px 7px;
+  min-height: 26px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  box-sizing: border-box;
+}
+
+/* Tag Nuevo: negro, más pequeño (Figma) */
+.card-product .x-badge-content.x-badge-text--new,
+.card-product [class*='x-badge-new'] .x-badge-content.x-badge-text {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  padding: 3px 7px !important;
+  min-height: 26px;
+  border-radius: 4px !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 767px) {
+  .card-product .x-badge-content.x-badge-text--new,
+  .card-product [class*='x-badge-new'] .x-badge-content.x-badge-text {
+    font-size: 10px !important;
+    line-height: 16px !important;
+    min-height: 22px;
+    padding: 2px 5px !important;
+  }
 }
 
 .card-product .x-badge-content.label-img {
   border: none !important;
-  border-radius: 0 !important;
+  border-radius: 4px !important;
 }
 
 .card-product .x-badge-container .x-badge-content {
   border: none !important;
-  border-radius: 0 !important;
+  border-radius: 4px !important;
   opacity: 1 !important;
 }
 
@@ -1835,6 +2472,23 @@ video {
 }
 
 /* ===== Mini cart / drawer Mis Joyas (Figma) ===== */
+
+/* Drawer abierto: por encima del header (z-50 / z-60). Solo cuando tiene la clase --open. */
+#CartDrawer.misjoyas-cart.misjoyas-cart--open {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 80 !important;
+}
+
+#CartDrawer.misjoyas-cart.misjoyas-cart--force-closed {
+  display: none !important;
+}
+
+#CartDrawer.misjoyas-cart.misjoyas-cart--force-closed #CartDrawer-Overlay,
+#CartDrawer.misjoyas-cart.misjoyas-cart--force-closed > .drawer,
+#CartDrawer.misjoyas-cart.misjoyas-cart--force-closed > .popup {
+  display: none !important;
+}
 
 #CartDrawer.misjoyas-cart #update-cart.misjoyas-cart__panel {
   width: 100% !important;
@@ -1888,6 +2542,19 @@ video {
   font-weight: 600 !important;
   color: #0e1b1f !important;
   letter-spacing: 0;
+}
+
+@media (min-width: 1024px) {
+  #CartDrawer.misjoyas-cart .misjoyas-cart__title {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
+
+  #CartDrawer.misjoyas-cart .misjoyas-cart__total-label,
+  #CartDrawer.misjoyas-cart .misjoyas-cart__total-value {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
 }
 
 #CartDrawer.misjoyas-cart .misjoyas-cart__header-divider {
@@ -1946,6 +2613,7 @@ video {
   height: 6px;
   background: #f83785;
   border-radius: 10px;
+  width: calc((100% - 30px) * var(--mj-progress, 0) / 100);
   max-width: calc(100% - 30px);
   transition: width 0.5s ease-in-out;
   z-index: 1;
@@ -1962,6 +2630,22 @@ video {
   border: 2px solid #d9d9d9;
   box-sizing: border-box;
   z-index: 2;
+}
+
+#CartDrawer.misjoyas-cart .misjoyas-cart-progress__dot--1 {
+  left: 15px;
+}
+
+#CartDrawer.misjoyas-cart .misjoyas-cart-progress__dot--2 {
+  left: calc(15px + (100% - 30px) * 0.3333);
+}
+
+#CartDrawer.misjoyas-cart .misjoyas-cart-progress__dot--3 {
+  left: calc(15px + (100% - 30px) * 0.6666);
+}
+
+#CartDrawer.misjoyas-cart .misjoyas-cart-progress__dot--4 {
+  left: calc(100% - 15px);
 }
 
 #CartDrawer.misjoyas-cart .misjoyas-cart-progress__dot.is-reached {
@@ -2193,8 +2877,14 @@ video {
   opacity: 0.7;
 }
 
-#CartDrawer.misjoyas-cart .misjoyas-cart-item__qty-btn:hover {
+#CartDrawer.misjoyas-cart .misjoyas-cart-item__qty-btn:hover:not(:disabled) {
   opacity: 1;
+}
+
+#CartDrawer.misjoyas-cart .misjoyas-cart-item__qty-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 #CartDrawer.misjoyas-cart .misjoyas-cart-item__qty-input {
@@ -2227,6 +2917,27 @@ video {
   background: transparent;
   color: #9da5af;
   cursor: pointer;
+}
+
+#CartDrawer.misjoyas-cart .misjoyas-cart__apps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-top: 1px solid rgba(45, 45, 45, 0.12);
+}
+
+#CartDrawer.misjoyas-cart .misjoyas-cart__apps-heading {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #2d2d2d;
+}
+
+#CartDrawer.misjoyas-cart .misjoyas-cart__app-block {
+  width: 100%;
 }
 
 #CartDrawer.misjoyas-cart .misjoyas-cart-item__remove-icon,
@@ -2617,32 +3328,1597 @@ video {
   }
 }
 
-.placeholder\:tw-text-\[\#737373\]::-moz-placeholder {
-  --tw-text-opacity: 1;
-  color: rgb(115 115 115 / var(--tw-text-opacity, 1));
+/* ===== MisJoyas desktop nav (Figma) ===== */
+@media (min-width: 1024px) {
+  /*
+    Figma 1582:5536 — fila logo/search/iconos:
+    contenido a ~100px del borde (inner x=101 en artboard 1440).
+    La barra beige del menú sigue a full-bleed vía breakout.
+  */
+  header.header.full-width {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+
+  /* Keep nav on its dedicated grid row (below logo/search) */
+  header.header .mj-header-nav {
+    grid-area: navigation !important;
+    position: relative;
+    background: #f8f4f0;
+    min-height: 46px;
+    padding: 0 24px;
+    margin-top: 0;
+    /* Break out of .full-width / page gutters so the beige bar is edge-to-edge */
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  /* Full-width mega menus anchor to the header, like Eurus tabbed menus */
+  header.header {
+    position: relative;
+    overflow-x: clip;
+  }
+
+  .mj-header-nav__list {
+    gap: 40px;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+  }
+
+  .mj-header-nav .mj-nav-item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .mj-header-nav .mj-nav-item.has-dropdown {
+    position: static;
+  }
+
+  .mj-header-nav .mj-nav-item__trigger {
+    position: relative;
+  }
+
+  .mj-header-nav .mj-nav-item.has-dropdown.is-focus .mj-nav-item__trigger::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 3px;
+    background: #000;
+    z-index: 70;
+  }
+
+  /* Títulos con fondo de botón: sin subrayado inferior */
+  .mj-header-nav .mj-nav-item--button.has-dropdown.is-focus .mj-nav-item__trigger::after {
+    display: none;
+  }
+
+  /* Títulos L1: Licenciatura, Plata 925, Baño de oro, Colecciones, Insumos, Ofertas */
+  .mj-header-nav .mj-nav-item__link {
+    color: var(--mj-nav-item-color, #000);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    gap: 6px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .mj-header-nav .mj-nav-item__link .mj-menu-title__text {
+    font-weight: 500;
+  }
+
+  .mj-header-nav .mj-nav-item__link .mj-menu-title__text strong,
+  .mj-header-nav .mj-nav-item__link .mj-menu-title__text b,
+  .mj-header-nav .mj-nav-item__button .mj-menu-title__text strong,
+  .mj-header-nav .mj-nav-item__button .mj-menu-title__text b,
+  .mj-header-nav .mj-nav-item__cta .mj-menu-title__text strong,
+  .mj-header-nav .mj-nav-item__cta .mj-menu-title__text b {
+    font-weight: 500;
+  }
+
+  .mj-header-nav .mj-nav-item__link:hover {
+    color: #f83785;
+  }
+
+  .mj-header-nav .mj-nav-item.is-focus .mj-nav-item__link {
+    color: var(--mj-nav-item-color, #000);
+  }
+
+  .mj-header-nav .mj-menu-caret {
+    display: inline-flex;
+    width: 9px;
+    height: 4px;
+    color: inherit;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .mj-header-nav .mj-nav-item.is-focus .mj-menu-caret {
+    transform: rotate(180deg);
+  }
+
+  .mj-header-nav .mj-menu-caret svg {
+    display: block;
+    width: 9px;
+    height: 4px;
+  }
+
+  .mj-header-nav .mj-nav-item__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 20px;
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Badge visible junto al título con fondo de botón */
+  .mj-header-nav .mj-nav-item__button .mj-nav-item__badge {
+    position: relative;
+    z-index: 1;
+  }
+
+  .mj-header-nav .mj-nav-item__cta.button,
+  .mj-header-nav .mj-nav-item__button.button {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px; /* mismo espacio texto–flecha que .mj-nav-item__link */
+    min-height: 46px;
+    padding: 11px 16px 12px !important;
+    border-radius: 4px !important;
+    font-size: 16px;
+    font-weight: 500; /* Licenciatura (button style) — mismo peso que L1 */
+    line-height: 22px;
+    text-decoration: none !important;
+    border: none !important;
+    transition: background-color 0.2s ease, color 0.2s ease !important;
+  }
+
+  .mj-header-nav .mj-nav-item__button .mj-menu-title__text,
+  .mj-header-nav .mj-nav-item__cta .mj-menu-title__text {
+    font-weight: 500;
+  }
+
+  .mj-header-nav .mj-nav-item__cta .button-icon {
+    margin-left: 0;
+    width: 1.25rem;
+    transform: none;
+  }
+
+  .mj-header-nav .mj-nav-item__cta.button::before,
+  .mj-header-nav .mj-nav-item__cta.button::after,
+  .mj-header-nav .mj-nav-item__button.button::before,
+  .mj-header-nav .mj-nav-item__button.button::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* Hover negro, sin subrayado (títulos con bg / botones del menú) */
+  .mj-header-nav .mj-nav-item__cta.button:hover,
+  .mj-header-nav .mj-nav-item__cta.button:focus,
+  .mj-header-nav .mj-nav-item__cta.button:focus-visible,
+  .mj-header-nav .mj-nav-item__button.button:hover,
+  .mj-header-nav .mj-nav-item__button.button:focus,
+  .mj-header-nav .mj-nav-item__button.button:focus-visible,
+  .mj-header-nav .mj-nav-item--button.is-focus .mj-nav-item__button.button {
+    background: #000 !important;
+    background-image: none !important;
+    color: #fff !important;
+    text-decoration: none !important;
+  }
+
+  .mj-header-nav .mj-nav-dropdown--mega {
+    left: 50%;
+    right: auto;
+    top: 100%;
+    width: 100vw;
+    max-width: 100vw;
+    transform: translateX(-50%);
+    border-radius: 0;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 5px rgba(217, 217, 217, 0.4);
+  }
+
+  /*
+    Evita recorte de categorías + CTA (ej. Baño de oro en viewports angostos):
+    el tema fija height: var(--menu-height) medido una vez; si el grid hace wrap
+    o el teleport llega tarde, el panel queda corto. Con height:auto al abrir
+    se muestra todo el contenido.
+  */
+  .mj-header-nav .mj-nav-dropdown--mega.toggle-menu:not(.toggle-menu-hidden) {
+    height: auto !important;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .mj-header-nav .mj-nav-dropdown--mega .mj-nav-dropdown__inner {
+    width: 100%;
+  }
+
+  /* Figma 1327:8410 — ~60px side inset on 1440 artboard */
+  .mj-mega {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 30px 60px 40px;
+    background: #fff;
+  }
+
+  .mj-mega__heading {
+    margin: 0 0 16px;
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .mj-mega__body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 48px;
+    width: 100%;
+  }
+
+  /* Filas de columnas (masonry vía Liquid): ítems extras van bajo la columna más corta */
+  .mj-mega__columns {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 48px;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .mj-mega__stack {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  /* Sin imagen promocional: el menú ocupa todo el ancho del panel */
+  .mj-mega--no-promo .mj-mega__body {
+    gap: 0;
+  }
+
+  .mj-mega--no-promo .mj-mega__columns {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .mj-mega__col {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  @media (max-width: 1400px) {
+    .mj-mega__columns {
+      gap: 40px;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .mj-mega__columns {
+      gap: 32px;
+    }
+  }
+
+  /* Categorías L2 del desplegable: Aros, Cadenas, Pulseras, Anillos, etc. */
+  .mj-mega__col-title,
+  .mj-mega__col-title-row {
+    display: block;
+    color: #000;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .mj-mega__col-title--stacked {
+    white-space: normal;
+  }
+
+  .mj-mega__col-title:hover {
+    color: #f83785;
+  }
+
+  /* Ofertas: "entre" en 1ª línea, descuentos en 2ª */
+  .mj-mega--ofertas .mj-mega__col-title--stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    white-space: normal;
+  }
+
+  .mj-mega--ofertas .mj-mega__col-title-row {
+    display: block;
+    line-height: 24px;
+  }
+
+  .mj-mega--ofertas .mj-mega__col-title--stacked + .mj-mega__col-line {
+    margin-top: 0;
+  }
+
+  .mj-mega__col-line {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 6px 0 6px; /* título → línea → listado (antes ~20px bajo la línea) */
+    background: #d9d9d9;
+  }
+
+  .mj-mega__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+
+  .mj-mega__link {
+    display: inline-block;
+    color: #000;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .mj-mega__link:hover {
+    color: #f83785;
+  }
+
+  /* Promo card — Figma 1405:3084 (260px image + side sparkles) */
+  .mj-mega__promo {
+    flex: 0 0 316px;
+    width: 316px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .mj-mega__badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    box-sizing: border-box;
+    width: 260px; /* same width as .mj-mega__promo-media */
+    min-height: 30px;
+    padding: 6px 12px 4px;
+    border-radius: 4px;
+    background: #dadad8;
+    color: #222;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  .mj-mega__promo-frame {
+    position: relative;
+    width: 316px;
+    height: 260px;
+  }
+
+  .mj-mega__promo-media {
+    position: absolute;
+    left: 28px;
+    top: 0;
+    width: 260px;
+    height: 260px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .mj-mega__sparkle {
+    position: absolute;
+    top: 107px;
+    width: 55px;
+    height: 55px;
+    -o-object-fit: contain;
+       object-fit: contain;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .mj-mega__sparkle--left {
+    left: 0;
+  }
+
+  .mj-mega__sparkle--right {
+    right: 0;
+  }
+
+  .mj-mega__promo-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .mj-mega__footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 1100px) {
+    .mj-mega {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+
+  .mj-mega__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    padding: 13px 32px 12px;
+    border-radius: 4px;
+    background: #000;
+    color: #fff !important;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .mj-mega__cta:hover {
+    background: #222;
+    color: #fff !important;
+  }
+
+  .mj-mega__cta--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Category cards — Figma 2484:9482 (menú plano, ej. Baño de oro) */
+  .mj-mega--categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 60px 40px;
+  }
+
+  .mj-mega--categories .mj-mega__heading {
+    width: 100%;
+    margin: 0 0 16px;
+    text-align: left;
+  }
+
+  .mj-mega__cats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 50px;
+    width: 100%;
+  }
+
+  .mj-mega__cat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    width: 138px;
+    text-decoration: none;
+    color: #000;
+  }
+
+  .mj-mega__cat:hover .mj-mega__cat-title {
+    color: #f83785;
+  }
+
+  .mj-mega__cat-media {
+    display: block;
+    width: 138px;
+    height: 138px;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .mj-mega__cat-media--empty {
+    background: #f5f5f5;
+  }
+
+  .mj-mega__cat-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .mj-mega__cat-title,
+  .mj-mega__cat-title-row {
+    display: block;
+    width: 100%;
+    color: #000;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  /* Ofertas cards: "Entre" en 1ª línea, rango en 2ª */
+  .mj-mega--ofertas .mj-mega__cat-title--stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    white-space: normal;
+  }
+
+  .mj-mega--ofertas .mj-mega__cat-title-row {
+    display: block;
+    line-height: 24px;
+    white-space: nowrap;
+  }
+
+  .mj-mega__cat-line {
+    display: block;
+    width: 134px;
+    max-width: 100%;
+    height: 1px;
+    background: #000;
+  }
+
+  .mj-mega--categories .mj-mega__footer {
+    margin-top: 60px;
+  }
+
+  @media (max-width: 1200px) {
+    .mj-mega__cats {
+      gap: 32px;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .mj-mega--categories {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .mj-mega__cats {
+      gap: 24px;
+    }
+  }
 }
 
-.placeholder\:tw-text-\[\#737373\]::placeholder {
-  --tw-text-opacity: 1;
-  color: rgb(115 115 115 / var(--tw-text-opacity, 1));
+/* —— MisJoyas mobile navigation (Figma 1416:4390 / 4736 / 8232) —— */
+.mj-mobile-nav.menu-drawer {
+  width: 100% !important;
+  max-width: none !important;
 }
 
+.mj-mobile-nav.menu-drawer.menu-opening {
+  transform: translate(0) !important;
+  visibility: visible !important;
+  pointer-events: auto;
+}
+
+.mj-mobile-nav .x-container-mobile-nav {
+  padding-top: 0;
+  background: #fff;
+  color: #000;
+  min-height: 0;
+}
+
+/* Área scrolleable entre header y footer negro (flex min-height fix) */
+.mj-mobile-nav #menu-navigation {
+  position: relative;
+  min-height: 0;
+  flex: 1 1 0%;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Beat theme link / header text colors in the white menu area */
+.mj-mobile-nav #menu-navigation,
+.mj-mobile-nav #menu-navigation a:not(.button),
+.mj-mobile-nav #menu-navigation button:not(.button),
+.mj-mobile-nav .mj-mobile-nav__trigger,
+.mj-mobile-nav .mj-mobile-nav__title,
+.mj-mobile-nav .mj-mobile-nav__title-text,
+.mj-mobile-nav .mj-mobile-nav__sublink,
+.mj-mobile-nav .mj-mobile-nav__panel-inner,
+.mj-mobile-nav .mj-mobile-nav__panel-heading,
+.mj-mobile-nav .mj-mobile-nav__back-btn,
+.mj-mobile-nav .mj-mobile-nav__back-label,
+.mj-mobile-nav .mj-mobile-nav__caret {
+  color: #000 !important;
+}
+
+/* title_color del customizer (ej. Ofertas Black → rosa) */
+.mj-mobile-nav .mj-mobile-nav__trigger.has-custom-color,
+.mj-mobile-nav .mj-mobile-nav__trigger.has-custom-color .mj-mobile-nav__title,
+.mj-mobile-nav .mj-mobile-nav__trigger.has-custom-color .mj-mobile-nav__title-text,
+.mj-mobile-nav .mj-mobile-nav__title.has-custom-color,
+.mj-mobile-nav .mj-mobile-nav__title.has-custom-color .mj-mobile-nav__title-text {
+  color: var(--mj-nav-item-color, #f83785) !important;
+}
+
+.mj-mobile-nav__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 42px 20px 8px;
+  flex-shrink: 0;
+}
+
+.mj-mobile-nav__logo {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+/* Figma 1416:4390 / 1601:10771 — isotipo 50×50 */
+.mj-mobile-nav__logo-img {
+  display: block;
+  width: 50px;
+  height: 50px;
+  max-width: 50px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -o-object-position: left center;
+     object-position: left center;
+}
+
+.mj-mobile-nav__logo-text {
+  font-weight: 600;
+  font-size: 16px;
+  color: #000;
+}
+
+#MobileNavDrawer .mj-mobile-nav__close,
+.mj-mobile-nav__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: #f0eee6;
+  color: #000;
+  cursor: pointer;
+  padding: 0;
+}
+
+#MobileNavDrawer .mj-mobile-nav__close svg,
+.mj-mobile-nav__close svg {
+  width: 14px;
+  height: 14px;
+  color: #000;
+  fill: currentColor;
+}
+
+.mj-mobile-nav__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  /* Espacio bajo el último ítem expandido, antes del footer negro */
+  padding: 16px 20px 48px;
+  box-sizing: border-box;
+}
+
+.mj-mobile-nav .x-header-store-selector-container:empty {
+  display: none;
+}
+
+.mj-mobile-nav__cta {
+  margin: 0;
+  width: auto;
+}
+
+/* Colores desde customizer (mismo header-menu-button-styles que desktop) */
+.mj-mobile-nav__cta-btn.button,
+.mj-mobile-nav__cta .mj-mobile-nav__cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-height: 46px;
+  padding: 11px 16px 12px !important;
+  border-radius: 4px !important;
+  background: rgba(var(--colors-button, 248, 55, 133)) !important;
+  background-image: none !important;
+  color: rgb(var(--colors-button-text, 255, 255, 255)) !important;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+  border: none !important;
+  text-decoration: none !important;
+}
+
+.mj-mobile-nav__cta-btn.button::before,
+.mj-mobile-nav__cta-btn.button::after,
+.mj-mobile-nav__cta .mj-mobile-nav__cta-btn::before,
+.mj-mobile-nav__cta .mj-mobile-nav__cta-btn::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Texto/caret del botón: color del customizer (no el #000 global del drawer) */
+.mj-mobile-nav__cta-btn.button,
+.mj-mobile-nav__cta-btn.button .mj-mobile-nav__title,
+.mj-mobile-nav__cta-btn.button .mj-mobile-nav__title-text,
+.mj-mobile-nav__cta-btn.button .mj-mobile-nav__caret,
+.mj-mobile-nav__item--button .mj-mobile-nav__trigger.mj-mobile-nav__cta-btn,
+.mj-mobile-nav__item--button .mj-mobile-nav__trigger.mj-mobile-nav__cta-btn .mj-mobile-nav__title,
+.mj-mobile-nav__item--button .mj-mobile-nav__trigger.mj-mobile-nav__cta-btn .mj-mobile-nav__title-text,
+.mj-mobile-nav__item--button .mj-mobile-nav__trigger.mj-mobile-nav__cta-btn .mj-mobile-nav__caret {
+  color: rgb(var(--colors-button-text, 255, 255, 255)) !important;
+}
+
+/* Tree menu with button style + children: trigger + caret, accordion below */
+.mj-mobile-nav__item--button .mj-mobile-nav__trigger.mj-mobile-nav__cta-btn {
+  gap: 6px;
+  width: auto;
+  max-width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mj-mobile-nav__item--button .mj-mobile-nav__caret {
+  flex-shrink: 0;
+}
+
+.mj-mobile-nav__item--button .mj-mobile-nav__accordion {
+  width: 100%;
+}
+
+.mj-mobile-nav__item {
+  margin: 0;
+  width: 100%;
+}
+
+.mj-mobile-nav__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #000;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mj-mobile-nav__title {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.mj-mobile-nav__title-text strong,
+.mj-mobile-nav__title-text b {
+  font-weight: 600;
+}
+
+.mj-mobile-nav__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 6px 0;
+  border-radius: 2px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 20px;
+  flex-shrink: 0;
+}
+
+.mj-mobile-nav__caret {
+  display: inline-flex;
+  margin-left: 0;
+  color: inherit;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mj-mobile-nav__caret.is-open {
+  transform: rotate(180deg);
+}
+
+.mj-mobile-nav__caret .mj-menu-caret svg {
+  width: 9px;
+  height: 4px;
+}
+
+/* Paso 2 — accordion L2 under L1 */
+.mj-mobile-nav__accordion {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 0 0;
+}
+
+/* “Ver todo…” como una subcategoría más del accordion */
+.mj-mobile-nav__view-all--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.mj-mobile-nav__sublink {
+  display: inline-block;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+/* Paneles drill anclados al viewport de #menu-navigation (no al UL alto) */
+.mj-mobile-nav .menu-parent {
+  position: static;
+}
+
+.mj-mobile-nav__panel {
+  position: absolute;
+  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* Paso 3 — drill panel: scroll interno hasta ver el último ítem */
+.mj-mobile-nav__panel-inner {
+  position: static;
+  height: 100%;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 20px 48px;
+  box-sizing: border-box;
+}
+
+.mj-mobile-nav__panel-heading {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.mj-mobile-nav__panel-back {
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.mj-mobile-nav__back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #000;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 26px;
+  cursor: pointer;
+}
+
+.mj-mobile-nav__back-chevron {
+  display: inline-flex;
+  transform: rotate(90deg);
+  line-height: 0;
+}
+
+.mj-mobile-nav__back-chevron .mj-menu-caret svg {
+  width: 9px;
+  height: 4px;
+}
+
+.mj-mobile-nav__panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mj-mobile-nav__panel-item {
+  margin: 0;
+}
+
+/* Black footer: Tiendas + links + social */
+.mj-mobile-nav__footer {
+  flex-shrink: 0;
+  background: #000;
+  color: #fff;
+  border-top: 1px solid #fff;
+}
+
+.mj-mobile-nav__stores {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.mj-mobile-nav__stores-icon {
+  display: inline-flex;
+  color: #fff;
+}
+
+.mj-mobile-nav__stores-icon img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  filter: brightness(0) invert(1);
+}
+
+.mj-mobile-nav__stores-text {
+  color: #fff;
+}
+
+.mj-mobile-nav__stores-text strong {
+  font-weight: 600;
+}
+
+.mj-mobile-nav__footer-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 20px 20px;
+  color: #fff;
+}
+
+.mj-mobile-nav__footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.mj-mobile-nav__footer-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.mj-mobile-nav__footer-link-text {
+  color: inherit;
+}
+
+.mj-mobile-nav__footer-link-text strong {
+  font-weight: 600;
+}
+
+.mj-mobile-nav__footer-check {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.mj-mobile-nav__footer-check img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.mj-mobile-nav__footer-chevron {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 4.33px solid transparent;
+  border-bottom: 4.33px solid transparent;
+  border-left: 3.5px solid #f83785;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+
+.mj-mobile-nav__footer-account-icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.mj-mobile-nav__footer-account-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.mj-mobile-nav__footer-link--account {
+  font-weight: 600;
+  gap: 4px;
+}
+
+.mj-mobile-nav__footer-social {
+  display: flex;
+  justify-content: center;
+}
+
+.mj-mobile-nav__footer-social ul,
+.mj-mobile-nav__footer-social-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 0;
+  list-style: none;
+}
+
+.mj-mobile-nav__footer-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 13px;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 9999px;
+  opacity: 1 !important;
+  box-sizing: border-box;
+}
+
+.mj-mobile-nav__footer-social svg {
+  width: 18px;
+  height: 18px;
+  color: #fff;
+  fill: currentColor;
+}
+
+/* Hide default borders from legacy mobile nav items inside MJ drawer */
+.mj-mobile-nav .block-mobile-navigation .border-b,
+.mj-mobile-nav .block-mobile-navigation .border-t,
+.mj-mobile-nav .block-mobile-navigation .border-y {
+  border-color: transparent;
+}
+
+/* ===== MISJOYAS PDP EXTRACTED STYLES (cacheable) ===== */
+/* from product.json → html_prodDesc_style_0.css */
+.misjoyas-product-desc{
+  width:100%;
+  margin:0 0 16px;
+  color:#000;
+  font-size:15px;
+  font-weight:400;
+  line-height:22px;
+}
+.misjoyas-product-desc p{
+  margin:0 0 8px;
+}
+.misjoyas-product-desc p:last-child{
+  margin-bottom:0;
+}
+.misjoyas-product-desc strong,
+.misjoyas-product-desc b{
+  font-weight:600;
+}
+@media (max-width:767px){
+  .misjoyas-product-desc{
+    font-size:14px;
+    line-height:20px;
+    margin-bottom:12px;
+  }
+}
+
+/* from product.json → html_MEaFay_style_0.css */
+.misjoyas-wholesale {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.misjoyas-wholesale__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  background: rgba(248, 55, 133, 0.12);
+  border: 0;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  text-align: left;
+  color: #000;
+  font-family: inherit;
+  font-weight: 700;
+}
+.misjoyas-wholesale[data-open="false"] .misjoyas-wholesale__header {
+  border-radius: 4px;
+}
+.misjoyas-wholesale__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f83785;
+}
+.misjoyas-wholesale__icon img {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+.misjoyas-wholesale__title {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  color: #000;
+}
+.misjoyas-wholesale__toggle {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  width: 1em;
+  text-align: center;
+  color: #000;
+}
+.misjoyas-wholesale__panel {
+  border: 1px solid #e0e0e0;
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
+  background: #fff;
+}
+.misjoyas-wholesale[data-open="false"] .misjoyas-wholesale__panel {
+  display: none;
+}
+.misjoyas-wholesale__body {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: normal;
+  color: #000;
+}
+.misjoyas-wholesale__body p {
+  margin: 0;
+}
+.misjoyas-wholesale__note {
+  color: #737373;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+/* from product.json → html_goldExp_style_0.css */
+.misjoyas-gold-experience{width:100%;margin-bottom:20px;display:flex;flex-direction:column;gap:12px}
+.misjoyas-gold-experience__box{background:#ffebbb;border-radius:4px;padding:16px;color:#000}
+.misjoyas-gold-experience__title{margin:0 0 6px;font-size:14px;font-weight:700;line-height:normal}
+.misjoyas-gold-experience__text{margin:0;font-size:14px;font-weight:400;line-height:1.4}
+.misjoyas-gold-experience__badges{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:14px;font-weight:600;line-height:20px;color:#000}
+.misjoyas-gold-experience__badges > span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.misjoyas-gold-experience__star{color:#fcdf97;font-weight:700}
+@media (max-width:600px){
+.misjoyas-gold-experience__badges{gap:8px 12px}
+}
+
+/* from product.json → html_9PyUAj_style_0.css */
+.misjoyas-accordion{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  width:100%;
+  margin:0;
+  font-family:inherit;
+}
+.misjoyas-item{
+  border:1px solid #e0e0e0;
+  border-radius:4px;
+  overflow:hidden;
+  background:#fff;
+  margin:0;
+}
+.misjoyas-accordion-btn{
+  width:100%;
+  background:#fff;
+  border:none;
+  padding:16px;
+  text-align:left;
+  color:#222;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  font-family:inherit;
+}
+.misjoyas-accordion-btn:hover{
+  background:#fafafa;
+}
+.misjoyas-accordion-btn__label{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex:1;
+  min-width:0;
+}
+.misjoyas-accordion-btn__icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  width:28px;
+  height:28px;
+}
+.misjoyas-accordion-btn__icon--shipping{
+  width:24px;
+  height:24px;
+}
+.misjoyas-accordion-btn__icon img{
+  display:block;
+  width:28px;
+  height:28px;
+}
+.misjoyas-accordion-btn__icon--shipping img{
+  width:24px;
+  height:24px;
+}
+.misjoyas-accordion-btn__text{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width:0;
+}
+.misjoyas-accordion-btn__title{
+  color:#222;
+  font-size:14px;
+  font-weight:700;
+  line-height:normal;
+}
+.misjoyas-accordion-btn__subtitle{
+  color:#737373;
+  font-size:14px;
+  font-weight:400;
+  line-height:normal;
+}
+.misjoyas-arrow{
+  flex-shrink:0;
+  font-size:20px;
+  font-weight:400;
+  line-height:1;
+  color:#000;
+  width:1em;
+  text-align:center;
+}
+.misjoyas-content{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .35s ease;
+  padding:0 16px;
+  font-size:13px;
+  color:#555;
+}
+.misjoyas-content.is-open{
+  padding-bottom:16px;
+}
+.misjoyas-content p{
+  margin:10px 0;
+  line-height:1.6;
+}
+.misjoyas-content p:first-child{
+  margin-top:0;
+}
+
+/* from product.json → html_fMA38V_style_0.css */
+.misjoyas-wa-help{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  width:100%;
+  margin-top:20px;
+  margin-bottom:20px;
+  padding:10px 16px;
+  background:rgba(121,213,201,0.24);
+  border-radius:4px;
+  color:#000;
+  text-decoration:none;
+  box-sizing:border-box;
+  font-family:inherit;
+}
+.misjoyas-wa-help:hover{
+  color:#000;
+  text-decoration:none;
+}
+.misjoyas-wa-help__left{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+.misjoyas-wa-help__icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  width:24px;
+  height:24px;
+}
+.misjoyas-wa-help__icon img{
+  display:block;
+  width:24px;
+  height:24px;
+}
+.misjoyas-wa-help__question{
+  font-size:14px;
+  font-weight:700;
+  line-height:normal;
+}
+.misjoyas-wa-help__cta{
+  flex-shrink:0;
+  font-size:14px;
+  font-weight:400;
+  line-height:normal;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+@media (max-width:600px){
+  .misjoyas-wa-help{
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .misjoyas-wa-help__cta{
+    margin-left:32px;
+  }
+}
+
+/* from product.json → html_cgMNhC_style_0.css */
+.misjoyas-payment{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  margin-top:20px;
+  margin-bottom:20px;
+  font-family:inherit;
+}
+.misjoyas-payment__label{
+  flex-shrink:0;
+  color:#000;
+  font-size:14px;
+  font-weight:700;
+  line-height:normal;
+  white-space:nowrap;
+}
+/* PDP usa el snippet .misjoyas-payment-logos; forzar tamaño PDP (40px) */
+.misjoyas-payment .misjoyas-payment-logos__logo {
+  height: 40px;
+}
+.misjoyas-payment .misjoyas-payment-logos__logo--webpay {
+  max-width: 120px;
+}
+.misjoyas-payment .misjoyas-payment-logos__logo--mp,
+.misjoyas-payment .misjoyas-payment-logos__logo--transfer {
+  width: 100px;
+}
+@media (min-width: 768px) {
+  .misjoyas-payment .misjoyas-payment-logos__logo {
+    height: 40px;
+  }
+  .misjoyas-payment .misjoyas-payment-logos__logo--webpay {
+    max-width: 120px;
+  }
+  .misjoyas-payment .misjoyas-payment-logos__logo--mp,
+  .misjoyas-payment .misjoyas-payment-logos__logo--transfer {
+    width: 100px;
+  }
+}
+@media (max-width:600px){
+  .misjoyas-payment{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:10px;
+  }
+  .misjoyas-payment .misjoyas-payment-logos__logo {
+    height: 36px;
+  }
+  .misjoyas-payment .misjoyas-payment-logos__logo--webpay {
+    max-width: 110px;
+  }
+  .misjoyas-payment .misjoyas-payment-logos__logo--mp,
+  .misjoyas-payment .misjoyas-payment-logos__logo--transfer {
+    width: 90px;
+  }
+}
+
+/* from product.json → sec_custom_liquid_NLGn9E_style_0.css */
+.misjoyas-details{
+  width:100%;
+  font-family:inherit;
+  color:#000;
+}
+.misjoyas-details__item{
+  border-top:1px solid #e0e0e0;
+  background:#fff;
+}
+.misjoyas-details__header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:8px;
+  width:100%;
+  padding:20px 0 0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  text-align:left;
+  color:#000 !important;
+  font-family:inherit;
+}
+.misjoyas-details__title{
+  flex:1;
+  min-width:0;
+  font-size:18px;
+  font-weight:700;
+  line-height:24px;
+  color:#000 !important;
+  opacity:1;
+  visibility:visible;
+}
+.misjoyas-details__toggle{
+  flex-shrink:0;
+  font-size:26px;
+  font-weight:400;
+  line-height:32px;
+  width:1em;
+  text-align:center;
+  color:#000 !important;
+  opacity:1;
+  visibility:visible;
+}
+.misjoyas-details__panel{
+  overflow:hidden;
+}
+.misjoyas-details__item[data-open="false"] .misjoyas-details__panel{
+  display:none;
+}
+.misjoyas-details__body{
+  padding:8px 0 20px;
+  font-size:15px;
+  font-weight:400;
+  line-height:22px;
+  color:#000;
+}
+.misjoyas-estandar{
+  width:100%;
+  margin:20px 0 0;
+  padding:20px 0 0;
+}
+.misjoyas-estandar__img{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:4px;
+}
+@media (max-width:767px){
+  .misjoyas-details__title{
+    font-size:16px;
+    line-height:22px;
+  }
+  .misjoyas-details__toggle{
+    font-size:22px;
+    line-height:28px;
+  }
+  .misjoyas-details__body{
+    font-size:14px;
+    line-height:20px;
+  }
+  .misjoyas-estandar{
+    margin-top:12px;
+    padding-top:12px;
+  }
+}
+.placeholder\:tw-text-\[\#2d2d2d\]::-moz-placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(45 45 45 / var(--tw-text-opacity, 1));
+}
+.placeholder\:tw-text-\[\#2d2d2d\]::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(45 45 45 / var(--tw-text-opacity, 1));
+}
 .placeholder\:tw-opacity-70::-moz-placeholder {
   opacity: 0.7;
 }
-
 .placeholder\:tw-opacity-70::placeholder {
   opacity: 0.7;
 }
-
-.hover\:tw-opacity-100:hover {
-  opacity: 1;
+.hover\:tw-opacity-90:hover {
+  opacity: 0.9;
 }
-
 @media (min-width: 768px) {
 
-  .md\:tw-mt-0 {
-    margin-top: 0px;
+  .md\:tw-absolute {
+    position: absolute;
+  }
+
+  .md\:tw-inset-0 {
+    inset: 0px;
+  }
+
+  .md\:tw-block {
+    display: block;
   }
 
   .md\:tw-flex {
@@ -2653,21 +4929,7 @@ video {
     display: none;
   }
 }
-
 @media (min-width: 1024px) {
-
-  .lg\:tw-my-0 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-
-  .lg\:\!tw-w-\[345px\] {
-    width: 345px !important;
-  }
-
-  .lg\:tw-w-\[345px\] {
-    width: 345px;
-  }
 
   .lg\:\[grid-area\:auto\] {
     grid-area: auto;
@@ -2676,9 +4938,6 @@ video {
   .lg\:\[grid-area\:icons\] {
     grid-area: icons;
   }
-
-  .lg\:\[grid-area\:navigation\] {
-    grid-area: navigation;
-  }
 }
+
 

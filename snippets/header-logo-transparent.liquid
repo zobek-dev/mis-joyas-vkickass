@@ -12,14 +12,6 @@
   assign logo_alt_dark = section.settings.logo_dark.alt | default: shop.name | escape
   assign logo_alt_transparent = logo_transparent.alt | default: shop.name | escape
 
-  if section.settings.logo_position == 'left-left'
-    if section.blocks.size > 0 
-      assign show_border = true
-    elsif section.settings.menu != blank
-      assign show_border = true
-    endif
-  endif
-
   assign class_logo_dark ="header-logo hidden absolute dark:block dark:relative mx-auto"
   assign class_logo_light ="header-logo block dark:hidden dark:absolute mx-auto"
   if logo_above 
@@ -33,7 +25,7 @@
 {%- capture sizes -%}
   (min-width: 768px) {{ section.settings.logo_width }}px, {{ section.settings.logo_width_mobile }}px
 {%- endcapture -%}
-<div class="flex {% if logo_above %} lg:py-2 items-center{% endif %}{% if show_border %}{% if settings.lang_direction contains request.locale.iso_code %} lg:pl-5 lg:ml-3 lg:border-l{% else %} lg:pr-5 lg:mr-3 lg:border-r{% endif %}{% endif %}"
+<div class="flex {% if logo_above %} lg:py-2 items-center{% endif %}"
   x-data='{
     logo_src: `{{ logo_transparent | image_url: width: 3000 | image_tag: loading: 'lazy', sizes: sizes, widths: '50, 100, 150, 200, 250, 300, 400, 500 600', class: class_logo_light, alt: logo_alt_transparent }}`,
     logo_dark_src: `{{ logo_transparent | image_url: width: 3000 | image_tag: loading: 'lazy', sizes: sizes, widths: '50, 100, 150, 200, 250, 300, 400, 500 600', class: class_logo_dark, alt: logo_alt_transparent }}`,

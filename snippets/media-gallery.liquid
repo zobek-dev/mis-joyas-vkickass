@@ -451,6 +451,7 @@
           x-transition:leave-end="opacity-0 transform translate-y-1/3"
           x-intersect:leave="$store.xModal.removeFocus('postion-image-{{ section.id }}-{{ media.id }}')"
           @keyup.escape="zoomClose()"
+          @click="if (!$event.target.closest('img, video, iframe, button, a, model-viewer, picture, .splide__arrows')) zoomClose()"
         >
           <div 
             id="zoom-x-product-{{ section.id }}" 

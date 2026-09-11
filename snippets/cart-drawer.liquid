@@ -80,7 +80,9 @@
   @keydown.escape="$store.xModal.removeFocus(); $store.xMiniCart.hideCart();"
   x-cloak
 >
-  <div class="{{ settings.cart_type }} fixed z-20{% if settings.cart_type == 'drawer' %} md:z-20 typeDrawer md:fixed left-0 top-0 w-full h-full md:flex md:justify-end{% else %} md:z-auto md:top-full md:absolute left-0{% endif %} right-0 animate-goleft duration-300">
+  <div
+    class="{{ settings.cart_type }} fixed z-20{% if settings.cart_type == 'drawer' %} md:z-20 typeDrawer md:fixed left-0 top-0 w-full h-full md:flex md:justify-end{% else %} md:z-auto md:top-full md:absolute left-0{% endif %} right-0 animate-goleft duration-300"
+  >
     <div id="CartDrawer-Overlay" class="bg-black opacity-40 block{% if settings.cart_type == "popup" %} md:hidden{% else %} md:block{% endif %} fixed top-0 right-0 bottom-0 left-0" @click="$store.xMiniCart.hideCart()"></div>
     {%- if settings.cart_type == "popup" -%}
       <div class="cart-popup x-page-width page-width mx-auto relative">
@@ -95,15 +97,9 @@
         {%- if settings.edges_type == "rounded_corners" %}{% unless settings.cart_drawer_size_mobile == "fullscreen" %} rounded-t-[10px]{% endunless %} md:rounded-[10px]{%- if settings.cart_type == "popup" %} md:mb-2.5 md:mx-2.5{% else %} md:m-2.5{% endif %}{% endif -%}
         {%- if settings.cart_type == "popup" %} md:border-t md:h-auto md:bottom-auto shadow-md{% unless is_rtl %} right-0{% endunless %} md:absolute{% else %} md:h-full md:z-auto md:relative{% endif -%}
         {%- if cart == empty %} lg:w-[32rem]{% endif -%}{% if is_rtl %} text-right {% else %} md:left-auto{% endif %}"
-      x-show="$store.xMiniCart.open" 
       x-data="{ show: false, productCount: 0 }"
       x-intersect.full="$store.xModal.focus('CartDrawer', 'CloseCart'); $store.xCartAnalytics.viewCart();"
       {% unless cart == empty %} :class="show ? 'lg:max-w-4xl lg:w-screen' : 'lg:w-[32rem]'"{% endunless %}
-      x-transition:enter="transition-all ease-in-out duration-500"
-      x-transition:enter-start="opacity-0 transform translate-y-1/3{{ anima_init }}"
-      x-transition:enter-end="opacity-100 transform translate-y-0{{ anima_end }}"
-      x-transition:leave="transition ease-in-out duration-500"
-      x-transition:leave-end="opacity-0 transform translate-y-1/3{{ anima_init }}"
     >
       <div id="loading-cart-{{ section.id }}" class="absolute top-0 bottom-0 h-full w-full" x-show="$store.xMiniCart.loading">
         <div class="absolute top-0 right-0 w-full h-full opacity-20"></div>
@@ -575,7 +571,7 @@
                 -%}
                 {% comment %}theme-check-enable TranslationKeyExists{% endcomment %}
               {% endif %}
-              <form action="{{ routes.cart_url }}" id="CartDrawer-Form" class="grow flex flex-wrap" method="post">
+              <form action="{{ routes.cart_url }}" id="CartDrawer-Form" class="grow flex flex-wrap" method="post" @submit="$store.xCartHelper.goToCheckout($event)">
                 <div id="CartDrawer-CartItems" class="flex grow flex-col">
                   <div class="grow">
                     <table class="block w-full cart-items" role="table">
@@ -1053,12 +1049,29 @@
                                         endif
                                       endfor
                                     %}
+                                    {% liquid
+                                      assign qty_at_min = false
+                                      assign qty_at_max = false
+                                      if item.quantity <= 1
+                                        assign qty_at_min = true
+                                      endif
+                                      if item.variant.inventory_management != blank and item.variant.inventory_policy != 'continue' and item.quantity >= item.variant.inventory_quantity
+                                        assign qty_at_max = true
+                                      endif
+                                    %}
                                     <div class="misjoyas-cart-item__actions cart-item__quantity" role="cell" headers="CartDrawer-ColumnQuantity">
                                       <div class="misjoyas-cart-item__qty-control border border-solid">
                                         <button
                                           type="button"
                                           class="misjoyas-cart-item__qty-btn no-js-hidden"
-                                          @click.prevent="minusItemQty('{{ item.key }}', {{ item.index | plus: 1 }}, '{{ item.variant.inventory_policy }}', '{{ item.variant.inventory_management }}', {{ item.variant.inventory_quantity }}, '{{ gift_wrapping_item_key }}')"
+                                          data-mj-cart-qty="minus"
+                                          data-item-id="{{ item.key }}"
+                                          data-line="{{ item.index | plus: 1 }}"
+                                          data-inventory-policy="{{ item.variant.inventory_policy }}"
+                                          data-track-inventory="{{ item.variant.inventory_management }}"
+                                          data-max-qty="{{ item.variant.inventory_quantity }}"
+                                          data-gift-wrap="{{ gift_wrapping_item_key }}"
+                                          {% if qty_at_min %}disabled aria-disabled="true"{% endif %}
                                           aria-label="{{ 'products.product.quantity.decrease' | t: product: item.product.title | escape }}"
                                         >
                                           {% render 'icon-alls', icon: 'icon-minus', class: 'w-3' %}
@@ -1069,14 +1082,27 @@
                                           aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
                                           type="number"
                                           value="{{ item.quantity }}"
-                                          min="0"
-                                          x-on:change="updateItemQty('{{ item.key }}', {{ item.index | plus: 1 }}, '{{ item.variant.inventory_policy }}', '{{ item.variant.inventory_management }}', {{ item.variant.inventory_quantity }}, '{{ gift_wrapping_item_key }}')"
+                                          min="1"
+                                          data-mj-cart-qty-input
+                                          data-item-id="{{ item.key }}"
+                                          data-line="{{ item.index | plus: 1 }}"
+                                          data-inventory-policy="{{ item.variant.inventory_policy }}"
+                                          data-track-inventory="{{ item.variant.inventory_management }}"
+                                          data-max-qty="{{ item.variant.inventory_quantity }}"
+                                          data-gift-wrap="{{ gift_wrapping_item_key }}"
                                           @keydown="handleKeydown($event, $el)"
                                         >
                                         <button
                                           type="button"
                                           class="misjoyas-cart-item__qty-btn"
-                                          @click.prevent="plusItemQty('{{ item.key }}', {{ item.index | plus: 1 }}, '{{ item.variant.inventory_policy }}', '{{ item.variant.inventory_management }}', {{ item.variant.inventory_quantity }})"
+                                          data-mj-cart-qty="plus"
+                                          data-item-id="{{ item.key }}"
+                                          data-line="{{ item.index | plus: 1 }}"
+                                          data-inventory-policy="{{ item.variant.inventory_policy }}"
+                                          data-track-inventory="{{ item.variant.inventory_management }}"
+                                          data-max-qty="{{ item.variant.inventory_quantity }}"
+                                          data-gift-wrap="{{ gift_wrapping_item_key }}"
+                                          {% if qty_at_max %}disabled aria-disabled="true"{% endif %}
                                           aria-label="{{ 'products.product.quantity.increase' | t: product: item.product.title | escape }}"
                                         >
                                           {% render 'icon-alls', icon: 'icon-plus', class: 'w-3' %}
@@ -1116,6 +1142,9 @@
                 <div id="CartDrawer-CartErrors" role="alert"></div>
               </form>
             </div>
+            {%- if section != blank -%}
+              {% render 'cart-drawer-app-blocks', section: section %}
+            {%- endif -%}
             <div class="footer-cart-drawer-mobile misjoyas-cart__footer">
               {% comment %} Cart upsell {% endcomment %}
               {% if settings.enable_upsell_minicart %}
@@ -1520,11 +1549,10 @@
 
                   <button
                     id="checkout-submit"
-                    class="misjoyas-cart__checkout button button-solid leading-normal w-full justify-center cursor-pointer"
+                    class="misjoyas-cart__checkout cart__checkout-button button button-solid leading-normal w-full justify-center cursor-pointer"
                     type="submit"
                     name="checkout"
                     form="CartDrawer-Form"
-                    @click="$store.xCartHelper.goToCheckout($event)"
                     {% if cart == empty %}disabled{% endif %}
                     {{ block.shopify_attributes }}
                   >

@@ -75,15 +75,15 @@
     "colors_dark_footer_line": "#263135",
     "colors_dark_image_treatment_overlay": "#2e1c13",
     "colors_dark_image_treatment_text": "#ffffff",
-    "type_body_font": "titillium_web_n4",
+    "type_body_font": "fustat_n4",
     "text_base_size": 130,
-    "type_header_font": "titillium_web_n6",
+    "type_header_font": "fustat_n4",
     "heading_base_size": 140,
     "heading_text_tranform": "none",
-    "heading_highlight_font": "titillium_web_n4",
+    "heading_highlight_font": "fustat_n4",
     "heading_highlight_base_size": 120,
-    "type_menu_font": "titillium_web_n4",
-    "type_button_font": "titillium_web_n4",
+    "type_menu_font": "fustat_n4",
+    "type_button_font": "fustat_n4",
     "edges_type": "square",
     "buttons_type": "square",
     "buttons_color_mobile": "hover",
@@ -193,9 +193,9 @@
     "cart_custom_field_label": "TEST",
     "enable_cart_timer": false,
     "hide_cart": false,
-    "enable_free_shipping": false,
-    "order_amount_freeshipping": "CLP:90000",
-    "enable_cart_progress_bar": false,
+    "enable_free_shipping": true,
+    "order_amount_freeshipping": "CLP:39990",
+    "enable_cart_progress_bar": true,
     "enable_estimate_shipping": false,
     "auto_calculate_shipping": false,
     "show_estimate_cart": false,
@@ -352,23 +352,6 @@
           "searchAndFilterApp": "none"
         }
       },
-      "12120936241911852800": {
-        "type": "shopify://apps/judge-me-reviews/blocks/reviews_tab/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-        "disabled": true,
-        "settings": {
-          "position": "right"
-        }
-      },
-      "14060646107696862457": {
-        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-        "disabled": true,
-        "settings": {}
-      },
-      "15181020662106344915": {
-        "type": "shopify://apps/judge-me-reviews/blocks/popup_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-        "disabled": true,
-        "settings": {}
-      },
       "5149645339031002760": {
         "type": "shopify://apps/minmaxify-order-limits/blocks/app-embed-block/3acfba32-89f3-4377-ae20-cbb9abc48475",
         "disabled": false,
@@ -384,9 +367,21 @@
         "disabled": false,
         "settings": {}
       },
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      },
+      "14429071373314833104": {
+        "type": "shopify://apps/candy-rack/blocks/head/cb9c657f-334f-4905-80c2-f69cca01460c",
+        "disabled": false,
+        "settings": {
+          "script_load_mode": "async"
+        }
+      },
       "12711036393401670242": {
         "type": "shopify://apps/whatsup-whatsapp-button/blocks/float-button/7e68b675-2a94-4586-a750-8b8ca8c9d069",
-        "disabled": false,
+        "disabled": true,
         "settings": {
           "alignment": "right",
           "horizon_dis": 24,
@@ -403,17 +398,10 @@
           "visibility_mobile": true
         }
       },
-      "855628211100114053": {
-        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+      "11532412952436166569": {
+        "type": "shopify://apps/loox-reviews/blocks/loox-inject/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
         "disabled": false,
         "settings": {}
-      },
-      "14429071373314833104": {
-        "type": "shopify://apps/candy-rack/blocks/head/cb9c657f-334f-4905-80c2-f69cca01460c",
-        "disabled": false,
-        "settings": {
-          "script_load_mode": "async"
-        }
       }
     }
   },
@@ -554,8 +542,8 @@
       "cart_show_vendor": false,
       "show_cart_note": true,
       "show_cart_payment_methods": true,
-      "enable_featured_discount": false,
-      "cart_enable_savings_amount": false,
+      "enable_featured_discount": true,
+      "cart_enable_savings_amount": true,
       "cart_enable_terms_and_conditions": false,
       "cart_terms_and_conditions_page": "",
       "cart_upsell_product_list": [],

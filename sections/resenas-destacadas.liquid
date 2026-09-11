@@ -1,0 +1,916 @@
+{%- comment -%}
+  Reseñas destacadas — Mediahuella para MisJoyas
+  Muro de reseñas verificadas de Loox filtrado a 4 y 5 estrellas.
+  Loox no permite filtrar su widget por rango de estrellas, por eso las
+  reseñas se sincronizan y quedan escritas en esta sección.
+  Actualizar con: resenas-loox/extraer-loox.py -> curar.py -> generar-seccion.py
+  Última sincronización: 2026-08-31
+{%- endcomment -%}
+
+{%- liquid
+  assign bg = section.settings.background_color | default: '#ffffff'
+  assign card_bg = section.settings.card_background | default: '#f8f4f0'
+  assign txt = section.settings.text_color | default: '#2d2d2d'
+  assign star = section.settings.star_color | default: '#f83785'
+  assign pad_y = section.settings.padding_y | default: 56
+  assign pad_y_mobile = section.settings.padding_y_mobile | default: 40
+-%}
+
+{%- style -%}
+  .resenas-destacadas-{{ section.id }} {
+    background: {{ bg }};
+    color: {{ txt }};
+    padding: {{ pad_y_mobile }}px 0;
+  }
+  @media (min-width: 768px) {
+    .resenas-destacadas-{{ section.id }} { padding: {{ pad_y }}px 0; }
+  }
+  .resenas-destacadas-{{ section.id }} .rd-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  @media (min-width: 768px) {
+    .resenas-destacadas-{{ section.id }} .rd-inner { padding: 0 40px; }
+  }
+  .resenas-destacadas-{{ section.id }} .rd-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-title {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+  @media (min-width: 768px) {
+    .resenas-destacadas-{{ section.id }} .rd-title { font-size: 30px; }
+  }
+  .resenas-destacadas-{{ section.id }} .rd-sub {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.4;
+    opacity: .8;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-summary .rd-star { width: 18px; height: 18px; }
+  .resenas-destacadas-{{ section.id }} .rd-star {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    flex: none;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-star.is-full { fill: {{ star }}; }
+  .resenas-destacadas-{{ section.id }} .rd-star.is-empty { fill: currentColor; opacity: .18; }
+  .resenas-destacadas-{{ section.id }} .rd-viewport { position: relative; }
+  .resenas-destacadas-{{ section.id }} .rd-track {
+    display: flex;
+    gap: 12px;
+    margin: 0;
+    padding: 0 0 4px;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-track::-webkit-scrollbar { display: none; }
+  .resenas-destacadas-{{ section.id }} .rd-card {
+    flex: 0 0 auto;
+    width: 72%;
+    max-width: 300px;
+    scroll-snap-align: start;
+    background: {{ card_bg }};
+    overflow: hidden;
+  }
+  @media (min-width: 600px) {
+    .resenas-destacadas-{{ section.id }} .rd-card { width: 42%; }
+  }
+  @media (min-width: 900px) {
+    .resenas-destacadas-{{ section.id }} .rd-card { width: 30%; }
+  }
+  @media (min-width: 1100px) {
+    .resenas-destacadas-{{ section.id }} .rd-card { width: calc((100% - 36px) / 4); max-width: none; }
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: rgba(0, 0, 0, .05);
+    overflow: hidden;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .4s ease;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__link:hover .rd-card__media img { transform: scale(1.04); }
+  .resenas-destacadas-{{ section.id }} .rd-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 16px 16px;
+    flex: 1 1 auto;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__stars { display: inline-flex; gap: 2px; }
+  .resenas-destacadas-{{ section.id }} .rd-card__text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.45;
+    min-height: 4.35em; /* 3 lineas: alinea el pie de todas las tarjetas */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__meta {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    font-size: 13px;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__author { font-weight: 600; }
+  .resenas-destacadas-{{ section.id }} .rd-card__verified {
+    font-size: 12px;
+    opacity: .7;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__verified::before {
+    content: '✓';
+    margin-right: 3px;
+    color: {{ star }};
+    font-weight: 700;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__product {
+    margin: 0;
+    font-size: 13px;
+    opacity: .75;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-card__date {
+    font-size: 11px;
+    opacity: .55;
+    margin-top: auto;
+    padding-top: 4px;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-nav {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, .12);
+    background: #fff;
+    color: #2d2d2d;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+    z-index: 2;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-nav[hidden] { display: none !important; }
+  .resenas-destacadas-{{ section.id }} .rd-nav--prev { left: -14px; }
+  .resenas-destacadas-{{ section.id }} .rd-nav--next { right: -14px; }
+  @media (min-width: 1100px) {
+    .resenas-destacadas-{{ section.id }} .rd-nav { display: flex; }
+  }
+  .resenas-destacadas-{{ section.id }} .rd-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-cta a {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1px solid currentColor;
+    color: inherit;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .resenas-destacadas-{{ section.id }} .rd-cta a:hover {
+    background: {{ star }};
+    border-color: {{ star }};
+    color: #fff;
+  }
+{%- endstyle -%}
+
+<div class="resenas-destacadas-{{ section.id }}">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="rd-star-{{ section.id }}" viewBox="0 0 20 20">
+      <path d="M10 1.6l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.2l-4.94 2.6.94-5.5-4-3.9 5.53-.8z"/>
+    </symbol>
+  </svg>
+  <div class="rd-inner">
+    <div class="rd-head">
+      {%- if section.settings.title != blank -%}
+        <h2 class="rd-title">{{ section.settings.title | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.show_summary -%}
+        <span class="rd-summary">
+          <span class="rd-card__stars" role="img" aria-label="{{ section.settings.rating_promedio }} de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+          {{ section.settings.rating_promedio }} de 5 · {{ section.settings.total_resenas }} reseñas verificadas
+        </span>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="rd-sub">{{ section.settings.subtitle | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="rd-viewport">
+      <button class="rd-nav rd-nav--prev" type="button" aria-label="Reseñas anteriores" data-rd-prev>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <ul class="rd-track" role="list" data-rd-track>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/aro-arolla-huggie-con-gota-colgante-circon-blanca-cu-bano-de-oro-ae23577-cug" aria-label="Reseña de Nicole B. sobre Argolla Huggie Gota Circón 14 mm">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/29/Hg6mrgjjC_mid.jpg" alt="Reseña de Nicole B. sobre Argolla Huggie Gota Circón 14 mm" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Muy hermosos aros, elegantes, livianos y cómodos</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Nicole B.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Argolla Huggie Gota Circón 14 mm</p>
+            <time class="rd-card__date" datetime="2026-08-29">29 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/pulsera-cristales-morados-an1645-h-0" aria-label="Reseña de Nicole B. sobre Pulsera Cristales Hecho con  Swarovski® Rosado">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/29/2wq9dWkam_mid.jpg" alt="Reseña de Nicole B. sobre Pulsera Cristales Hecho con  Swarovski® Rosado" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">La compre para mi hija de 9 años, se le ve muy hermosa</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Nicole B.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Pulsera Cristales Hecho con  Swarovski® Rosado</p>
+            <time class="rd-card__date" datetime="2026-08-29">29 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/anillo-estrella-fugaz-circones-ryf8365" aria-label="Reseña de Silvana R. sobre Anillo Estrella Fugaz Circones">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/29/3tF2cdXNC_mid.jpg" alt="Reseña de Silvana R. sobre Anillo Estrella Fugaz Circones" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Me gustaría que hubieran mas tallas</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Silvana R.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Anillo Estrella Fugaz Circones</p>
+            <time class="rd-card__date" datetime="2026-08-29">29 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/argolla-lisa-75-mm-aa02-021" aria-label="Reseña de Luis C. sobre Argolla Lisa 75 mm">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/26/OJO2nLuBH_mid.jpg" alt="Reseña de Luis C. sobre Argolla Lisa 75 mm" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Atención muy amable de parte del personal</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Luis C.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Argolla Lisa 75 mm</p>
+            <time class="rd-card__date" datetime="2026-08-26">26 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/set-3-palmeras-negras-para-aros" aria-label="Reseña de Victor A. sobre Set 3 Palmeras Negras para Aros">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/25/ArJGfNFu0_mid.jpg" alt="Reseña de Victor A. sobre Set 3 Palmeras Negras para Aros" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="4 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-empty" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Hola buenas tardes ,el único inconveniente que el orificio para encajar el soporte es un poco pequeño y no encaja ,nada k no tenga solución pero sería ideal que para futuras compras sea acorde gracias</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Victor A.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Set 3 Palmeras Negras para Aros</p>
+            <time class="rd-card__date" datetime="2026-08-25">25 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/colgante-pelota-de-futbol-esmaltado-pyf9468" aria-label="Reseña de Margarita O. sobre Colgante Pelota de Fútbol Esmaltado">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/24/wCO9j8zuJ_mid.jpg" alt="Reseña de Margarita O. sobre Colgante Pelota de Fútbol Esmaltado" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Vendida apenas llegó gracias</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Margarita O.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Colgante Pelota de Fútbol Esmaltado</p>
+            <time class="rd-card__date" datetime="2026-08-24">24 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/aro-corazon-18-mm-p08al-016" aria-label="Reseña de Margarita O. sobre Aro Corazón 18 mm">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/24/VcCtUCSJeo_mid.jpg" alt="Reseña de Margarita O. sobre Aro Corazón 18 mm" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Estará en vitrina ,exelente me gustaron mucho</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Margarita O.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Aro Corazón 18 mm</p>
+            <time class="rd-card__date" datetime="2026-08-24">24 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/aro-circon-granate-6x6-mm-ac01-003gr" aria-label="Reseña de Rodrigo S. sobre Aro Circón Granate 6x6 mm">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/24/8VTWpNCdI_mid.jpg" alt="Reseña de Rodrigo S. sobre Aro Circón Granate 6x6 mm" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Me an dicho que se me ven bien y e recibido muchos elogios.</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Rodrigo S.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Aro Circón Granate 6x6 mm</p>
+            <time class="rd-card__date" datetime="2026-08-24">24 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/aro-circon-2-mm-ar08068653" aria-label="Reseña de Carolina G. sobre Aro Circón 2 mm">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/22/UzYCgXtWs_mid.jpg" alt="Reseña de Carolina G. sobre Aro Circón 2 mm" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Precioso el arito,es pequeñito ideal para acompañar mas aritos ♡</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Carolina G.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Aro Circón 2 mm</p>
+            <time class="rd-card__date" datetime="2026-08-22">22 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/pulsera-ajustable-perlas-p21ppp-002" aria-label="Reseña de Teresa S. sobre Pulsera Ajustable Perlas Esferas">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/17/5LmrRORdi_mid.jpg" alt="Reseña de Teresa S. sobre Pulsera Ajustable Perlas Esferas" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Hermosa y queda muy bien junto a mis otras pulseras que también compré en mis joyas</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Teresa S.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Pulsera Ajustable Perlas Esferas</p>
+            <time class="rd-card__date" datetime="2026-08-16">16 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/anillo-solitario-moissanita-y-circones-ar19436" aria-label="Reseña de Marcelo O. sobre Anillo Solitario Moissanita y Circones">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/16/FPy8VSoda_mid.jpg" alt="Reseña de Marcelo O. sobre Anillo Solitario Moissanita y Circones" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">muy amables con la atención y la calidad es excelente y explican muy bien y con claridad</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Marcelo O.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Anillo Solitario Moissanita y Circones</p>
+            <time class="rd-card__date" datetime="2026-08-16">16 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/colgante-colibri-circones-rubi-pyf7004-2" aria-label="Reseña de Danisa C. sobre Colgante Colibrí Circones Rubí">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/16/_rlZ04A2D_mid.jpg" alt="Reseña de Danisa C. sobre Colgante Colibrí Circones Rubí" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="4 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-empty" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Son hermosas las joyas ya vendí el nudo de brujas , no es primera vez que compro siempre he comprado en mis joyas. Son muy lindas joyas .</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Danisa C.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Colgante Colibrí Circones Rubí</p>
+            <time class="rd-card__date" datetime="2026-08-15">15 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/aro-corazon-ae28097" aria-label="Reseña de Josefa V. sobre Aro Corazón">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/15/bO8DvOAtt_YhjRm_whn_orig_mid.jpg" alt="Reseña de Josefa V. sobre Aro Corazón" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Muy bellos me encantan</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Josefa V.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Aro Corazón</p>
+            <time class="rd-card__date" datetime="2026-08-15">15 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/collar-rombo-circon-punto-de-luz-3-mm-25456" aria-label="Reseña de Angela R. sobre Collar Circón Punto de Luz 3 mm">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/tlDbClgkR_mid.jpg" alt="Reseña de Angela R. sobre Collar Circón Punto de Luz 3 mm" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Lo compre para mi .....llevon2 semanas sin alergia</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Angela R.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Collar Circón Punto de Luz 3 mm</p>
+            <time class="rd-card__date" datetime="2026-08-05">5 de agosto de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/joyero-prime-selection-sh789-21-1" aria-label="Reseña de Johana S. sobre Joyero Prime Selection">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/xZse6OVVtj_mid.jpg" alt="Reseña de Johana S. sobre Joyero Prime Selection" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Hermoso , perfecto</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Johana S.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Joyero Prime Selection</p>
+            <time class="rd-card__date" datetime="2026-07-27">27 de julio de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/anillo-solitario-circon-baguette-agua-marina-dr2553" aria-label="Reseña de Bernny sobre Anillo solitario Circón Baguette Agua Marina">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/IMEWuT7Fpl_mid.jpg" alt="Reseña de Bernny sobre Anillo solitario Circón Baguette Agua Marina" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Anillo hermoso, la piedra es preciosa, me encantó!!!
+Estoy 100% conforme con la compra.</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Bernny</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Anillo solitario Circón Baguette Agua Marina</p>
+            <time class="rd-card__date" datetime="2026-06-25">25 de junio de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/colgante-maxi-corazon-chunky-circones-pave-pyf8675" aria-label="Reseña de Anónimo sobre Colgante Maxi Corazón Chunky Circones Pavé">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/JHtRyNtyLc_mid.jpg" alt="Reseña de Anónimo sobre Colgante Maxi Corazón Chunky Circones Pavé" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Es lo más hermoso que he visto. Es grande, brilla muchísimo y es pesado. Maravilloso 100 de 10</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Anónimo</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Colgante Maxi Corazón Chunky Circones Pavé</p>
+            <time class="rd-card__date" datetime="2026-06-15">15 de junio de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/rosario-virgen-de-los-rayos-milagrosa-modelo5" aria-label="Reseña de Patricia S. sobre Rosario Virgen de los Rayos Milagrosa">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/cKiSKjySTK_mid.jpg" alt="Reseña de Patricia S. sobre Rosario Virgen de los Rayos Milagrosa" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Es muy bonita y elegante 😍 para mí la compré es larga igual</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Patricia S.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Rosario Virgen de los Rayos Milagrosa</p>
+            <time class="rd-card__date" datetime="2026-06-12">12 de junio de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/anillo-cintillo-rombos-circones-ar16886" aria-label="Reseña de Ximena G. sobre Anillo Cintillo Rombos Circones">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/oFMQn8vOzg_mid.jpg" alt="Reseña de Ximena G. sobre Anillo Cintillo Rombos Circones" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Precioso, muy delicado y hermoso, tal como en las fotos</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Ximena G.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Anillo Cintillo Rombos Circones</p>
+            <time class="rd-card__date" datetime="2026-06-11">11 de junio de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/colgante-corazon-circon-topacio-rubi-pyf7853" aria-label="Reseña de Javiera C. sobre Colgante Corazón Circón Rubí">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/_LjAKPKjVh_mid.jpg" alt="Reseña de Javiera C. sobre Colgante Corazón Circón Rubí" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Hermosa, muy feliz.</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Javiera C.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Colgante Corazón Circón Rubí</p>
+            <time class="rd-card__date" datetime="2026-05-21">21 de mayo de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/colgante-placa-circular-mediana-con-fotograbado-21-mm-3-2092p" aria-label="Reseña de Anónimo sobre Colgante Placa Circular Mediana con Fotograbado 21 mm">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/Cdxq-TxHt_mid.jpg" alt="Reseña de Anónimo sobre Colgante Placa Circular Mediana con Fotograbado 21 mm" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Hermosa y muy buena calidad,estoy muy feliz de comprar en mis joyas</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Anónimo</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Colgante Placa Circular Mediana con Fotograbado 21 mm</p>
+            <time class="rd-card__date" datetime="2026-05-21">21 de mayo de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/anillo-mariposa-circon-rubi-ryf9668" aria-label="Reseña de Alejandra D. sobre Anillo Mariposa Circón Rubí">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/cInLylC_F5_mid.jpg" alt="Reseña de Alejandra D. sobre Anillo Mariposa Circón Rubí" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Son joyas muy lindas y de buena calidad</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Alejandra D.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Anillo Mariposa Circón Rubí</p>
+            <time class="rd-card__date" datetime="2026-05-11">11 de mayo de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/collar-circon-punto-de-luz-4-mm-26618" aria-label="Reseña de Rossanna O. sobre Collar Circón Punto de Luz 4 mm">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/Vh1T9oZX9p_mid.jpg" alt="Reseña de Rossanna O. sobre Collar Circón Punto de Luz 4 mm" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Es hermoso y delicado , lo compré para mi emprendimiento y me lo termine auto regalando jajaj , queda muy lindo y se ve bien con cualquier prenda</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Rossanna O.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Collar Circón Punto de Luz 4 mm</p>
+            <time class="rd-card__date" datetime="2026-04-14">14 de abril de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/pulsera-corazones-circones-pu09070270" aria-label="Reseña de Gerard R. sobre Pulsera Corazones Circones">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/ohDqOlhRA9_mid.jpg" alt="Reseña de Gerard R. sobre Pulsera Corazones Circones" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Hola , la pulsera super linda, detallada y encantado con la compra</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Gerard R.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Pulsera Corazones Circones</p>
+            <time class="rd-card__date" datetime="2026-03-01">1 de marzo de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/anillo-solitario-moissanita-msj1730" aria-label="Reseña de Karina S. sobre Anillo Solitario Moissanita">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/cTeCnwSLG6_mid.jpg" alt="Reseña de Karina S. sobre Anillo Solitario Moissanita" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Un anillo maravilloso , accesible y de buenísima calidad, la mejor opción al oro y diamante que estancarisímos.</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Karina S.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Anillo Solitario Moissanita</p>
+            <time class="rd-card__date" datetime="2026-02-25">25 de febrero de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/argolla-lisa-16-mm-aa01-008" aria-label="Reseña de Anónimo sobre Argolla Lisa 16 mm">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/tqv4tjCsnl_mid.jpg" alt="Reseña de Anónimo sobre Argolla Lisa 16 mm" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Excelente producto</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Anónimo</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Argolla Lisa 16 mm</p>
+            <time class="rd-card__date" datetime="2026-02-23">23 de febrero de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/caja-conjunto-pequena-colores-vivos-al-azar" aria-label="Reseña de Rubén P. sobre Caja Conjunto Pequeña Colores Vivos al Azar">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/ZSmZtUs9dB_mid.jpg" alt="Reseña de Rubén P. sobre Caja Conjunto Pequeña Colores Vivos al Azar" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Exelente producto, seguiré comprando.</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Rubén P.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Caja Conjunto Pequeña Colores Vivos al Azar</p>
+            <time class="rd-card__date" datetime="2026-02-03">3 de febrero de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/cadena-grumet-30010442gd-300-gs-bc-6l00-3001102curbsf" aria-label="Reseña de Patricio U. sobre Cadena Grumet">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/iWY-KD_jbV_mid.jpg" alt="Reseña de Patricio U. sobre Cadena Grumet" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Muy buen producto no pierde brillo a pesar de los calores por el sudor y las duchas de todos los días!!!! Muy recomendable!!!</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Patricio U.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Cadena Grumet</p>
+            <time class="rd-card__date" datetime="2026-02-02">2 de febrero de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/pulsera-ajustable-esferas-corazon-pu14069990" aria-label="Reseña de Angeles O. sobre Pulsera Ajustable Esferas Corazón">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/fNPQBs0Ukl_mid.jpg" alt="Reseña de Angeles O. sobre Pulsera Ajustable Esferas Corazón" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Una belleza muy delicado</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Angeles O.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Pulsera Ajustable Esferas Corazón</p>
+            <time class="rd-card__date" datetime="2026-01-29">29 de enero de 2026</time>
+          </div>
+        </a>
+      </li>
+      <li class="rd-card" role="listitem">
+        <a class="rd-card__link" href="/products/cadena-corazones-entrelazados-045rhtb" aria-label="Reseña de Ximena A. sobre Cadena Corazones  Entrelazados">
+          <div class="rd-card__media">
+            <img src="https://images.loox.io/uploads/2026/8/6/XPXXB8s7hW_mid.jpg" alt="Reseña de Ximena A. sobre Cadena Corazones  Entrelazados" loading="lazy" decoding="async" width="480" height="600">
+          </div>
+          <div class="rd-card__body">
+            <span class="rd-card__stars" role="img" aria-label="5 de 5 estrellas"><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg><svg class="rd-star is-full" aria-hidden="true" focusable="false"><use href="#rd-star-{{ section.id }}"></use></svg></span>
+            <p class="rd-card__text">Muy buena calidad ..Llevo años comprando acá 🩵🩵🩵💯</p>
+            <p class="rd-card__meta">
+              <span class="rd-card__author">Ximena A.</span>
+              <span class="rd-card__verified">Compra verificada</span>
+            </p>
+            <p class="rd-card__product">Cadena Corazones  Entrelazados</p>
+            <time class="rd-card__date" datetime="2026-01-19">19 de enero de 2026</time>
+          </div>
+        </a>
+      </li>
+      </ul>
+      <button class="rd-nav rd-nav--next" type="button" aria-label="Más reseñas" data-rd-next>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    {%- if section.settings.cta_texto != blank and section.settings.cta_url != blank -%}
+      <div class="rd-cta"><a href="{{ section.settings.cta_url }}">{{ section.settings.cta_texto | escape }}</a></div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var raiz = document.querySelector('.resenas-destacadas-{{ section.id }}');
+    if (!raiz) return;
+    var pista = raiz.querySelector('[data-rd-track]');
+    var prev = raiz.querySelector('[data-rd-prev]');
+    var next = raiz.querySelector('[data-rd-next]');
+    if (!pista || !prev || !next) return;
+
+    function paso() {
+      var t = pista.querySelector('.rd-card');
+      return t ? t.getBoundingClientRect().width + 12 : pista.clientWidth * 0.8;
+    }
+    function estado() {
+      var max = pista.scrollWidth - pista.clientWidth - 2;
+      prev.hidden = pista.scrollLeft <= 2;
+      next.hidden = pista.scrollLeft >= max;
+    }
+    prev.addEventListener('click', function () { pista.scrollBy({ left: -paso(), behavior: 'smooth' }); });
+    next.addEventListener('click', function () { pista.scrollBy({ left: paso(), behavior: 'smooth' }); });
+    pista.addEventListener('scroll', estado, { passive: true });
+    window.addEventListener('resize', estado);
+    estado();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Reseñas destacadas",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Reseñas verificadas de Loox, solo de 4 y 5 estrellas. Se sincronizan con los scripts de resenas-loox/ (Mediahuella)."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Lo que dicen nuestras clientas"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Bajada",
+      "default": "Reseñas reales de compras verificadas en misjoyas.cl"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "Mostrar resumen de calificación",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rating_promedio",
+      "label": "Calificación promedio de la tienda",
+      "default": "4,8",
+      "info": "Promedio real de Loox sobre el total de reseñas. Actualizar al resincronizar."
+    },
+    {
+      "type": "text",
+      "id": "total_resenas",
+      "label": "Total de reseñas de la tienda",
+      "default": "880"
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fondo de la sección",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Fondo de la tarjeta",
+      "default": "#f8f4f0"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Texto",
+      "default": "#2d2d2d"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Estrellas y acentos",
+      "default": "#f83785"
+    },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "text",
+      "id": "cta_texto",
+      "label": "Texto del botón",
+      "info": "Déjalo vacío para ocultar el botón."
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Espaciado vertical (escritorio)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mobile",
+      "label": "Espaciado vertical (móvil)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reseñas destacadas"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,45 @@
+{%- comment -%}
+  Logos de pago MisJoyas (Webpay, Mercado Pago, Transferencia).
+  Parámetros opcionales:
+  - class — clases extra del contenedor (visibilidad responsive, etc.)
+  - webpay_logo — asset Webpay (default: webpay.png)
+  - mp_logo — asset Mercado Pago (default: mercado-pago.png)
+  - transfer_logo — asset de transferencia (default: transferencia.png)
+{%- endcomment -%}
+{%- liquid
+  assign webpay_src = webpay_logo | default: 'webpay.png'
+  assign mp_src = mp_logo | default: 'mercado-pago.png'
+  assign transfer_src = transfer_logo | default: 'transferencia.png'
+-%}
+<div class="misjoyas-payment-logos tw-flex tw-flex-wrap tw-items-center tw-gap-2{% if class != blank %} {{ class }}{% endif %}" role="list" aria-label="Medios de pago">
+  <img
+    class="misjoyas-payment-logos__logo misjoyas-payment-logos__logo--webpay"
+    src="{{ webpay_src | asset_url }}"
+    alt="Webpay Plus Transbank"
+    width="117"
+    height="40"
+    loading="lazy"
+    decoding="async"
+    role="listitem"
+  >
+  <img
+    class="misjoyas-payment-logos__logo misjoyas-payment-logos__logo--mp"
+    src="{{ mp_src | asset_url }}"
+    alt="Mercado Pago"
+    width="100"
+    height="40"
+    loading="lazy"
+    decoding="async"
+    role="listitem"
+  >
+  <img
+    class="misjoyas-payment-logos__logo misjoyas-payment-logos__logo--transfer"
+    src="{{ transfer_src | asset_url }}"
+    alt="Transferencia bancaria"
+    width="100"
+    height="40"
+    loading="lazy"
+    decoding="async"
+    role="listitem"
+  >
+</div>

@@ -1,0 +1,153 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "blocks": {
+        "breadcrumbs": {
+          "type": "breadcrumbs",
+          "settings": {
+            "show_breadcrumbs_border": false,
+            "full_width_breadcrumb": true,
+            "desktop_content_alignment": "text-left",
+            "mobile_content_alignment": "text-left",
+            "background_color_light": "#f2f2f2",
+            "text_color_light": "#2d2d2d",
+            "textlink_color_light": "#2d2d2d",
+            "background_color_dark": "#313131",
+            "text_color_dark": "rgba(0,0,0,0)",
+            "textlink_color_dark": "rgba(0,0,0,0)"
+          }
+        }
+      },
+      "block_order": [
+        "breadcrumbs"
+      ],
+      "settings": {
+        "show_collection_image": false,
+        "image_overlay_opacity": 20,
+        "show_collection_name": true,
+        "title_position": "text-center",
+        "size_title": 110,
+        "heading_tag": "h1",
+        "full_width_title": true,
+        "desktop_height": "450px",
+        "full_width": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "mobile_height": "300px",
+        "full_width_mobile": true,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
+      }
+    },
+    "subcollections": {
+      "type": "collection-subcollections-hub",
+      "blocks": {
+        "col_01": {
+          "type": "collection",
+          "settings": {
+            "collection": "argollas"
+          }
+        },
+        "col_02": {
+          "type": "collection",
+          "settings": {
+            "collection": "apegados"
+          }
+        },
+        "col_03": {
+          "type": "collection",
+          "settings": {
+            "collection": "trepadores-y-earcuff"
+          }
+        },
+        "col_04": {
+          "type": "collection",
+          "settings": {
+            "collection": "descuento-invierno-anillos"
+          }
+        },
+        "col_05": {
+          "type": "collection",
+          "settings": {
+            "collection": "descuento-invierno-collares"
+          }
+        },
+        "col_06": {
+          "type": "collection",
+          "settings": {
+            "collection": "colgantes-micro-circon-y-circon"
+          }
+        },
+        "col_07": {
+          "type": "collection",
+          "settings": {
+            "collection": "colgantes-plata-sola"
+          }
+        },
+        "col_08": {
+          "type": "collection",
+          "settings": {
+            "collection": "colgantes-y-collares-religiosos"
+          }
+        },
+        "col_09": {
+          "type": "collection",
+          "settings": {
+            "collection": "descuento-invierno-pulseras"
+          }
+        },
+        "col_10": {
+          "type": "collection",
+          "settings": {
+            "collection": "descuento-invierno-bano-oro"
+          }
+        }
+      },
+      "block_order": [
+        "col_01",
+        "col_02",
+        "col_03",
+        "col_04",
+        "col_05",
+        "col_06",
+        "col_07",
+        "col_08",
+        "col_09",
+        "col_10"
+      ],
+      "settings": {
+        "title": "",
+        "heading_tag": "h2",
+        "image_ratio": "square",
+        "title_size": 80,
+        "show_text_overlay": false,
+        "content_alignment": "center",
+        "content_position": "bottom",
+        "image_overlay_opacity": 5,
+        "show_item_count": true,
+        "columns_desktop": 5,
+        "spacing": 28,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "columns_mobile": "2",
+        "spacing_mobile": 20,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "subcollections"
+  ]
+}

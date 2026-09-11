@@ -15,6 +15,11 @@
   assign base_size_heading = settings.heading_base_size | times: 0.0225 
   assign font_size_heading = section.settings.size_title | times: 0.01 | times: base_size_heading
   assign show_image_banner = false
+  assign show_collection_title = section.settings.show_collection_name
+  assign subcollection_hub_handles = 'descuento-invierno,descuentos-invierno' | split: ','
+  if subcollection_hub_handles contains collection.handle
+    assign show_collection_title = true
+  endif
 -%}
 {%- style -%}
   .title--{{ section.id }} {
@@ -40,7 +45,7 @@
   <div class="{% if section.settings.full_width %} md:pl-0 md:pr-0{% else %} x-page-width page-width mx-auto{% endif %}{% if section.settings.full_width_mobile %} full-width-mobile{% else %} pr-5 pl-5{% endif %}">
     <div x-intersect.once="$el.classList.remove('bg-[#c9c9c9]')" class="promotion relative overflow-hidden w-full{% if section.settings.show_collection_image and collection.image %} bg-opacity-80 bg-[#c9c9c9] promotion relative{% if section.settings.mobile_height != 'auto' %} h-[{{ section.settings.mobile_height }}] md:h-auto{% else %} mobile-{{ section.id }}-natural{% endif %}{% if section.settings.desktop_height != 'auto' %} md:promotion:h-[{{ section.settings.desktop_height }}] md:promotion:pb-0{% else %} desktop-{{ section.id }}-natural{% endif %}{% endif %}{% if section.settings.full_width %} md:rounded-none{% else %}{% if settings.edges_type == 'rounded_corners' %} md:rounded-[10px]{% endif %}{% endif %}{% unless section.settings.full_width_mobile %}{% if settings.edges_type == 'rounded_corners' %} rounded-[10px]{% endif %}{% endunless %}">
       <div class="{% if section.settings.show_collection_image and collection.image %}absolute z-10 top-0 left-0 w-full h-full flex flex-col justify-end{% endif %}">
-        {% if section.settings.show_collection_name %}
+        {% if show_collection_title %}
           <div class="collection-title{% if section.settings.full_width_title %} pl-5 pr-5{% else %} x-page-width page-width{% endif %} w-full mx-auto pt-10{% if section.settings.show_collection_image and collection.image %} pb-12 md:pb-20 pl-5 pr-5{% else %} pb-6 md:pb-8{% endif %}">
             <{{ section.settings.heading_tag }} class="title--{{ section.id }} h2 leading-tight {{ section.settings.title_position }} ltr{% if section.settings.show_collection_image and collection.image %} image-treatment-text{% endif %}">
               {{ collection.title | escape }}

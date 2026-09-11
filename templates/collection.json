@@ -256,7 +256,7 @@
         "enable_micro_schema": false,
         "full_width": false,
         "spacing_col": 16,
-        "spacing_row": 12,
+        "spacing_row": 20,
         "padding_top": 0,
         "padding_bottom": 16,
         "spacing_col_mobile": 12,

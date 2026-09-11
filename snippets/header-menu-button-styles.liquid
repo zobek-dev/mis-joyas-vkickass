@@ -1,0 +1,106 @@
+{%- comment -%}
+  Estilos de botón reutilizables para bloques del header.
+  Parámetros:
+  - block: bloque con settings de color de botón
+  - css_class: clase contenedora (ej. button-xxx, tree-menu-button-xxx)
+  - text_only_hover: si true, el hover solo cambia el texto (menú árbol)
+{%- endcomment -%}
+{%- style -%}
+  .{{ css_class }}, .{{ css_class }} *:before {
+    {% if block.settings.button_light.alpha != 0.0 %}
+      --colors-button: {{ block.settings.button_light.red }}, {{ block.settings.button_light.green }}, {{ block.settings.button_light.blue }};
+    {% endif %}
+    {% if block.settings.button_text_light.alpha != 0.0 %}
+      --colors-button-text: {{ block.settings.button_text_light.red }}, {{ block.settings.button_text_light.green }}, {{ block.settings.button_text_light.blue }};
+    {% endif %}
+    {% if block.settings.button_hover_light.alpha != 0.0 %}
+      --colors-button-hover: rgb({{ block.settings.button_hover_light.red }}, {{ block.settings.button_hover_light.green }}, {{ block.settings.button_hover_light.blue }});
+    {% endif %}
+    {% if block.settings.button_text_hover_light.alpha != 0.0 %}
+      --colors-button-text-hover: {{ block.settings.button_text_hover_light.red }}, {{ block.settings.button_text_hover_light.green }}, {{ block.settings.button_text_hover_light.blue }};
+    {% endif %}
+    {% if block.settings.secondary_button_text_light.alpha != 0.0 %}
+      --colors-secondary-button: {{ block.settings.secondary_button_text_light.red }}, {{ block.settings.secondary_button_text_light.green }}, {{ block.settings.secondary_button_text_light.blue }};
+      --colors-line-secondary-button: {{ block.settings.secondary_button_text_light.red }}, {{ block.settings.secondary_button_text_light.green }}, {{ block.settings.secondary_button_text_light.blue }};
+      --background-secondary-button: transparent;
+    {% endif %}
+    {% if block.settings.secondary_button_light.alpha != 0.0 %}
+      --background-secondary-button: {{ block.settings.secondary_button_light.red }}, {{ block.settings.secondary_button_light.green }}, {{ block.settings.secondary_button_light.blue }};
+      --colors-line-secondary-button: {{ block.settings.secondary_button_light.red }}, {{ block.settings.secondary_button_light.green }}, {{ block.settings.secondary_button_light.blue }};
+    {% endif %}
+    {% if block.settings.colors_text_link.alpha != 0.0 %}
+      --colors-text-link: {{ block.settings.colors_text_link.red }}, {{ block.settings.colors_text_link.green }}, {{ block.settings.colors_text_link.blue }};
+    {% endif %}
+  }
+  .dark .{{ css_class }}, .dark .{{ css_class }} *:before {
+    {% if block.settings.button_dark.alpha != 0.0 %}
+      --colors-button: {{ block.settings.button_dark.red }}, {{ block.settings.button_dark.green }}, {{ block.settings.button_dark.blue }};
+    {% else %}
+      --colors-button: {{ settings.colors_dark_button.red }}, {{ settings.colors_dark_button.green }}, {{ settings.colors_dark_button.blue }};
+    {% endif %}
+    {% if block.settings.button_text_dark.alpha != 0.0 %}
+      --colors-button-text: {{ block.settings.button_text_dark.red }}, {{ block.settings.button_text_dark.green }}, {{ block.settings.button_text_dark.blue }};
+    {% else %}
+      --colors-button-text: {{ settings.colors_dark_button_text.red }}, {{ settings.colors_dark_button_text.green }}, {{ settings.colors_dark_button_text.blue }};
+    {% endif %}
+    {% if block.settings.button_hover_dark.alpha != 0.0 %}
+      --colors-button-hover: rgb({{ block.settings.button_hover_dark.red }}, {{ block.settings.button_hover_dark.green }}, {{ block.settings.button_hover_dark.blue }});
+    {% else %}
+      --colors-button-hover: rgb({{ settings.colors_dark_button_hover.red }}, {{ settings.colors_dark_button_hover.green }}, {{ settings.colors_dark_button_hover.blue }});
+    {% endif %}
+    {% if block.settings.button_text_hover_dark.alpha != 0.0 %}
+      --colors-button-text-hover: {{ block.settings.button_text_hover_dark.red }}, {{ block.settings.button_text_hover_dark.green }}, {{ block.settings.button_text_hover_dark.blue }};
+    {% else %}
+      --colors-button-text-hover: {{ settings.colors_dark_button_text_hover.red }}, {{ settings.colors_dark_button_text_hover.green }}, {{ settings.colors_dark_button_text_hover.blue }};
+    {% endif %}
+    {% if block.settings.secondary_button_text_dark.alpha != 0.0 %}
+      --colors-secondary-button: {{ block.settings.secondary_button_text_dark.red }}, {{ block.settings.secondary_button_text_dark.green }}, {{ block.settings.secondary_button_text_dark.blue }};
+      --colors-line-secondary-button: {{ block.settings.secondary_button_text_dark.red }}, {{ block.settings.secondary_button_text_dark.green }}, {{ block.settings.secondary_button_text_dark.blue }};
+      --background-secondary-button: transparent;
+    {% else %}
+      --colors-secondary-button: {{ settings.colors_dark_button_secondary.red }}, {{ settings.colors_dark_button_secondary.green }}, {{ settings.colors_dark_button_secondary.blue }};
+      --colors-line-secondary-button: {{ settings.colors_dark_button_secondary.red }}, {{ settings.colors_dark_button_secondary.green }}, {{ settings.colors_dark_button_secondary.blue }};
+    {% endif %}
+    {% if block.settings.secondary_button_dark.alpha != 0.0 %}
+      --background-secondary-button: {{ block.settings.secondary_button_dark.red }}, {{ block.settings.secondary_button_dark.green }}, {{ block.settings.secondary_button_dark.blue }};
+      --colors-line-secondary-button: {{ block.settings.secondary_button_dark.red }}, {{ block.settings.secondary_button_dark.green }}, {{ block.settings.secondary_button_dark.blue }};
+    {% elsif settings.background_dark_button_secondary.alpha != 0.0 %}
+      --background-secondary-button: {{ settings.background_dark_button_secondary.red }}, {{ settings.background_dark_button_secondary.green }}, {{ settings.background_dark_button_secondary.blue }};
+      --colors-line-secondary-button: {{ settings.background_dark_button_secondary.red }}, {{ settings.background_dark_button_secondary.green }}, {{ settings.background_dark_button_secondary.blue }};
+    {% else %}
+      --background-secondary-button: transparent;
+    {% endif %}
+    {% if block.settings.colors_text_link_dark.alpha != 0.0 %}
+      --colors-text-link: {{ block.settings.colors_text_link_dark.red }}, {{ block.settings.colors_text_link_dark.green }}, {{ block.settings.colors_text_link_dark.blue }};
+    {% else %}
+      --colors-text-link: {{ settings.colors_dark_text_link.red }}, {{ settings.colors_dark_text_link.green }}, {{ settings.colors_dark_text_link.blue }};
+    {% endif %}
+  }
+  {%- if text_only_hover -%}
+  .{{ css_class }} .button.button-disable-effect,
+  .{{ css_class }} .button.button-disable-effect:hover,
+  .{{ css_class }} .button.button-disable-effect:focus-visible {
+    background-color: rgba(var(--colors-button)) !important;
+    transition: color 0.2s ease !important;
+    transition-delay: 0s !important;
+  }
+  .{{ css_class }} .button.button-disable-effect:before {
+    display: none !important;
+    content: none !important;
+  }
+  .{{ css_class }} .button.button-disable-effect:hover,
+  .{{ css_class }} .button.button-disable-effect:focus-visible {
+    color: rgb(var(--colors-button-text-hover)) !important;
+  }
+  .{{ css_class }} .button.button-disable-effect {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .{{ css_class }} .flip-container:hover .front,
+  .{{ css_class }} .flip-container:hover .back {
+    opacity: 1 !important;
+    transform: none !important;
+    border-bottom-color: transparent !important;
+  }
+  {%- endif -%}
+{%- endstyle -%}

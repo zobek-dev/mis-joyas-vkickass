@@ -3080,6 +3080,22 @@
         "info_above": "Solo se aplica al diseño anterior"
       }
     },
+    "cart-drawer": {
+      "name": "Carrito lateral",
+      "settings": {
+        "apps_info": "Agrega bloques de apps debajo de los productos del carrito en Personalizar → Overlay → Carrito lateral. Upsells de Candy Rack: crea ofertas con Cart page → Pop-up (se activan al pagar). También puedes usar bloques Liquid personalizado."
+      },
+      "blocks": {
+        "heading": {
+          "name": "Título de upsells",
+          "settings": {
+            "heading": {
+              "label": "Título"
+            }
+          }
+        }
+      }
+    },
     "main-cart-items": {
       "name": "Elementos",
       "settings": {

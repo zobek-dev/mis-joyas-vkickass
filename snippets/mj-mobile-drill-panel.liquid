@@ -1,0 +1,60 @@
+{% comment %}
+  Side drill-down panel for MisJoyas mobile nav.
+  Accepts: links, back_title, panel_heading, panel_id, start_id, is_rtl
+{% endcomment %}
+<div class="mj-mobile-nav__panel-inner background-header w-full h-full overflow-y-auto scrollbar-body">
+  {%- if panel_heading != blank -%}
+    <p class="mj-mobile-nav__panel-heading">{{ panel_heading | escape }}</p>
+  {%- endif -%}
+
+  <div class="mj-mobile-nav__panel-back">
+    <button
+      type="button"
+      class="mj-mobile-nav__back-btn"
+      @click="$store.xMobileNav.removeActiveLink('{{ panel_id }}');"
+    >
+      <span class="mj-mobile-nav__back-chevron" aria-hidden="true">
+        {% render 'mj-menu-caret' %}
+      </span>
+      <span class="mj-mobile-nav__back-label">{{ back_title | escape }}</span>
+    </button>
+  </div>
+
+  <ul class="mj-mobile-nav__panel-list" role="list">
+    {%- for link in links -%}
+      {%- assign nested_id = start_id | append: '-' | append: forloop.index -%}
+      <li class="mj-mobile-nav__panel-item">
+        {%- if link.links != blank -%}
+          <button
+            type="button"
+            class="mj-mobile-nav__sublink"
+            @click="$store.xMobileNav.setActiveLink('{{ nested_id }}'); $store.xMobileNav.scrollTop($el);"
+          >
+            {{ link.title | escape }}
+          </button>
+        {%- else -%}
+          <a href="{{ link.url }}" class="mj-mobile-nav__sublink">{{ link.title | escape }}</a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+
+  {%- for link in links -%}
+    {%- if link.links != blank -%}
+      {%- assign nested_id = start_id | append: '-' | append: forloop.index -%}
+      <div
+        class="menu-drawer mj-mobile-nav__panel duration-300 ease-in-out top-0 absolute background-header w-full h-full z-30 invisible{% if is_rtl %} -translate-x-full{% else %} translate-x-full{% endif %}"
+        :class="{ 'menu-opening': $store.xMobileNav.currentMenuLinks.includes('{{ nested_id }}') }"
+      >
+        {% render 'mj-mobile-drill-panel',
+          links: link.links,
+          back_title: link.title,
+          panel_heading: panel_heading,
+          panel_id: nested_id,
+          start_id: nested_id,
+          is_rtl: is_rtl
+        %}
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>

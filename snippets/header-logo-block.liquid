@@ -7,16 +7,7 @@
     Usage:
     {% render 'header-logo-block' %}
 {% endcomment %}
-{%- liquid 
-  if section.settings.logo_position == 'left-left'
-    if section.blocks.size > 0 
-      assign show_border = true
-    elsif section.settings.menu != blank
-      assign show_border = true
-    endif
-  endif
--%}
-<div class="flex{% if logo_above %} lg:py-2 items-center{% endif %}{% if show_border %}{% if settings.lang_direction contains request.locale.iso_code %} lg:pl-5 lg:ml-3 lg:border-l{% else %} lg:pr-5 lg:mr-3 lg:border-r{% endif %}{% endif %}">
+<div class="flex{% if logo_above %} lg:py-2 items-center{% endif %}">
   <a href="{{ routes.root_url }}" class="{{ class_logo }} disable-effect inline-block">
     {%- if section.settings.logo_dark != blank -%}
       {%- assign logo_alt = section.settings.logo_dark.alt | default: shop.name | escape -%}

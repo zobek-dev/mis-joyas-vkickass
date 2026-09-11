@@ -1,0 +1,314 @@
+{%- liquid
+  assign pad_x = section.settings.padding_x | default: 80
+  assign pad_x_mobile = section.settings.padding_x_mobile | default: 20
+  assign pad_y = section.settings.padding_y | default: 40
+  assign pad_y_mobile = section.settings.padding_y_mobile | default: 40
+  assign radius = section.settings.border_radius | default: 4
+
+  if section.settings.background != blank
+    assign bg_r = section.settings.background.red
+    assign bg_g = section.settings.background.green
+    assign bg_b = section.settings.background.blue
+  else
+    assign bg_r = 121
+    assign bg_g = 213
+    assign bg_b = 201
+  endif
+-%}
+
+{%- style -%}
+  .cuadro-footer-{{ section.id }} {
+    width: 100%;
+    padding: {{ pad_y_mobile }}px {{ pad_x_mobile }}px;
+    box-sizing: border-box;
+  }
+  @media (min-width: 768px) {
+    .cuadro-footer-{{ section.id }} {
+      padding: {{ pad_y }}px {{ pad_x }}px;
+    }
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    box-sizing: border-box;
+    border-radius: {{ radius }}px;
+    background-color: rgb({{ bg_r }}, {{ bg_g }}, {{ bg_b }});
+    color: #000;
+    padding: 80px 20px;
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .cuadro-footer-{{ section.id }} .cuadro-footer__card {
+      padding: 29px 80px 37px;
+    }
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 748px;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__eyebrow {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    text-transform: uppercase;
+    color: #000;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__heading {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 40px;
+    color: #000;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__text {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #000;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__text p {
+    margin: 0;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 50px;
+    padding: 12px 32px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__btn--primary {
+    border: 0;
+    background: #000;
+    color: #fff;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__btn--primary:hover,
+  .cuadro-footer-{{ section.id }} .cuadro-footer__btn--primary:focus-visible {
+    background: #f83785;
+    color: #fff;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__btn--secondary {
+    border: 1px solid #000;
+    background: transparent;
+    color: #000;
+    padding: 10px 30px;
+  }
+  .cuadro-footer-{{ section.id }} .cuadro-footer__btn--secondary:hover,
+  .cuadro-footer-{{ section.id }} .cuadro-footer__btn--secondary:focus-visible {
+    background: #fff;
+    border-color: #000;
+    color: #000;
+  }
+{%- endstyle -%}
+
+<div
+  class="cuadro-footer-{{ section.id }}"
+  role="region"
+  aria-label="{{ 'sections.cuadro-footer.aria_label' | t }}"
+>
+  <div class="cuadro-footer__card">
+    <div class="cuadro-footer__inner">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="cuadro-footer__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="cuadro-footer__heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="cuadro-footer__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.button_label_1 != blank or section.settings.button_label_2 != blank -%}
+        <div class="cuadro-footer__actions">
+          {%- if section.settings.button_label_1 != blank -%}
+            {%- if section.settings.button_link_1 != blank -%}
+              <a
+                href="{{ section.settings.button_link_1 }}"
+                class="cuadro-footer__btn cuadro-footer__btn--primary disable-effect"
+                {% if section.settings.open_new_window_1 %}target="_blank" rel="noopener noreferrer"{% endif %}
+              >
+                {{ section.settings.button_label_1 | escape }}
+              </a>
+            {%- else -%}
+              <span class="cuadro-footer__btn cuadro-footer__btn--primary">
+                {{ section.settings.button_label_1 | escape }}
+              </span>
+            {%- endif -%}
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank -%}
+            {%- if section.settings.button_link_2 != blank -%}
+              <a
+                href="{{ section.settings.button_link_2 }}"
+                class="cuadro-footer__btn cuadro-footer__btn--secondary disable-effect"
+                {% if section.settings.open_new_window_2 %}target="_blank" rel="noopener noreferrer"{% endif %}
+              >
+                {{ section.settings.button_label_2 | escape }}
+              </a>
+            {%- else -%}
+              <span class="cuadro-footer__btn cuadro-footer__btn--secondary">
+                {{ section.settings.button_label_2 | escape }}
+              </span>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cuadro footer",
+  "tag": "section",
+  "class": "section-cuadro-footer",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "CLUB MISJOYAS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Súmate al club"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>Convierte tus compras en recompensas.</p><p>Inscríbete, acumula puntos con cada compra y canjéalos por beneficios exclusivos.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Botón principal"
+    },
+    {
+      "type": "text",
+      "id": "button_label_1",
+      "label": "Texto",
+      "default": "Únete ahora"
+    },
+    {
+      "type": "url",
+      "id": "button_link_1",
+      "label": "Enlace"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_new_window_1",
+      "label": "Abrir en nueva pestaña",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Botón secundario"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Texto",
+      "default": "Saber más"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Enlace"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_new_window_2",
+      "label": "Abrir en nueva pestaña",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Fondo",
+      "default": "#79d5c9"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Radio de esquinas (px)",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_x",
+      "label": "Padding lateral — escritorio (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mobile",
+      "label": "Padding lateral — móvil (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Padding vertical — escritorio (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mobile",
+      "label": "Padding vertical — móvil (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cuadro footer"
+    }
+  ]
+}
+{% endschema %}

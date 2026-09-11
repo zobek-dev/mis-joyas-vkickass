@@ -1,22 +1,9 @@
 {% comment %}
   Badges estáticos para tarjetas (sin xBadges JS).
-  Replica las etiquetas principales del tema: nuevo, descuento, agotado, tag.
+  Replica las etiquetas principales: nuevo, promo, agotado.
+  El % de descuento se muestra junto al precio (price.liquid).
 {% endcomment %}
 {%- liquid
-  assign variant = product.selected_or_first_available_variant
-  assign compare_at = variant.compare_at_price
-  assign price = variant.price
-  assign show_sale = false
-  assign sale_pct = 0
-
-  if compare_at > price
-    assign show_sale = true
-    assign sale_pct = compare_at | minus: price | times: 100.0 | divided_by: compare_at | round
-    if sale_pct == 100
-      assign sale_pct = 99
-    endif
-  endif
-
   assign show_new = false
   assign current_ts = 'now' | date: '%s'
   assign published_ts = product.published_at | date: '%s'
@@ -35,54 +22,36 @@
   endif
 -%}
 
-{%- if show_new -%}
-  <div class="top-left-container label-container absolute gap-1 space-y-1 top-1 flex-col left-1 pointer-events-none z-20">
-    <div class="x-badge-container pointer-events-none ltr w-max absolute text-start">
-      <div
-        class="x-badge-content ltr x-badge-text select-none inline-flex justify-center items-center pt-1 pb-1 pl-2 pr-2"
-        style="font-size: 12px; background-color: #157f7f; color: #ffffff;"
-      >
-        <span class="leading-normal w-fit p-break-words">Nuevo</span>
-      </div>
-    </div>
-  </div>
-{%- endif -%}
-
-{%- if show_dia_madre -%}
-  <div class="top-left-container label-container absolute gap-1 space-y-1 top-1 flex-col right-1 left-auto pointer-events-none z-20">
-    <div class="x-badge-container pointer-events-none ltr w-max absolute text-end" style="right: 0; left: auto;">
-      <div
-        class="x-badge-content ltr x-badge-text select-none inline-flex justify-center items-center pt-1 pb-1 pl-2 pr-2"
-        style="font-size: 12px; background-color: #f83785; color: #ffffff;"
-      >
-        <span class="leading-normal w-fit p-break-words">Día de la Madre</span>
-      </div>
-    </div>
-  </div>
-{%- endif -%}
-
-{%- unless product.available -%}
-  <div class="top-left-container label-container absolute gap-1 space-y-1 top-1 flex-col left-1 pointer-events-none z-20">
-    <div class="x-badge-container pointer-events-none ltr w-max absolute text-start">
-      <div
-        class="x-badge-content ltr x-badge-text select-none inline-flex justify-center items-center pt-2 pb-2 pl-3 pr-3"
-        style="font-size: 14px; background-color: #444444; color: #ffffff;"
-      >
-        <span class="leading-normal w-fit p-break-words">{{ 'products.product.sold_out' | t }}</span>
-      </div>
-    </div>
-  </div>
-{%- else -%}
-  {%- if show_sale -%}
-    <div class="bottom-left-container label-container absolute gap-1 space-y-1 bottom-0 flex-col-reverse left-0 pointer-events-none z-20">
-      <div class="x-badge-container pointer-events-none ltr w-max absolute text-start">
-        <div
-          class="x-badge-content ltr x-badge-text select-none inline-flex justify-center items-center pt-1 pb-1 pl-3 pr-3"
-          style="background-color: #0060F9; color: #ffffff;"
-        >
-          <span class="leading-normal w-fit p-break-words">-{{ sale_pct }}%</span>
+{%- if show_new or show_dia_madre or product.available == false -%}
+  <div class="top-left-container label-container absolute gap-1 top-1 left-1 pointer-events-none z-20">
+    {%- if show_new -%}
+      <div class="x-badge-new-label x-badge-container pointer-events-none ltr w-max text-start">
+        <div class="x-badge-content ltr x-badge-text x-badge-text--new select-none inline-flex justify-center items-center">
+          <span class="leading-normal w-fit p-break-words">Nuevo</span>
         </div>
       </div>
-    </div>
-  {%- endif -%}
-{%- endunless -%}
+    {%- endif -%}
+
+    {%- if show_dia_madre -%}
+      <div class="x-badge-container pointer-events-none ltr w-max text-start">
+        <div
+          class="x-badge-content ltr x-badge-text select-none inline-flex justify-center items-center"
+          style="font-size: 14px; background-color: #f83785; color: #ffffff;"
+        >
+          <span class="leading-normal w-fit p-break-words">Día de la Madre</span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- unless product.available -%}
+      <div class="x-badge-container pointer-events-none ltr w-max text-start">
+        <div
+          class="x-badge-content ltr x-badge-text select-none inline-flex justify-center items-center"
+          style="font-size: 14px; background-color: #444444; color: #ffffff;"
+        >
+          <span class="leading-normal w-fit p-break-words">{{ 'products.product.sold_out' | t }}</span>
+        </div>
+      </div>
+    {%- endunless -%}
+  </div>
+{%- endif -%}

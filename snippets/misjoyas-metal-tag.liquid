@@ -1,0 +1,52 @@
+{% comment %}
+  Metal type tag from metafield custom.tipo_de_metal.
+  Accepts:
+    - product: {Product}
+    - context: 'card' | 'pdp' (default: card)
+
+  Metafield values → labels:
+    - Plata 925 → Plata 925
+    - Recubrimiento Baño de Oro 18 k → Baño de oro 18K
+    - Baño de Oro 18k / Baño de Oro 18 k → Plata 925 con baño de oro 18K
+    - Acero → Acero quirúrgico (Figma 2474:9379)
+{% endcomment %}
+{%- capture metal_str -%}{%- render 'misjoyas-metal-str', product: product -%}{%- endcapture -%}
+{%- assign metal_str = metal_str | strip -%}
+{%- liquid
+  assign metal_context = context | default: 'card'
+  assign metal_variant = blank
+  assign metal_label = blank
+
+  if metal_str != blank
+    assign metal_key = metal_str | downcase | replace: 'á', 'a' | replace: 'é', 'e' | replace: 'í', 'i' | replace: 'ó', 'o' | replace: 'ú', 'u' | replace: 'ñ', 'n'
+
+    if metal_key == 'plata 925'
+      assign metal_variant = 'plata'
+      assign metal_label = 'products.product.metal_plata_925' | t
+    elsif metal_key == 'acero' or metal_key contains 'acero'
+      assign metal_variant = 'acero'
+      assign metal_label = 'products.product.metal_acero' | t
+    elsif metal_key contains 'recubrimiento'
+      assign metal_variant = 'oro'
+      assign metal_label = 'products.product.metal_bano_oro_18k' | t
+    elsif metal_key == 'bano de oro 18k' or metal_key == 'bano de oro 18 k'
+      assign metal_variant = 'plata-oro'
+      assign metal_label = 'products.product.metal_plata_bano_oro_18k' | t
+    elsif metal_key contains 'plata' and metal_key contains 'oro'
+      assign metal_variant = 'plata-oro'
+      assign metal_label = 'products.product.metal_plata_bano_oro_18k' | t
+    elsif metal_key contains 'bano de oro'
+      assign metal_variant = 'oro'
+      assign metal_label = 'products.product.metal_bano_oro_18k' | t
+    endif
+  endif
+-%}
+{%- if metal_variant != blank and metal_label != blank -%}
+  <div
+    class="misjoyas-metal-tag misjoyas-metal-tag--{{ metal_context }} misjoyas-metal-tag--{{ metal_variant }}"
+    aria-label="{{ metal_label | escape }}"
+  >
+    <span class="misjoyas-metal-tag__swatch" aria-hidden="true"></span>
+    <span class="misjoyas-metal-tag__label">{{ metal_label | escape }}</span>
+  </div>
+{%- endif -%}

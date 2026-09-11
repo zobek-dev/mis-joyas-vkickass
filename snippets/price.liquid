@@ -80,11 +80,24 @@
       {{ custom_price_html }}
     {% elsif use_misjoyas_layout %}
       <div class="hidden">{{ target.price }}</div>
-      {%- if on_sale -%}
+      {%- if misjoyas_context == 'pdp' -%}
+        <div class="misjoyas-price__stack">
+          <p class="misjoyas-price__label">{{ 'products.product.precio_mayorista' | t }}</p>
+          {%- if on_sale -%}
+            <div class="misjoyas-price__row{% if price_class != blank %} {{ price_class }}{% endif %}">
+              <span class="misjoyas-price__current">{{ money_price }}</span>
+              <span class="misjoyas-price__compare">{{ money_compare }}</span>
+              <span class="misjoyas-price__badge">-{{ sale_pct }}%</span>
+            </div>
+          {%- else -%}
+            <span class="misjoyas-price__current misjoyas-price__current--regular{% if price_class != blank %} {{ price_class }}{% endif %}">{{ money_price }}</span>
+          {%- endif -%}
+        </div>
+      {%- elsif on_sale -%}
         <div class="misjoyas-price__row{% if price_class != blank %} {{ price_class }}{% endif %}">
           <span class="misjoyas-price__current">{{ money_price }}</span>
           <span class="misjoyas-price__compare">{{ money_compare }}</span>
-          {%- if misjoyas_context == 'pdp' -%}
+          {%- if misjoyas_context == 'card' -%}
             <span class="misjoyas-price__badge">-{{ sale_pct }}%</span>
           {%- endif -%}
         </div>
@@ -112,6 +125,7 @@
         </small>
       {%- endif -%}
     {% else %}
+
       <div class="hidden">{{ target.price }}</div>
       {%- if compare_at_price > price %}
         <div class="{% if price_class != blank %}{{ price_class }}{% endif %}">

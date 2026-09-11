@@ -34,6 +34,20 @@
     },
     "rich_text_zTFRwh": {
       "type": "rich-text",
+      "blocks": {
+        "text_aq7anF": {
+          "type": "text",
+          "settings": {
+            "text": "<p>La tarjet ade Fidelización de MISJOYAS está regido bajo los términos y condiciones de nuestra página www.misjoyas.cl y puede ser revisado en <a href=\"https://www.misjoyas.cl/pages/terminos-y-condiciones\" title=\"https://www.misjoyas.cl/pages/terminos-y-condiciones\">https://www.misjoyas.cl/terminos-y-condiciones</a>. Además estas preguntas frecuentes también son parte de las políticas y condiciones del programa de fidelidad de Mis Joyas</p>",
+            "number_of_lines_shown": "none",
+            "read_more_label": "Read more",
+            "see_less_label": "See less"
+          }
+        }
+      },
+      "block_order": [
+        "text_aq7anF"
+      ],
       "name": "t:sections.rich-text.name",
       "settings": {
         "heading_light": "rgba(0,0,0,0)",
@@ -60,6 +74,7 @@
       "blocks": {
         "klaviyo_email_marketing_sms_form_embed_block_qCGEgf": {
           "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/form-embed-block/2632fe16-c075-4321-a88b-50b567f42507",
+          "disabled": true,
           "settings": {
             "formId": "URWZz3"
           }
@@ -69,7 +84,8 @@
         "klaviyo_email_marketing_sms_form_embed_block_qCGEgf"
       ],
       "settings": {
-        "include_margins": true
+        "include_margins": true,
+        "content_alignment": "left"
       }
     }
   },

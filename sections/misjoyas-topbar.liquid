@@ -1,42 +1,130 @@
 {%- if section.settings.enable -%}
 {%- style -%}
-  .misjoyas-topbar-{{ section.id }} {
+  .mj-topbar-{{ section.id }} {
     width: 100%;
+    max-width: 100%;
+    overflow: hidden;
     background: {{ section.settings.background_color }};
     color: {{ section.settings.text_color }};
-    overflow: hidden;
-    white-space: nowrap;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .misjoyas-topbar-track-{{ section.id }} {
+  .mj-topbar__inner-{{ section.id }} {
     display: flex;
-    gap: {{ section.settings.gap }}px;
-    padding: {{ section.settings.padding_vertical }}px 0;
-    font-size: {{ section.settings.font_size }}px;
-    font-weight: 500;
-    letter-spacing: .4px;
-    animation: misjoyasScroll-{{ section.id }} {{ section.settings.animation_speed }}s linear infinite;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    gap: {{ section.settings.gap_desktop }}px;
+    min-height: 36px;
+    padding: 2px 16px 5px;
+    font-size: 14px;
+    line-height: 20px;
   }
-  .misjoyas-topbar-track-{{ section.id }} span {
-    display: inline-block;
+  .mj-topbar__item-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 1 auto;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+    white-space: nowrap;
   }
-  @keyframes misjoyasScroll-{{ section.id }} {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+  .mj-topbar__item-{{ section.id }}--underline .mj-topbar__text {
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
-  @media (max-width: 600px) {
-    .misjoyas-topbar-track-{{ section.id }} {
-      font-size: {{ section.settings.font_size | minus: 2 }}px;
-      gap: {{ section.settings.gap | times: 0.67 | round }}px;
-      padding: {{ section.settings.padding_vertical | minus: 2 }}px 0;
+  .mj-topbar__item-{{ section.id }}:hover .mj-topbar__text {
+    opacity: 0.85;
+  }
+  .mj-topbar__icon-{{ section.id }} {
+    display: block;
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .mj-topbar__text {
+    font-weight: 400;
+  }
+  .mj-topbar__text strong {
+    font-weight: 600;
+  }
+  .mj-topbar__chevron-{{ section.id }} {
+    display: block;
+    width: 3.5px;
+    height: 8.66px;
+    flex-shrink: 0;
+    color: {{ section.settings.accent_color }};
+  }
+  /* Mobile — Figma 1414:4314: side inset + gap, without overflowing the viewport */
+  @media (max-width: 749px) {
+    .mj-topbar__inner-{{ section.id }} {
+      justify-content: center;
+      gap: {{ section.settings.gap_mobile }}px;
+      padding: 2px 20px 5px;
+    }
+    .mj-topbar__item-{{ section.id }}--hide-mobile {
+      display: none;
+    }
+    .mj-topbar__item-{{ section.id }}--underline .mj-topbar__text {
+      text-decoration: none;
     }
   }
 {%- endstyle -%}
 
-<div class="misjoyas-topbar-{{ section.id }}">
-  <div class="misjoyas-topbar-track-{{ section.id }}">
-    {%- for i in (1..6) -%}
-      <span>{{ section.settings.text }}</span>
+<div class="mj-topbar-{{ section.id }}">
+  <div class="mj-topbar__inner-{{ section.id }}">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign item_classes = 'mj-topbar__item-' | append: section.id
+        if block.settings.underline
+          assign item_classes = item_classes | append: ' mj-topbar__item-' | append: section.id | append: '--underline'
+        endif
+        if block.settings.hide_on_mobile
+          assign item_classes = item_classes | append: ' mj-topbar__item-' | append: section.id | append: '--hide-mobile'
+        endif
+      -%}
+
+      {%- if block.settings.link != blank -%}
+        <a
+          href="{{ block.settings.link }}"
+          class="{{ item_classes }}"
+          {% if block.settings.open_new_window %}target="_blank" rel="noopener"{% endif %}
+          {{ block.shopify_attributes }}
+        >
+      {%- else -%}
+        <span class="{{ item_classes }}" {{ block.shopify_attributes }}>
+      {%- endif -%}
+
+        {%- if block.settings.show_icon -%}
+          <img
+            class="mj-topbar__icon-{{ section.id }}"
+            src="{{ 'misjoyas-topbar-check.png' | asset_url }}"
+            alt=""
+            width="20"
+            height="20"
+            loading="lazy"
+          >
+        {%- endif -%}
+
+        {%- if block.settings.text != blank -%}
+          <span class="mj-topbar__text">{{ block.settings.text }}</span>
+        {%- endif -%}
+
+        {%- if block.settings.show_chevron -%}
+          <svg class="mj-topbar__chevron-{{ section.id }}" viewBox="0 0 3.5 8.66" aria-hidden="true" focusable="false">
+            <path d="M0 0L3.5 4.33L0 8.66V0Z" fill="currentColor"/>
+          </svg>
+        {%- endif -%}
+
+      {%- if block.settings.link != blank -%}
+        </a>
+      {%- else -%}
+        </span>
+      {%- endif -%}
     {%- endfor -%}
   </div>
 </div>
@@ -44,19 +132,13 @@
 
 {% schema %}
 {
-  "name": "MisJoyas Topbar",
+  "name": "Topbar",
   "settings": [
     {
       "type": "checkbox",
       "id": "enable",
       "label": "Mostrar barra",
       "default": true
-    },
-    {
-      "type": "text",
-      "id": "text",
-      "label": "Mensaje",
-      "default": "🎁 Todas las Compras desde $49.990 durante MAYO participan en el sorteo de 20 Giftcards de $50.000 🎁"
     },
     {
       "type": "color",
@@ -71,45 +153,124 @@
       "default": "#000000"
     },
     {
-      "type": "range",
-      "id": "animation_speed",
-      "label": "Velocidad (segundos por ciclo)",
-      "min": 5,
-      "max": 60,
-      "step": 5,
-      "default": 20
+      "type": "color",
+      "id": "accent_color",
+      "label": "Color de flecha",
+      "default": "#f83785"
     },
     {
       "type": "range",
-      "id": "font_size",
-      "label": "Tamaño de fuente (px)",
-      "min": 10,
-      "max": 20,
-      "step": 1,
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "Separación entre repeticiones (px)",
+      "id": "gap_desktop",
+      "label": "Separación desktop (px)",
       "min": 20,
-      "max": 120,
-      "step": 10,
+      "max": 100,
+      "step": 2,
       "default": 60
     },
     {
       "type": "range",
-      "id": "padding_vertical",
-      "label": "Padding vertical (px)",
-      "min": 4,
-      "max": 20,
+      "id": "gap_mobile",
+      "label": "Separación mobile (px)",
+      "min": 10,
+      "max": 60,
       "step": 2,
-      "default": 10
+      "default": 30
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Ítem",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "Texto del ítem"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_window",
+          "label": "Abrir en nueva ventana",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Mostrar icono",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_chevron",
+          "label": "Mostrar flecha",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "underline",
+          "label": "Subrayar texto",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Ocultar en mobile",
+          "default": false
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "MisJoyas Topbar"
+      "name": "Topbar",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "text": "<strong>Plata 925</strong> certificada",
+            "show_icon": true,
+            "show_chevron": true,
+            "underline": true,
+            "hide_on_mobile": false
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text": "Todo para <strong>emprender</strong>",
+            "show_icon": false,
+            "show_chevron": true,
+            "underline": true,
+            "hide_on_mobile": true
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text": "<strong>Tiendas — </strong>37 en todo Chile",
+            "show_icon": false,
+            "show_chevron": true,
+            "underline": true,
+            "hide_on_mobile": false
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text": "<strong>Despacho gratis</strong> sobre $99.990",
+            "show_icon": false,
+            "show_chevron": false,
+            "underline": false,
+            "hide_on_mobile": true
+          }
+        }
+      ]
     }
   ]
 }

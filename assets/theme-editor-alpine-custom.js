@@ -5,7 +5,9 @@ const buildCardPriceHtml = (v, priceEl) => {
 
   if (isMisjoyasCard) {
     if (v.compare_at_price > v.price) {
-      return '<div class="misjoyas-price__row"><span class="misjoyas-price__current">' + v.price_formatted + closeSpan + '<span class="misjoyas-price__compare">' + v.compare_at_price_formatted + closeSpan + closeDiv;
+      let salePct = Math.round((v.compare_at_price - v.price) * 100 / v.compare_at_price);
+      if (salePct === 100) salePct = 99;
+      return '<div class="misjoyas-price__row"><span class="misjoyas-price__current">' + v.price_formatted + closeSpan + '<span class="misjoyas-price__compare">' + v.compare_at_price_formatted + closeSpan + '<span class="misjoyas-price__badge">-' + salePct + '%</span>' + closeDiv;
     }
     return '<span class="misjoyas-price__current misjoyas-price__current--regular">' + v.price_formatted + closeSpan;
   }
@@ -840,7 +842,7 @@ document.addEventListener('alpine:init', () => {
                     const sectionElement = document.querySelector(section.selector);
                     if (sectionElement) {
                       if (response.sections[section.id])
-                        sectionElement.innerHTML = getSectionInnerHTML(response.sections[section.id], section.selector);
+                        window.setSectionInnerHTML(sectionElement, response.sections[section.id], section.selector);
                     }
                   }));
                   if (!Alpine.store('xCartNoti') || !Alpine.store('xCartNoti').enable) {
@@ -868,7 +870,7 @@ document.addEventListener('alpine:init', () => {
                 const sectionElement = document.querySelector(section.selector);
                 if (sectionElement) {
                   if (response.sections[section.id])
-                    sectionElement.innerHTML = getSectionInnerHTML(response.sections[section.id], section.selector);
+                    window.setSectionInnerHTML(sectionElement, response.sections[section.id], section.selector);
                 }
               }));
               if (!Alpine.store('xCartNoti') || !Alpine.store('xCartNoti').enable) {
@@ -2500,12 +2502,12 @@ document.addEventListener('alpine:init', () => {
                 const sectionElement = document.querySelector(section.selector);
                 if (sectionElement) {
                   if (response.sections[section.id]) {
-                    sectionElement.innerHTML = getSectionInnerHTML(response.sections[section.id], section.selector);
+                    window.setSectionInnerHTML(sectionElement, response.sections[section.id], section.selector);
                     if (section.selector == '#CartDrawer' || section.selector == '#main-cart-footer' ) {
-                      cartDrawer = getSectionInnerHTML(response.sections[section.id], section.selector);
+                      cartDrawer = window.getSectionInnerHTML(response.sections[section.id], section.selector);
                     }
                     if(section.selector == '#main-cart-items') {
-                      cartPage =  getSectionInnerHTML(response.sections[section.id], section.selector);
+                      cartPage = window.getSectionInnerHTML(response.sections[section.id], section.selector);
                     }
                   }
                 }
@@ -3390,7 +3392,7 @@ requestAnimationFrame(() => {
 
             if (sectionElement) {
               if (response.sections[section.id])
-                sectionElement.innerHTML = getSectionInnerHTML(response.sections[section.id], section.selector);
+                window.setSectionInnerHTML(sectionElement, response.sections[section.id], section.selector);
             }
           }));
           if (Alpine.store('xQuickView') && Alpine.store('xQuickView').show) {
@@ -3837,7 +3839,7 @@ requestAnimationFrame(() => {
 
             if (sectionElement) {
               if (response.sections[section.id])
-                sectionElement.innerHTML = getSectionInnerHTML(response.sections[section.id], section.selector);
+                window.setSectionInnerHTML(sectionElement, response.sections[section.id], section.selector);
             }
           }));
           if (Alpine.store('xQuickView') && Alpine.store('xQuickView').show) {
@@ -4367,7 +4369,7 @@ requestAnimationFrame(() => {
 
               if (sectionElement) {
                 if (response.sections[section.id])
-                  sectionElement.innerHTML = getSectionInnerHTML(response.sections[section.id], section.selector);
+                  window.setSectionInnerHTML(sectionElement, response.sections[section.id], section.selector);
               }
             }));
             if (Alpine.store('xQuickView') && Alpine.store('xQuickView').show) {

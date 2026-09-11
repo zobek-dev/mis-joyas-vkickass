@@ -21,14 +21,15 @@
         },
         "logo_cyber_Va6mqR": {
           "type": "logo_cyber",
+          "disabled": true,
           "settings": {
-            "logo_cyber": "shopify://shop_images/tag-cyber-misjoyas.jpg"
+            "logo_cyber": "shopify://shop_images/tag-revancha.jpg"
           }
         },
         "product_sku_8UPmFF": {
           "type": "product_sku",
           "settings": {
-            "heading": "Sku:"
+            "heading": "SKU:"
           }
         },
         "price": {
@@ -45,30 +46,17 @@
             "metafield_key": "peso-varante"
           }
         },
-        "html_FyjCUi": {
+        "html_prodDesc": {
           "type": "html",
           "settings": {
-            "custom_html": "<div class=\"misjoyas-silver-badge\">\n  <span class=\"misjoyas-silver-icon\" aria-hidden=\"true\">\n    <img src=\"{{ 'plata-925-icon.svg' | asset_url }}\" alt=\"\" width=\"28\" height=\"28\" loading=\"lazy\">\n  </span>\n  <span class=\"misjoyas-silver-text\">Plata fina certificada • Ley 925</span>\n</div>\n\n<style>\n\n.misjoyas-silver-badge{\ndisplay:inline-flex;\nalign-items:center;\ngap:6px;\nbackground:linear-gradient(135deg,#f5f5f5,#e3e3e3);\ncolor:#222;\nfont-size:13px;\nfont-weight:600;\npadding:6px 10px;\nborder-radius:6px;\nborder:1px solid #dcdcdc;\nbox-shadow:0 2px 6px rgba(0,0,0,0.08);\nmargin-bottom:6px;\nanimation:misjoyasBadgeFade 0.5s ease;\n}\n\n.misjoyas-silver-icon{\ndisplay:flex;\nalign-items:center;\nflex-shrink:0;\nwidth:28px;\nheight:28px;\n}\n\n.misjoyas-silver-icon img{\ndisplay:block;\nwidth:28px;\nheight:28px;\n}\n\n.misjoyas-silver-text{\nletter-spacing:.2px;\n}\n\n@keyframes misjoyasBadgeFade{\nfrom{\nopacity:0;\ntransform:translateY(5px);\n}\nto{\nopacity:1;\ntransform:translateY(0);\n}\n}\n\n@media (max-width:600px){\n\n.misjoyas-silver-badge{\nfont-size:12px;\npadding:5px 8px;\n}\n\n}\n\n</style>"
+            "custom_html": "{%- if product.description != blank -%}\n<div class=\"misjoyas-product-desc rte\">{{ product.description }}</div>\n{%- endif -%}"
           }
         },
-        "html_EdbWHG": {
+        "html_wUncyg": {
           "type": "html",
-          "disabled": true,
           "settings": {
-            "custom_html": "<div class=\"misjoyas-silver-badge\">\n  <span class=\"misjoyas-silver-icon\" aria-hidden=\"true\">\n    <img src=\"{{ 'plata-925-icon.svg' | asset_url }}\" alt=\"\" width=\"28\" height=\"28\" loading=\"lazy\">\n  </span>\n  <span class=\"misjoyas-silver-text\">Plata fina certificada • Ley 925</span>\n</div>\n\n<style>\n\n.misjoyas-silver-badge{\ndisplay:inline-flex;\nalign-items:center;\ngap:6px;\nbackground:linear-gradient(135deg,#f5f5f5,#e3e3e3);\ncolor:#222;\nfont-size:13px;\nfont-weight:600;\npadding:6px 10px;\nborder-radius:6px;\nborder:1px solid #dcdcdc;\nbox-shadow:0 2px 6px rgba(0,0,0,0.08);\nmargin-bottom:6px;\nanimation:misjoyasBadgeFade 0.5s ease;\n}\n\n.misjoyas-silver-icon{\ndisplay:flex;\nalign-items:center;\nflex-shrink:0;\nwidth:28px;\nheight:28px;\n}\n\n.misjoyas-silver-icon img{\ndisplay:block;\nwidth:28px;\nheight:28px;\n}\n\n.misjoyas-silver-text{\nletter-spacing:.2px;\n}\n\n@keyframes misjoyasBadgeFade{\nfrom{\nopacity:0;\ntransform:translateY(5px);\n}\nto{\nopacity:1;\ntransform:translateY(0);\n}\n}\n\n@media (max-width:600px){\n\n.misjoyas-silver-badge{\nfont-size:12px;\npadding:5px 8px;\n}\n\n}\n\n</style>"
+            "custom_html": "{%- if product.tags contains 'NoZonaExtrema' -%}\n{% style %} \n.misjoyas-zona-extrema{\n    margin: 16px 0;\n    width: 100%;\n    font-size: 14px;\n    color: #6b5518;\n    background: #fdf6e3;\n    padding: 16px;\ntext-align:justify\n}\n{% endstyle %}\n<div class=\"misjoyas-zona-extrema\">\nPor normativa de las empresas de Courier, algunos productos como los líquidos de limpieza, paños y polvos de pulir tienen dificultades para despacharse a zonas extremas como Arica, Tarapacá, Aysén y Magallanes.\n</div>\n{%- endif -%}"
           }
-        },
-        "html_z7HzVj": {
-          "type": "html",
-          "disabled": true,
-          "settings": {
-            "custom_html": "<div class=\"misjoyas-promo-banner\">\n\n  <div class=\"misjoyas-badge\">\n    Exclusivo por tiempo limitado\n  </div>\n\n  <div class=\"misjoyas-timer\">\n    ⏳ Oferta termina en: <span id=\"misjoyas-countdown\">05:00:00</span>\n  </div>\n\n  <div class=\"misjoyas-row\">\n    <div class=\"misjoyas-icon\">💎</div>\n    <div class=\"misjoyas-text\">\n      <strong>10% OFF</strong>\n      <span>Descuentos exclusivos por cantidad</span>\n    </div>\n    <div class=\"misjoyas-price\">Sobre compras de $150.000</div>\n  </div>\n\n  <div class=\"misjoyas-row\">\n    <div class=\"misjoyas-icon\">✨</div>\n    <div class=\"misjoyas-text\">\n      <strong>15% OFF</strong>\n      <span>Descuentos exclusivos por cantidad</span>\n    </div>\n    <div class=\"misjoyas-price\">Sobre compras de $400.000</div>\n  </div>\n\n  <div class=\"misjoyas-row\">\n    <div class=\"misjoyas-icon\">👑</div>\n    <div class=\"misjoyas-text\">\n      <strong>20% OFF</strong>\n      <span>Descuentos exclusivos por cantidad</span>\n    </div>\n    <div class=\"misjoyas-price\">Sobre compras de $1.000.000</div>\n  </div>\n\n</div>\n\n<style>\n\n.misjoyas-promo-banner{\nbackground:#ffffff;\nborder:1px solid #eee;\nborder-radius:12px;\npadding:18px;\nmargin-top:12px;\nfont-family:inherit;\nbox-shadow:0 6px 18px rgba(0,0,0,0.06);\nanimation:misjoyasFade 0.6s ease;\n}\n\n.misjoyas-badge{\nbackground:linear-gradient(135deg,#000,#1a1a1a);\ncolor:#ffffff;\nfont-weight:600;\nfont-size:13px;\ntext-align:center;\npadding:8px 12px;\nborder-radius:6px;\nmargin-bottom:10px;\nletter-spacing:.5px;\n}\n\n.misjoyas-timer{\ntext-align:center;\nfont-size:14px;\nfont-weight:600;\nmargin-bottom:14px;\ncolor:#000;\n}\n\n#misjoyas-countdown{\nfont-weight:700;\n}\n\n.misjoyas-row{\ndisplay:flex;\nalign-items:center;\njustify-content:space-between;\npadding:10px 0;\nborder-top:1px solid #f3f3f3;\ntransition:all .25s ease;\n}\n\n.misjoyas-row:first-of-type{\nborder-top:none;\n}\n\n.misjoyas-row:hover{\ntransform:translateY(-2px);\n}\n\n.misjoyas-icon{\nfont-size:18px;\nmargin-right:10px;\n}\n\n.misjoyas-text{\nflex:1;\ndisplay:flex;\nflex-direction:column;\nfont-size:14px;\ncolor:#333;\n}\n\n.misjoyas-text strong{\nfont-size:16px;\ncolor:#000;\n}\n\n.misjoyas-text span{\nfont-size:12px;\ncolor:#777;\n}\n\n.misjoyas-price{\nfont-size:13px;\ncolor:#666;\ntext-align:right;\n}\n\n@keyframes misjoyasFade{\nfrom{\nopacity:0;\ntransform:translateY(10px);\n}\nto{\nopacity:1;\ntransform:translateY(0);\n}\n}\n\n/* RESPONSIVE */\n\n@media (max-width:600px){\n\n.misjoyas-row{\nflex-direction:column;\nalign-items:flex-start;\ngap:4px;\n}\n\n.misjoyas-price{\ntext-align:left;\nfont-size:12px;\n}\n\n}\n\n</style>\n\n<script>\n\nconst TIMER_DURATION = 5 * 60 * 60 * 1000;\n\nfunction startTimer(){\n\nlet endTime = sessionStorage.getItem(\"misjoyasTimerEnd\");\n\nif(!endTime){\nendTime = Date.now() + TIMER_DURATION;\nsessionStorage.setItem(\"misjoyasTimerEnd\", endTime);\n}\n\nfunction updateTimer(){\n\nlet remaining = endTime - Date.now();\n\nif(remaining <= 0){\nendTime = Date.now() + TIMER_DURATION;\nsessionStorage.setItem(\"misjoyasTimerEnd\", endTime);\nremaining = TIMER_DURATION;\n}\n\nlet hours = Math.floor((remaining / (1000*60*60)) % 24);\nlet minutes = Math.floor((remaining / (1000*60)) % 60);\nlet seconds = Math.floor((remaining / 1000) % 60);\n\ndocument.getElementById(\"misjoyas-countdown\").innerHTML =\nString(hours).padStart(2,'0') + \":\" +\nString(minutes).padStart(2,'0') + \":\" +\nString(seconds).padStart(2,'0');\n\n}\n\nsetInterval(updateTimer,1000);\nupdateTimer();\n\n}\n\nstartTimer();\n\n</script>"
-          }
-        },
-        "badges_CRMAFB": {
-          "type": "badges",
-          "disabled": true,
-          "settings": {}
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -117,10 +105,22 @@
             "secondary_button_text_dark": "rgba(0,0,0,0)"
           }
         },
+        "html_MEaFay": {
+          "type": "html",
+          "settings": {
+            "custom_html": "<div class=\"misjoyas-wholesale\" data-open=\"true\">\n  <button type=\"button\" class=\"misjoyas-wholesale__header\" aria-expanded=\"true\">\n    <span class=\"misjoyas-wholesale__icon\" aria-hidden=\"true\">\n      <img src=\"{{ 'misjoyas-icon-wholesale-bag.svg' | asset_url }}\" alt=\"\" width=\"18\" height=\"18\" loading=\"lazy\">\n    </span>\n    <strong class=\"misjoyas-wholesale__title\">¿Quieres obtener más descuentos?</strong>\n    <span class=\"misjoyas-wholesale__toggle\" aria-hidden=\"true\">−</span>\n  </button>\n\n  <div class=\"misjoyas-wholesale__panel\">\n    <div class=\"misjoyas-wholesale__body\">\n      <p><strong>✓ Tramos de descuentos automáticos:</strong></p>\n      <p>• 10% OFF sobre $150.000<br>\n         • 15% OFF sobre $400.000<br>\n         • 20% OFF sobre $1.000.000</p>\n      <p class=\"misjoyas-wholesale__note\">Los descuentos se aplican automáticamente en el carrito al alcanzar el monto.</p>\n    </div>\n  </div>\n</div>"
+          }
+        },
+        "html_goldExp": {
+          "type": "html",
+          "settings": {
+            "custom_html": "{%- capture metal_str -%}{%- render 'misjoyas-metal-str', product: product -%}{%- endcapture -%}\n{%- assign metal_str = metal_str | strip -%}\n{%- if metal_str == 'Recubrimiento Baño de Oro 18k' -%}\n<div class=\"misjoyas-gold-experience\">\n  <div class=\"misjoyas-gold-experience__box\">\n    <p class=\"misjoyas-gold-experience__title\">La experiencia MISJOYAS®, ahora en Baño de Oro 18K.</p>\n    <p class=\"misjoyas-gold-experience__text\">Una joya desarrollada bajo nuestros criterios de diseño, terminación, control de calidad y respaldo.</p>\n  </div>\n  <div class=\"misjoyas-gold-experience__badges\">\n    <span><span class=\"misjoyas-gold-experience__star\" aria-hidden=\"true\">✦</span> Oro 18K certificado</span>\n    <span><span class=\"misjoyas-gold-experience__star\" aria-hidden=\"true\">✦</span> Hipoalergénico</span>\n    <span><span class=\"misjoyas-gold-experience__star\" aria-hidden=\"true\">✦</span> Libre de níquel</span>\n  </div>\n</div>\n\n{%- endif -%}"
+          }
+        },
         "candy_rack_product_placement_button_dpec6K": {
           "type": "shopify://apps/candy-rack/blocks/product-placement-button/cb9c657f-334f-4905-80c2-f69cca01460c",
           "settings": {
-            "title_text": "Lleva tambien",
+            "title_text": "Lleva también",
             "subtitle_text": "",
             "atc_button_layout_text_label": "Agregar",
             "button_show_more_text": "Ver más",
@@ -129,8 +129,8 @@
             "button_style": "solid_button",
             "button_size": "small_button",
             "clickable_product": true,
-            "max_products": 5,
-            "corner_radius": 0,
+            "max_products": 3,
+            "corner_radius": 20,
             "background_color": "#ffffff",
             "text_color": "#282a2c",
             "solid_button_background_color": "#282a2c",
@@ -139,36 +139,7 @@
             "top_padding": 24,
             "bottom_padding": 24,
             "specific_offer_id": "",
-            "custom_css": ""
-          }
-        },
-        "html_HPUmhe": {
-          "type": "html",
-          "settings": {
-            "custom_html": "<div class=\"misjoyas-garantia\">\n\n<div class=\"misjoyas-garantia-icon\" aria-hidden=\"true\">\n  <img src=\"{{ 'div.misjoyas-garantia-icon.svg' | asset_url }}\" alt=\"\" width=\"40\" height=\"40\" loading=\"lazy\">\n</div>\n\n<div class=\"misjoyas-garantia-texto\">\n<strong>Garantía de satisfacción</strong><br>\nSi el producto no cumple tus expectativas, podés solicitar una devolución sin problemas dentro de los primeros días posteriores a la compra.\n</div>\n\n</div>\n\n<style>\n\n.misjoyas-garantia{\ndisplay:flex;\nalign-items:center;\ngap:12px;\nbackground:#f8f8f8;\nborder:1px solid #e5e5e5;\npadding:14px;\nborder-radius:8px;\nmargin-top:15px;\nfont-size:14px;\nanimation:misjoyasFade .4s ease;\n}\n\n.misjoyas-garantia-icon{\ndisplay:flex;\nalign-items:center;\nflex-shrink:0;\nwidth:40px;\nheight:40px;\n}\n\n.misjoyas-garantia-icon img{\ndisplay:block;\nwidth:40px;\nheight:40px;\n}\n\n.misjoyas-garantia-texto{\nline-height:1.4;\ncolor:#333;\n}\n\n@keyframes misjoyasFade{\nfrom{\nopacity:0;\ntransform:translateY(5px);\n}\nto{\nopacity:1;\ntransform:translateY(0);\n}\n}\n\n@media (max-width:600px){\n\n.misjoyas-garantia{\nfont-size:13px;\npadding:12px;\n}\n\n}\n\n</style>"
-          }
-        },
-        "html_QpXa4B": {
-          "type": "html",
-          "disabled": true,
-          "settings": {
-            "custom_html": "<div class=\"misjoyas-reviews-slider\">\n\n<div class=\"misjoyas-reviews-track\">\n\n<div class=\"misjoyas-review\">\n<div class=\"misjoyas-stars\">★★★★★</div>\n<p>La calidad de las joyas es increíble. Compré varias piezas y todas llegaron perfectas. Muy recomendable.</p>\n<span class=\"misjoyas-name\">Camila R.</span>\n</div>\n\n<div class=\"misjoyas-review\">\n<div class=\"misjoyas-stars\">★★★★★</div>\n<p>Excelente tienda. La plata es realmente 925 y el brillo de las piezas es hermoso. Volveré a comprar.</p>\n<span class=\"misjoyas-name\">Valentina M.</span>\n</div>\n\n<div class=\"misjoyas-review\">\n<div class=\"misjoyas-stars\">★★★★★</div>\n<p>Muy buena experiencia comprando acá. Los precios son buenísimos y la calidad supera lo que esperaba.</p>\n<span class=\"misjoyas-name\">Fernanda L.</span>\n</div>\n\n<div class=\"misjoyas-review\">\n<div class=\"misjoyas-stars\">★★★★★</div>\n<p>Todo llegó rápido y bien empaquetado. Las joyas son muy elegantes y se nota que son de buena calidad.</p>\n<span class=\"misjoyas-name\">Daniela S.</span>\n</div>\n\n<div class=\"misjoyas-review\">\n<div class=\"misjoyas-stars\">★★★★★</div>\n<p>Me encantó la tienda. Muy confiable y con precios excelentes para comprar varias piezas.</p>\n<span class=\"misjoyas-name\">Natalia P.</span>\n</div>\n\n</div>\n\n</div>\n\n<style>\n\n.misjoyas-reviews-slider{\noverflow:hidden;\nmargin-top:18px;\n}\n\n.misjoyas-reviews-track{\ndisplay:flex;\ngap:12px;\nanimation:misjoyasSlide 28s linear infinite;\n}\n\n.misjoyas-review{\nmin-width:240px;\nbackground:#fff;\nborder:1px solid #eee;\nborder-radius:10px;\npadding:14px;\nbox-shadow:0 4px 12px rgba(0,0,0,0.05);\nfont-size:13px;\ncolor:#444;\n}\n\n.misjoyas-stars{\ncolor:#f5b301;\nfont-size:14px;\nmargin-bottom:6px;\n}\n\n.misjoyas-review p{\nmargin:6px 0 10px 0;\n}\n\n.misjoyas-name{\nfont-weight:600;\nfont-size:12px;\ncolor:#222;\n}\n\n@keyframes misjoyasSlide{\n\n0%{\ntransform:translateX(0);\n}\n\n100%{\ntransform:translateX(-50%);\n}\n\n}\n\n/* responsive */\n\n@media (max-width:600px){\n\n.misjoyas-review{\nmin-width:200px;\nfont-size:12px;\n}\n\n}\n\n</style>"
-          }
-        },
-        "description": {
-          "type": "description",
-          "disabled": true,
-          "settings": {
-            "show_in_tab": true,
-            "open_by_default": false,
-            "make_content_center": false,
-            "icon": "none",
-            "another_icon": "",
-            "custom_icon": "",
-            "heading": "ℹ️ Descripción del producto",
-            "number_of_lines_shown": "none",
-            "read_more_label": "Ver más",
-            "see_less_label": "Ver menos"
+            "custom_css": ".candyrack-ppp-button-layout__offer {\n  border: 1px solid #79D5C9 !important;\n}"
           }
         },
         "complementary_XCwmDV": {
@@ -190,7 +161,19 @@
         "html_9PyUAj": {
           "type": "html",
           "settings": {
-            "custom_html": "<div class=\"misjoyas-accordion\">\n\n<!-- BENEFICIOS Y COMPRA -->\n<div class=\"misjoyas-item\">\n<button type=\"button\" class=\"misjoyas-accordion-btn\">\n<span class=\"misjoyas-accordion-btn__label\">\n  <span class=\"misjoyas-accordion-btn__icon\" aria-hidden=\"true\">\n    <img src=\"{{ 'beneficios.svg' | asset_url }}\" alt=\"\" width=\"28\" height=\"28\" loading=\"lazy\">\n  </span>\n  <span class=\"misjoyas-accordion-btn__title\">Beneficios de Comprar en MISJOYAS®</span>\n</span>\n<span class=\"misjoyas-arrow\">+</span>\n</button>\n\n<div class=\"misjoyas-content\">\n\n<p><strong>Compra segura con MISJOYAS®</strong></p>\n\n<p>En MISJOYAS® buscamos que tu experiencia de compra sea simple, segura y confiable.</p>\n\n<p><strong>✓ Compra mínima</strong><br>\nLa compra mínima por pedido es de <strong>$49.990</strong>, lo que permite acceder a nuestra colección mayorista.</p>\n\n<p><strong>✓ Kit de regalo</strong><br>\nEn tu primera compra desde <strong>$100.000</strong> recibirás un kit de regalo para presentar tus joyas de forma profesional.</p>\n\n<p><strong>✓ Medios de pago</strong><br>\n• Mercado Pago<br>\n• Transbank</p>\n\n<p><strong>✓ Confirmación de pedido</strong><br>\nUna vez finalizada tu compra recibirás un correo con la confirmación de tu pedido.</p>\n\n</div>\n</div>\n\n<!-- ENVIOS -->\n<div class=\"misjoyas-item\">\n<button type=\"button\" class=\"misjoyas-accordion-btn\">\n<span class=\"misjoyas-accordion-btn__label\">\n  <span class=\"misjoyas-accordion-btn__icon\" aria-hidden=\"true\">\n    <img src=\"{{ 'envios.svg' | asset_url }}\" alt=\"\" width=\"28\" height=\"28\" loading=\"lazy\">\n  </span>\n  <span class=\"misjoyas-accordion-btn__title\">Envíos a todo Chile</span>\n</span>\n<span class=\"misjoyas-arrow\">+</span>\n</button>\n\n<div class=\"misjoyas-content\">\n\n<p>En MISJOYAS® trabajamos para que recibas tu pedido de forma rápida y segura.</p>\n\n<p>Tu pedido se procesará en un plazo máximo de <strong>24 horas hábiles</strong> una vez confirmado el pago.</p>\n\n<p>Realizamos envíos a todo Chile mediante:</p>\n\n<p>\n• Chilexpress<br>\n• Correos de Chile\n</p>\n\n<p><strong>✓ Despacho Gratis</strong><br>\nPor compras sobre <strong>$99.990</strong> obtienes <strong>DESPACHO GRATIS</strong>.</p>\n\n</div>\n</div>\n\n<!-- CAMBIOS -->\n<div class=\"misjoyas-item\">\n<button type=\"button\" class=\"misjoyas-accordion-btn\">\n<span class=\"misjoyas-accordion-btn__label\">\n  <span class=\"misjoyas-accordion-btn__icon\" aria-hidden=\"true\">\n    <img src=\"{{ 'cambios.svg' | asset_url }}\" alt=\"\" width=\"28\" height=\"28\" loading=\"lazy\">\n  </span>\n  <span class=\"misjoyas-accordion-btn__title\">Cambios y Devoluciones</span>\n</span>\n<span class=\"misjoyas-arrow\">+</span>\n</button>\n\n<div class=\"misjoyas-content\">\n\n<p>En MISJOYAS® buscamos que cada compra cumpla con tus expectativas.</p>\n\n<p><strong>✓ Garantía legal</strong><br>\nSi recibes un producto con fallas de fábrica puedes pedir reparación, cambio o devolución hasta <strong>6 meses</strong> después de recibirlo.</p>\n\n<p><strong>✓ Garantía de satisfacción MISJOYAS®</strong><br>\nSi el producto no cumple tus expectativas puedes solicitar cambio o devolución dentro de los <strong>primeros 10 días</strong>.</p>\n\n<p><strong>✓ Cómo realizar tu cambio o devolución</strong></p>\n\n<p>\nCorreo: contacto@misjoyas.cl<br>\nWhatsApp: +56 9 4545 4917\n</p>\n\n</div>\n</div>\n\n<!-- DESCUENTOS -->\n<div class=\"misjoyas-item\">\n<button type=\"button\" class=\"misjoyas-accordion-btn\">\n<span class=\"misjoyas-accordion-btn__label\">\n  <span class=\"misjoyas-accordion-btn__icon\" aria-hidden=\"true\">\n    <img src=\"{{ 'descuentos.svg' | asset_url }}\" alt=\"\" width=\"28\" height=\"28\" loading=\"lazy\">\n  </span>\n  <span class=\"misjoyas-accordion-btn__title\">Beneficios y Descuentos</span>\n</span>\n<span class=\"misjoyas-arrow\">+</span>\n</button>\n\n<div class=\"misjoyas-content\">\n\n<p><strong>✓ Tramos de descuentos automáticos</strong></p>\n\n<p>\n• 10% OFF sobre <strong>$150.000</strong><br>\n• 15% OFF sobre <strong>$400.000</strong><br>\n• 20% OFF sobre <strong>$1.000.000</strong>\n</p>\n\n<p>Los descuentos se aplican automáticamente en el carrito al alcanzar el monto.</p>\n\n<p><strong>✓ Tarjeta de fidelización</strong></p>\n\n<p>\nEn tu primera compra desde <strong>$80.000</strong> recibes tu tarjeta de fidelización y un sticker para acumular beneficios.\n</p>\n\n<p>\nCada compra posterior sobre este monto recibe un sticker.  \nAl completar <strong>10 stickers</strong> recibes un <strong>regalo premium exclusivo</strong>.\n</p>\n\n<p><strong>Importante:</strong> debes iniciar sesión antes de comprar para recibir este beneficio.</p>\n\n</div>\n</div>\n\n</div>\n\n<style>\n\n.misjoyas-accordion{\nmargin-top:15px;\nfont-family:inherit;\n}\n\n.misjoyas-item{\nborder:1px solid #eee;\nborder-radius:8px;\nmargin-bottom:8px;\noverflow:hidden;\nbackground:#fff;\n}\n\n.misjoyas-accordion-btn{\nwidth:100%;\nbackground:#fff;\nborder:none;\npadding:14px;\ntext-align:left;\nfont-size:14px;\nfont-weight:600;\ncolor:#222;\ndisplay:flex;\njustify-content:space-between;\nalign-items:center;\ngap:12px;\ncursor:pointer;\n}\n\n.misjoyas-accordion-btn:hover{\nbackground:#fafafa;\n}\n\n.misjoyas-accordion-btn__label{\ndisplay:flex;\nalign-items:center;\ngap:10px;\nflex:1;\nmin-width:0;\n}\n\n.misjoyas-accordion-btn__icon{\ndisplay:flex;\nalign-items:center;\njustify-content:center;\nflex-shrink:0;\nwidth:28px;\nheight:28px;\n}\n\n.misjoyas-accordion-btn__icon img{\ndisplay:block;\nwidth:28px;\nheight:28px;\n}\n\n.misjoyas-accordion-btn__title{\nflex:1;\nmin-width:0;\ncolor:#222;\nfont-size:14px;\nfont-weight:600;\nline-height:1.3;\ntext-align:left;\n}\n\n.misjoyas-arrow{\nflex-shrink:0;\nfont-size:18px;\nline-height:1;\n}\n\n.misjoyas-content{\nmax-height:0;\noverflow:hidden;\ntransition:max-height .35s ease;\npadding:0 14px;\nfont-size:13px;\ncolor:#555;\n}\n\n.misjoyas-content p{\nmargin:10px 0;\nline-height:1.6;\n}\n\n</style>\n\n<script>\n\ndocument.querySelectorAll(\".misjoyas-accordion-btn\").forEach(btn => {\n\nbtn.addEventListener(\"click\", function(){\n\nconst content = this.nextElementSibling\nconst arrow = this.querySelector(\".misjoyas-arrow\")\n\nif(content.style.maxHeight){\n\ncontent.style.maxHeight = null\narrow.innerHTML = \"+\"\n\n}else{\n\ndocument.querySelectorAll(\".misjoyas-content\").forEach(c => c.style.maxHeight = null)\ndocument.querySelectorAll(\".misjoyas-arrow\").forEach(a => a.innerHTML = \"+\")\n\ncontent.style.maxHeight = content.scrollHeight + \"px\"\narrow.innerHTML = \"−\"\n\n}\n\n})\n\n})\n\n</script>"
+            "custom_html": "<div class=\"misjoyas-accordion\">\n  <!-- DESPACHO -->\n  <div class=\"misjoyas-item\">\n    <button type=\"button\" class=\"misjoyas-accordion-btn\" aria-expanded=\"false\">\n      <span class=\"misjoyas-accordion-btn__label\">\n        <span\n          class=\"misjoyas-accordion-btn__icon misjoyas-accordion-btn__icon--shipping\"\n          aria-hidden=\"true\"\n        >\n          <img\n            src=\"{{ 'envios.svg' | asset_url }}\"\n            alt=\"\"\n            width=\"24\"\n            height=\"24\"\n            loading=\"lazy\"\n          />\n        </span>\n        <span class=\"misjoyas-accordion-btn__text\">\n          <span class=\"misjoyas-accordion-btn__title\">Despacho a domicilio gratis</span>\n          <span class=\"misjoyas-accordion-btn__subtitle\">Por compras sobre $39.990 · a todo Chile</span>\n        </span>\n      </span>\n      <span class=\"misjoyas-arrow\">+</span>\n    </button>\n\n    <div class=\"misjoyas-content\">\n      <p>En MISJOYAS® trabajamos para que recibas tu pedido de forma rápida y segura.</p>\n      <p>Tu pedido se procesará en un plazo máximo de <strong>24 horas hábiles</strong> una vez confirmado el pago.</p>\n      <p>Realizamos envíos a todo Chile mediante:</p>\n      <p>• Chilexpress<br />• Correos de Chile</p>\n      <p>\n        <strong>✓ Despacho Gratis</strong><br />\n        Por compras sobre <strong>$39.990</strong> obtienes <strong>DESPACHO GRATIS</strong>.\n      </p>\n    </div>\n  </div>\n\n  <!-- BENEFICIOS -->\n  <div class=\"misjoyas-item\">\n    <button type=\"button\" class=\"misjoyas-accordion-btn\" aria-expanded=\"false\">\n      <span class=\"misjoyas-accordion-btn__label\">\n        <span class=\"misjoyas-accordion-btn__icon\" aria-hidden=\"true\">\n          <img\n            src=\"{{ 'beneficios2.svg' | asset_url }}\"\n            alt=\"\"\n            width=\"28\"\n            height=\"28\"\n            loading=\"lazy\"\n          />\n        </span>\n        <span class=\"misjoyas-accordion-btn__text\">\n          <span class=\"misjoyas-accordion-btn__title\">Beneficios y descuentos</span>\n          <span class=\"misjoyas-accordion-btn__subtitle\">Descuentos exclusivos mayoristas y tarjeta de fidelización.</span>\n        </span>\n      </span>\n      <span class=\"misjoyas-arrow\">+</span>\n    </button>\n\n    <div class=\"misjoyas-content\">\n      <p><strong>✓ Tarjeta de fidelización</strong></p>\n      <p>En tu primera compra desde <strong>$80.000</strong> recibes tu tarjeta de fidelización y un sticker para acumular beneficios.</p>\n      <p>Cada compra posterior sobre este monto recibe un sticker. Al completar <strong>10 stickers</strong> recibes un <strong>regalo premium exclusivo</strong>.</p>\n      <p><strong>Importante:</strong> debes iniciar sesión antes de comprar para recibir este beneficio.</p>\n    </div>\n  </div>\n\n  <!-- CAMBIOS -->\n  <div class=\"misjoyas-item\">\n    <button type=\"button\" class=\"misjoyas-accordion-btn\" aria-expanded=\"false\">\n      <span class=\"misjoyas-accordion-btn__label\">\n        <span class=\"misjoyas-accordion-btn__icon\" aria-hidden=\"true\">\n          <img\n            src=\"{{ 'cambios.svg' | asset_url }}\"\n            alt=\"\"\n            width=\"28\"\n            height=\"28\"\n            loading=\"lazy\"\n          />\n        </span>\n        <span class=\"misjoyas-accordion-btn__text\">\n          <span class=\"misjoyas-accordion-btn__title\">Cambios y devoluciones</span>\n          <span class=\"misjoyas-accordion-btn__subtitle\">En MISJOYAS® buscamos que cada compra cumpla con tus expectativas.</span>\n        </span>\n      </span>\n      <span class=\"misjoyas-arrow\">+</span>\n    </button>\n\n    <div class=\"misjoyas-content\">\n      <p>En MISJOYAS® buscamos que cada compra cumpla con tus expectativas.</p>\n      <p>\n        <strong>✓ Garantía legal</strong><br />\n        Si recibes un producto con fallas de fábrica puedes pedir reparación, cambio o devolución hasta <strong>6 meses</strong> después de recibirlo.\n      </p>\n      <p>\n        <strong>✓ Garantía de satisfacción MISJOYAS®</strong><br />\n        Si el producto no cumple tus expectativas puedes solicitar cambio o devolución dentro de los <strong>primeros 10 días</strong>.\n      </p>\n      <p><strong>✓ Cómo realizar tu cambio o devolución</strong></p>\n      <p>Correo: contacto@misjoyas.cl<br />WhatsApp: +56 9 4545 4917</p>\n    </div>\n  </div>\n</div>"
+          }
+        },
+        "html_fMA38V": {
+          "type": "html",
+          "settings": {
+            "custom_html": "{%- liquid\n  assign wa_phone = '56945454917'\n  assign wa_message = '¡Hola! 👋 Me interesa esta pieza: ' | append: product.title | append: '. ¿Me pueden contar un poco más, por favor?'\n  assign wa_text = wa_message | url_encode\n  assign wa_url = 'https://wa.me/' | append: wa_phone | append: '?text=' | append: wa_text\n-%}\n<a\n  class=\"misjoyas-wa-help\"\n  href=\"{{ wa_url }}\"\n  target=\"_blank\"\n  rel=\"noopener noreferrer\"\n  aria-label=\"Escríbenos por WhatsApp\"\n>\n  <span class=\"misjoyas-wa-help__left\">\n    <span class=\"misjoyas-wa-help__icon\" aria-hidden=\"true\">\n      <img\n        src=\"{{ 'misjoyas-icon-whatsapp.svg' | asset_url }}\"\n        alt=\"\"\n        width=\"24\"\n        height=\"24\"\n        loading=\"lazy\"\n      >\n    </span>\n    <span class=\"misjoyas-wa-help__question\">¿Tienes dudas con esta pieza?</span>\n  </span>\n  <span class=\"misjoyas-wa-help__cta\">Escríbenos por WhatsApp</span>\n</a>"
+          }
+        },
+        "html_cgMNhC": {
+          "type": "html",
+          "settings": {
+            "custom_html": "<div class=\"misjoyas-payment\">\n  <span class=\"misjoyas-payment__label\">Paga seguro:</span>\n  {% render 'misjoyas-payment-logos' %}\n</div>"
           }
         },
         "gift_wrapping_EK3NQn": {
@@ -199,24 +182,6 @@
             "text_gift": "",
             "color_icon_light": "rgba(0,0,0,0)",
             "color_icon_dark": "rgba(0,0,0,0)"
-          }
-        },
-        "table_of_information_aYEGxp": {
-          "type": "table_of_information",
-          "disabled": true,
-          "settings": {
-            "show_in_tab": false,
-            "open_by_default": false,
-            "icon": "none",
-            "another_icon": "",
-            "custom_icon": "",
-            "use_secondary_background": false,
-            "heading": "Additional details",
-            "left_label": "Sort",
-            "right_label": "Values",
-            "details": "<p>Weight: 100g<br/>-Dimension: 16mm<br/><br/>-Size: Small<br/>Condition: Excellent<br/>Usage: Daily use<br/>Price range: Budget-friendly</p>",
-            "text_to_use_for_empty_fields": "-",
-            "extra_details": "<p>Add further details to enrich you product information.</p>"
           }
         },
         "sticky-atc": {
@@ -288,41 +253,9 @@
             "open_new_window_6": false
           }
         },
-        "text_jLJ9eC": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "text": "{{ product.description }}",
-            "number_of_lines_shown": "none",
-            "read_more_label": "",
-            "see_less_label": ""
-          }
-        },
         "selleasy_lb_upsell_widget_bl_DphFhP": {
           "type": "shopify://apps/selleasy/blocks/lb-upsell-widget-bl/790c1a03-a71f-4bc1-9869-00dad526d3c2",
           "settings": {}
-        },
-        "subscriptions_app_block_qYcpmR": {
-          "type": "shopify://apps/subscriptions/blocks/app-block/a3bfe9ec-96f8-4508-a003-df608a36d2ad",
-          "disabled": true,
-          "settings": {
-            "widget_style": "card",
-            "widget_style_card_selector": "radio_button",
-            "subscription_policy_url": "",
-            "color_text_body": "#6d7175",
-            "dividers_color": "#8f8d8d",
-            "background_color": "#ffffff",
-            "border_thickness": 1,
-            "border_radius": 0,
-            "product": "{{product}}"
-          }
-        },
-        "reelplus_carousel_fBRWnE": {
-          "type": "shopify://apps/reelplus/blocks/carousel/a8b9e6d7-1308-4956-b132-162738213898",
-          "disabled": true,
-          "settings": {
-            "reelplus_carousel_widget": "widget-93ad9074-f320-4fe9-b1ab-49915ba35baf"
-          }
         }
       },
       "block_order": [
@@ -331,27 +264,22 @@
         "product_sku_8UPmFF",
         "price",
         "variant_weight_mjPeso",
-        "html_FyjCUi",
-        "html_EdbWHG",
-        "html_z7HzVj",
-        "badges_CRMAFB",
+        "html_prodDesc",
+        "html_wUncyg",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "html_MEaFay",
+        "html_goldExp",
         "candy_rack_product_placement_button_dpec6K",
-        "html_HPUmhe",
-        "html_QpXa4B",
-        "description",
         "complementary_XCwmDV",
         "html_9PyUAj",
+        "html_fMA38V",
+        "html_cgMNhC",
         "gift_wrapping_EK3NQn",
-        "table_of_information_aYEGxp",
         "sticky-atc",
         "feature_icon_4cVkJd",
-        "text_jLJ9eC",
-        "selleasy_lb_upsell_widget_bl_DphFhP",
-        "subscriptions_app_block_qYcpmR",
-        "reelplus_carousel_fBRWnE"
+        "selleasy_lb_upsell_widget_bl_DphFhP"
       ],
       "custom_css": [],
       "settings": {
@@ -401,15 +329,57 @@
       "type": "custom-liquid",
       "name": "t:sections.custom-liquid.name",
       "settings": {
-        "custom_liquid": "{%- assign clean_description = product.description \n    | strip_html \n    | replace: \"Grosor:\", \"<br>Grosor:\" \n    | replace: \"Ancho:\", \"<br>Ancho:\" \n    | strip -%}\n\n<div class=\"custom-product-description\" style=\"\n  margin: 20px 0; \n  font-family: sans-serif; \n  color: #333; \n  background: #f9f9f9; \n  border-radius: 12px; \n  padding: 25px 20px; \n  box-shadow: 0 4px 12px rgba(0,0,0,0.05); \n\">\n  <h3 style=\"font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #222;\">Detalles adicionales</h3>\n  <p style=\"font-size: 15px; line-height: 1.7; color: #555; font-weight: 500;\">{{ clean_description }}</p>\n</div>",
+        "custom_liquid": "{%- capture metal_str -%}{%- render 'misjoyas-metal-str', product: product -%}{%- endcapture -%}\n{%- assign metal_str = metal_str | strip -%}\n{%- liquid\n  assign is_plata = false\n  assign is_revestimiento = false\n  if metal_str == 'Plata 925'\n    assign is_plata = true\n  elsif metal_str == 'Recubrimiento Baño de Oro 18k'\n    assign is_revestimiento = true\n  endif\n-%}\n{%- if is_revestimiento -%}\n<div class=\"misjoyas-details\">\n\n  {%- comment -%}\n  Detalles adicionales (temporalmente desactivado — descripción completa va bajo el precio).\n  {%- liquid\n    assign clean_description = product.description | replace: '</p>', '</p><!--MJBR-->' | replace: '<br>', '<!--MJBR-->' | replace: '<br/>', '<!--MJBR-->' | replace: '<br />', '<!--MJBR-->' | strip_html | replace: '<!--MJBR-->', '<br>' | replace: 'Grosor:', '<br>Grosor:' | replace: 'Ancho:', '<br>Ancho:' | strip\n  -%}\n  {%- if clean_description != blank -%}\n  <div class=\"misjoyas-details__item\" data-open=\"true\">\n    <button type=\"button\" class=\"misjoyas-details__header\" aria-expanded=\"true\">\n      <span class=\"misjoyas-details__title\">Detalles adicionales</span>\n      <span class=\"misjoyas-details__toggle\" aria-hidden=\"true\">−</span>\n    </button>\n    <div class=\"misjoyas-details__panel\">\n      <div class=\"misjoyas-details__body\">{{ clean_description }}</div>\n    </div>\n  </div>\n  {%- endif -%}\n  {%- endcomment -%}\n\n  <div class=\"misjoyas-details__item\" data-open=\"true\">\n    <button type=\"button\" class=\"misjoyas-details__header\" aria-expanded=\"true\">\n      <span class=\"misjoyas-details__title\">Protección y terminación</span>\n      <span class=\"misjoyas-details__toggle\" aria-hidden=\"true\">−</span>\n    </button>\n    <div class=\"misjoyas-details__panel\">\n      <div class=\"misjoyas-details__body\">\n        Barniz protector italiano que ayuda a conservar el brillo y la apariencia de la pieza en el tiempo.<br>\n        Terminación de pulido premium bajo el estándar de calidad MISJOYAS.\n      </div>\n    </div>\n  </div>\n\n  <div class=\"misjoyas-details__item\" data-open=\"true\">\n    <button type=\"button\" class=\"misjoyas-details__header\" aria-expanded=\"true\">\n      <span class=\"misjoyas-details__title\">Cuidados</span>\n      <span class=\"misjoyas-details__toggle\" aria-hidden=\"true\">−</span>\n    </button>\n    <div class=\"misjoyas-details__panel\">\n      <div class=\"misjoyas-details__body\">\n        Evitar agua, perfumes, cremas, productos químicos y humedad. Guardar por separado (en su estuche) y limpiar con un paño seco.<br>\n        Ponte la joya al final, después de cremas y perfume.\n      </div>\n    </div>\n  </div>\n\n</div>\n{%- endif -%}\n\n{%- if is_plata or is_revestimiento -%}\n<div class=\"misjoyas-estandar\">\n  <picture>\n    {%- if is_revestimiento -%}\n      <source media=\"(max-width: 767px)\" srcset=\"{{ 'estandar-Oro-MJ_mobile.jpg' | asset_url }}\" width=\"800\" height=\"1664\">\n      <img\n        class=\"misjoyas-estandar__img\"\n        src=\"{{ 'estandar-Oro-MJ_desktop.jpg' | asset_url }}\"\n        alt=\"Estándar MISJOYAS — Calidad certificada Baño de Oro 18K\"\n        width=\"2560\"\n        height=\"560\"\n        loading=\"lazy\"\n        decoding=\"async\"\n      >\n    {%- else -%}\n      <source media=\"(max-width: 767px)\" srcset=\"{{ 'estandar-Plata-MJ_mobile.jpg' | asset_url }}\" width=\"800\" height=\"1664\">\n      <img\n        class=\"misjoyas-estandar__img\"\n        src=\"{{ 'estandar-Plata-MJ_desktop.jpg' | asset_url }}\"\n        alt=\"Estándar MISJOYAS — Calidad certificada Plata 925\"\n        width=\"2560\"\n        height=\"560\"\n        loading=\"lazy\"\n        decoding=\"async\"\n      >\n    {%- endif -%}\n  </picture>\n</div>\n{%- endif -%}",
         "full_width": false,
         "show_section_divider": false,
-        "padding_top": 28,
-        "padding_bottom": 28,
+        "padding_top": 20,
+        "padding_bottom": 20,
         "full_width_mobile": false,
         "show_section_divider_mobile": false,
+        "padding_top_mobile": 16,
+        "padding_bottom_mobile": 16
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "custom_css": [
+        ".card-product {border: 1px solid #e0e0e0;}"
+      ],
+      "settings": {
+        "eyebrow": "NUESTRAS SUGERENCIAS",
+        "eyebrow_color": "#222222",
+        "heading": "También te puede gustar",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "spacing": 16,
+        "spacing_mobile": 12,
+        "padding_x": 80,
+        "padding_x_mobile": 20,
+        "padding_top": 40,
+        "padding_bottom": 40,
         "padding_top_mobile": 28,
-        "padding_bottom_mobile": 28
+        "padding_bottom_mobile": 28,
+        "show_vendor": false,
+        "show_rating": false,
+        "show_highlighted_attributes": true,
+        "show_quickview": true,
+        "show_view_all": true,
+        "button_label": "Ver más",
+        "button_link": "",
+        "open_new_window": false,
+        "enable_carousel_desktop": true,
+        "enable_swiper_mobile": true,
+        "enable_arrow_mobile": false,
+        "full_width": false,
+        "show_section_divider": false,
+        "show_section_divider_mobile": false,
+        "background_color_light": "#ffffff",
+        "background_color_dark": "",
+        "highlight_type": "underline",
+        "heading_size": 100,
+        "heading_tag": "h2",
+        "heading_alignment": "center"
       }
     },
     "ticker_EDChGG": {
@@ -444,8 +414,8 @@
       "settings": {
         "enable": true,
         "show_only_on_homepage": false,
-        "background_color": "#68b5a3",
-        "text_color": "#ffffff",
+        "background_color": "#79d5c9",
+        "text_color": "#222222",
         "animation_speed": 25,
         "gap": 60,
         "gap_mobile": 20,
@@ -453,331 +423,81 @@
         "pause_on_hover": false
       }
     },
-    "product-recommendations": {
-      "type": "product-recommendations",
-      "custom_css": [
-        ".card-product {border: 1px solid #e0e0e0;}"
+    "banner_pequeno_C9R6ib": {
+      "type": "banner-pequeno",
+      "name": "Banner pequeño",
+      "settings": {
+        "image": "shopify://shop_images/Banner-mayorista_mobile_66d5152e-f993-4eb5-bb90-1a2472b3ff87.jpg",
+        "image_mobile": "shopify://shop_images/Banner-mayorista_mobile_1.jpg",
+        "image_alt": "",
+        "button_label": "Ver todos los beneficios",
+        "button_link": "shopify://pages/fidelizacion",
+        "button_position": "right",
+        "open_new_window": false,
+        "button_bg": "#f83785",
+        "button_color": "#ffffff",
+        "banner_height": 248,
+        "banner_height_mobile": 552,
+        "border_radius": 4,
+        "padding_x": 80,
+        "padding_x_mobile": 20,
+        "padding_y": 40,
+        "padding_y_mobile": 40
+      }
+    },
+    "1786119016b83f66d9": {
+      "type": "apps",
+      "blocks": {
+        "loox_reviews_loox_dynamic_section_ErKkWA": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "reviews_to_display": "",
+            "default_tab": "automatic",
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1080,
+            "is_sample": true
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_loox_dynamic_section_ErKkWA"
       ],
       "settings": {
-        "heading": "Puede que también te guste",
-        "highlight_type": "underline",
-        "heading_size": 70,
-        "heading_tag": "h3",
-        "heading_alignment": "center",
-        "products_to_show": 10,
-        "background_color_light": "#ffffff",
-        "background_color_dark": "",
-        "show_vendor": false,
-        "show_rating": false,
-        "show_highlighted_attributes": true,
-        "show_quickview": true,
-        "enable_carousel_desktop": true,
-        "enable_swiper_mobile": true,
-        "enable_arrow_mobile": false,
-        "columns_desktop": 4,
-        "full_width": false,
-        "show_section_divider": true,
-        "spacing": 16,
-        "padding_top": 32,
-        "padding_bottom": 40,
-        "columns_mobile": "2",
-        "show_section_divider_mobile": false,
-        "spacing_mobile": 16,
-        "padding_top_mobile": 24,
-        "padding_bottom_mobile": 32
+        "include_margins": true,
+        "content_alignment": "left"
       }
     },
     "recently_viewed_4h746e": {
       "type": "recently-viewed",
       "name": "t:sections.recently-viewed-products.name",
       "settings": {
+        "eyebrow": "VUELVE POR ELLOS",
+        "eyebrow_color": "#222222",
         "heading": "Tus últimos vistos",
-        "products_to_show": 10,
+        "products_to_show": 8,
         "columns_desktop": 4,
         "gap": 16,
         "gap_mobile": 12,
+        "padding_x": 80,
+        "padding_x_mobile": 20,
         "show_vendor": false,
         "show_rating": false,
         "show_highlighted_attributes": true,
-        "show_quickview": false,
-        "padding_top": 32,
+        "show_quickview": true,
+        "show_view_all": true,
+        "button_label": "Ver más",
+        "button_link": "",
+        "open_new_window": false,
+        "show_empty_state": true,
+        "empty_heading": "Aún no tienes productos vistos",
+        "empty_text": "Explora nuestra tienda y los productos que veas aparecerán aquí.",
+        "empty_button_label": "Explorar productos",
+        "empty_button_link": "",
+        "padding_top": 40,
         "padding_bottom": 40,
-        "padding_top_mobile": 24,
-        "padding_bottom_mobile": 32
-      }
-    },
-    "1773246905d9151850": {
-      "type": "apps",
-      "blocks": {
-        "vizup_videos_videos_block_XmgpEc": {
-          "type": "shopify://apps/vizup-videos/blocks/videos-block/eaecaa7b-ab6b-40ae-8ddf-50daa867f3eb",
-          "settings": {
-            "videoc_widget_id": "",
-            "custom_css": ""
-          }
-        }
-      },
-      "block_order": [
-        "vizup_videos_videos_block_XmgpEc"
-      ],
-      "disabled": true,
-      "settings": {
-        "include_margins": true,
-        "content_alignment": "left"
-      }
-    },
-    "custom_liquid_tRBp6e": {
-      "type": "custom-liquid",
-      "name": "t:sections.custom-liquid.name",
-      "settings": {
-        "custom_liquid": "{% render 'misjoyas-trust-section' %}",
-        "full_width": false,
-        "show_section_divider": false,
-        "padding_top": 28,
-        "padding_bottom": 28,
-        "full_width_mobile": false,
-        "show_section_divider_mobile": false,
-        "padding_top_mobile": 28,
-        "padding_bottom_mobile": 28
-      }
-    },
-    "custom_liquid_iRmK4m": {
-      "type": "custom-liquid",
-      "name": "t:sections.custom-liquid.name",
-      "settings": {
-        "custom_liquid": "<div class=\"misjoyas-comparison\">\n\n<h2 class=\"misjoyas-title\">¿Por qué elegirnos?</h2>\n\n<table class=\"misjoyas-table\">\n\n<thead>\n<tr>\n<th></th>\n<th>Otras marcas</th>\n<th class=\"misjoyas-us\">Nosotros</th>\n</tr>\n</thead>\n\n<tbody>\n\n<tr>\n<td>Calidad del material</td>\n<td>Plata de baja calidad o baños</td>\n<td class=\"misjoyas-us\">Plata fina certificada Ley 925</td>\n</tr>\n\n<tr>\n<td>Precios</td>\n<td>Precios elevados</td>\n<td class=\"misjoyas-us\">Precios competitivos y descuentos por volumen</td>\n</tr>\n\n<tr>\n<td>Variedad de diseños</td>\n<td>Colecciones limitadas</td>\n<td class=\"misjoyas-us\">Amplia variedad de modelos modernos</td>\n</tr>\n\n<tr>\n<td>Confianza</td>\n<td>Poca información del material</td>\n<td class=\"misjoyas-us\">Transparencia y calidad garantizada</td>\n</tr>\n\n<tr>\n<td>Oportunidad de negocio</td>\n<td>No pensado para emprendedores</td>\n<td class=\"misjoyas-us\">Ideal para revender y emprender</td>\n</tr>\n\n</tbody>\n\n</table>\n\n</div>\n\n<style>\n\n.misjoyas-comparison{\nmargin:50px 0;\ntext-align:center;\nfont-family:inherit;\n}\n\n.misjoyas-title{\nfont-size:28px;\nmargin-bottom:25px;\n}\n\n.misjoyas-table{\nwidth:100%;\nmax-width:900px;\nmargin:auto;\nborder-collapse:collapse;\nfont-size:14px;\n}\n\n.misjoyas-table th,\n.misjoyas-table td{\npadding:14px;\nborder-bottom:1px solid #eee;\n}\n\n.misjoyas-table th{\nbackground:#f8f8f8;\nfont-weight:600;\n}\n\n.misjoyas-us{\nbackground:#f3f7f5;\nfont-weight:600;\ncolor:#0b6b4f;\n}\n\n.misjoyas-table tr:hover{\nbackground:#fafafa;\n}\n\n/* responsive */\n\n@media (max-width:768px){\n\n.misjoyas-table{\nfont-size:12px;\n}\n\n.misjoyas-table th,\n.misjoyas-table td{\npadding:10px;\n}\n\n}\n\n</style>",
-        "full_width": false,
-        "show_section_divider": false,
-        "padding_top": 28,
-        "padding_bottom": 28,
-        "full_width_mobile": false,
-        "show_section_divider_mobile": false,
-        "padding_top_mobile": 28,
-        "padding_bottom_mobile": 28
-      }
-    },
-    "multicolumn_FfPreB": {
-      "type": "multicolumn",
-      "blocks": {
-        "column_PdD7Dx": {
-          "type": "column",
-          "settings": {
-            "icon": "truck",
-            "another_icon": "",
-            "custom_image": "shopify://shop_images/Container.png",
-            "custom_icon": "",
-            "title": "DESPACHO GRATIS",
-            "highlight_type": "underline",
-            "title_link": "",
-            "open_new_window": false,
-            "heading_size": 100,
-            "text": "<p>A todo el país por compras sobre $99.900</p>"
-          }
-        },
-        "column_633PUV": {
-          "type": "column",
-          "settings": {
-            "icon": "truck",
-            "another_icon": "",
-            "custom_image": "shopify://shop_images/Container2.png",
-            "custom_icon": "",
-            "title": "KIT DE REGALO",
-            "highlight_type": "underline",
-            "title_link": "",
-            "open_new_window": false,
-            "heading_size": 100,
-            "text": "<p>Con tu primera compra</p>"
-          }
-        },
-        "column_LbBjyq": {
-          "type": "column",
-          "settings": {
-            "icon": "truck",
-            "another_icon": "",
-            "custom_image": "shopify://shop_images/carbon_ibm-data-product-exchange.png",
-            "custom_icon": "",
-            "title": "CAMBIOS Y DEVOLUCIONES",
-            "highlight_type": "underline",
-            "title_link": "",
-            "open_new_window": false,
-            "heading_size": 100,
-            "text": "<p>Conoce nuestras políticas</p>"
-          }
-        }
-      },
-      "block_order": [
-        "column_PdD7Dx",
-        "column_633PUV",
-        "column_LbBjyq"
-      ],
-      "name": "t:sections.multicolumn.name",
-      "settings": {
-        "title": "",
-        "highlight_type": "underline",
-        "heading_size": 100,
-        "heading_tag": "h2",
-        "secondary_background": "section",
-        "border_column": "none",
-        "column_content_alignment": "center",
-        "icon_position": "above",
-        "icon_size": 45,
-        "enable_desktop_slider": true,
-        "swiper_on_mobile": false,
-        "enable_arrow_mobile": false,
-        "auto_play": true,
-        "change_bar_every": 5,
-        "background_color_light": "#232323",
-        "heading_light": "rgba(0,0,0,0)",
-        "text_light": "#ffffff",
-        "color_heading_highlight_light": "rgba(0,0,0,0)",
-        "line_border_light": "rgba(0,0,0,0)",
-        "color_icon_light": "rgba(0,0,0,0)",
-        "background_color_dark": "#232323",
-        "heading_dark": "rgba(0,0,0,0)",
-        "text_dark": "rgba(0,0,0,0)",
-        "color_heading_highlight_dark": "rgba(0,0,0,0)",
-        "line_border_dark": "rgba(0,0,0,0)",
-        "color_icon_dark": "rgba(0,0,0,0)",
-        "column_layout_desktop": "lg:w-1/4",
-        "section_height_desktop": "md:py-7",
-        "spacing_desktop": 28,
-        "full_width": false,
-        "padding_full_width": false,
-        "show_section_divider": false,
-        "padding_top": 28,
-        "padding_bottom": 28,
-        "column_layout_mobile": "w-full",
-        "section_height_mobile": "py-5",
-        "spacing_mobile": 16,
-        "full_width_mobile": false,
-        "show_section_divider_mobile": false,
-        "padding_top_mobile": 20,
-        "padding_bottom_mobile": 20
-      }
-    },
-    "product_description_jXVpPU": {
-      "type": "product-description",
-      "disabled": true,
-      "name": "t:sections.product-description.name",
-      "settings": {
-        "heading": "",
-        "highlight_type": "font_highlight",
-        "heading_size": 100,
-        "heading_tag": "h2",
-        "heading_alignment": "center",
-        "number_of_lines_shown": "none",
-        "read_more_label": "",
-        "see_less_label": "See less",
-        "text_size": 100,
-        "background_color_light": "rgba(0,0,0,0)",
-        "heading_light": "rgba(0,0,0,0)",
-        "color_heading_highlight_light": "rgba(0,0,0,0)",
-        "text_color_light": "rgba(0,0,0,0)",
-        "background_color_dark": "rgba(0,0,0,0)",
-        "heading_dark": "rgba(0,0,0,0)",
-        "color_heading_highlight_dark": "rgba(0,0,0,0)",
-        "text_color_dark": "rgba(0,0,0,0)",
-        "width_content": 75,
-        "full_width": false,
-        "show_section_divider": true,
-        "line_spacing": 150,
-        "padding_top": 28,
-        "padding_bottom": 28,
-        "show_section_divider_mobile": true,
-        "padding_top_mobile": 28,
-        "padding_bottom_mobile": 28
-      }
-    },
-    "logo_list_GgziEF": {
-      "type": "logo-list",
-      "blocks": {
-        "logo_QK8kBy": {
-          "type": "logo",
-          "disabled": true,
-          "settings": {
-            "image_logo": "shopify://shop_images/plata_fina_certificada_negro.png",
-            "image_link": "",
-            "open_new_window": false
-          }
-        },
-        "logo_XDkGfK": {
-          "type": "logo",
-          "disabled": true,
-          "settings": {
-            "image_logo": "shopify://shop_images/plata_fina_certificada_negro.png",
-            "image_link": "",
-            "open_new_window": false
-          }
-        },
-        "logo_i9Yp4e": {
-          "type": "logo",
-          "disabled": true,
-          "settings": {
-            "image_logo": "shopify://shop_images/plata_fina_certificada_negro.png",
-            "image_link": "",
-            "open_new_window": false
-          }
-        },
-        "logo_byXAtb": {
-          "type": "logo",
-          "disabled": true,
-          "settings": {
-            "image_logo": "shopify://shop_images/plata_fina_certificada_negro.png",
-            "image_link": "",
-            "open_new_window": false
-          }
-        }
-      },
-      "block_order": [
-        "logo_QK8kBy",
-        "logo_XDkGfK",
-        "logo_i9Yp4e",
-        "logo_byXAtb"
-      ],
-      "disabled": true,
-      "name": "t:sections.logo-list.name",
-      "settings": {
-        "heading": "",
-        "highlight_type": "underline",
-        "heading_size": 100,
-        "heading_tag": "h2",
-        "heading_alignment": "center",
-        "corner_image": 0,
-        "show_border": false,
-        "image_ratio": "auto",
-        "background_color_light": "rgba(0,0,0,0)",
-        "background_color_dark": "rgba(0,0,0,0)",
-        "enable_carousel_on_desktop": false,
-        "enable_arrow_mobile": false,
-        "auto_switch_bar": true,
-        "change_bar_every": 5,
-        "show_navigation": true,
-        "columns_desktop": 9,
-        "full_width": false,
-        "show_section_divider": false,
-        "spacing": 16,
-        "padding_top": 28,
-        "padding_bottom": 28,
-        "layout_mobile": "carousel",
-        "columns_mobile": "2",
-        "show_section_divider_mobile": false,
-        "spacing_mobile": 16,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 28
-      }
-    },
-    "custom_liquid_RXYqQR": {
-      "type": "custom-liquid",
-      "disabled": true,
-      "name": "t:sections.custom-liquid.name",
-      "settings": {
-        "custom_liquid": "<div class=\"review-slider-section\">\n\n<h2 class=\"review-title\">Opiniones de nuestros clientes</h2>\n\n<div class=\"review-slider\" id=\"reviewSlider\">\n\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Excelente calidad, la plata se ve muy fina.</p><span>Camila R.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy buena experiencia comprando en esta tienda.</p><span>Valentina M.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Las joyas llegaron perfectas.</p><span>Fernanda L.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Precios muy buenos para la calidad.</p><span>Daniela S.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Compré para revender y me fue excelente.</p><span>Natalia P.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Diseños muy elegantes.</p><span>Carolina G.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>La calidad me sorprendió mucho.</p><span>Sofía T.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy recomendable si buscas plata 925.</p><span>Paula V.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Todo llegó rápido y perfecto.</p><span>Andrea C.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Excelente atención.</p><span>Marcela D.</span></div>\n\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy buena calidad de productos.</p><span>Antonia L.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>La plata se nota auténtica.</p><span>Laura S.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Gran variedad de modelos.</p><span>Verónica M.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Tienda muy confiable.</p><span>Gabriela P.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy satisfecha con la compra.</p><span>Daniela F.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Volveré a comprar.</p><span>Rocío N.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Joyas muy elegantes.</p><span>Camila B.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Excelente precio calidad.</p><span>Valeria R.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy recomendable.</p><span>Claudia T.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Perfecto para emprender.</p><span>Nicole A.</span></div>\n\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Productos hermosos.</p><span>Carla M.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Me encantó la colección.</p><span>Francisca L.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Gran calidad.</p><span>Natalia G.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Todo llegó muy bien protegido.</p><span>Daniela P.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy confiables.</p><span>Macarena S.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Excelente experiencia.</p><span>Paula C.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Volveré a comprar seguro.</p><span>Andrea L.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Joyas muy lindas.</p><span>Camila F.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy buena tienda.</p><span>Valentina D.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Precios excelentes.</p><span>Fernanda R.</span></div>\n\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Me encantó comprar acá.</p><span>Rocío M.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy buena calidad.</p><span>Antonia G.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Piezas preciosas.</p><span>Carolina S.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy recomendable.</p><span>Sofía L.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Todo perfecto.</p><span>Claudia R.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Diseños hermosos.</p><span>Paula N.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Excelente compra.</p><span>Gabriela S.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Joyas increíbles.</p><span>Valeria P.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Gran calidad.</p><span>Natalia C.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy satisfecha.</p><span>Daniela M.</span></div>\n\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Excelente tienda.</p><span>Carla P.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy buena calidad.</p><span>Camila S.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Todo llegó perfecto.</p><span>Fernanda M.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy buena compra.</p><span>Valentina L.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy recomendable.</p><span>Rocío P.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Gran experiencia.</p><span>Claudia M.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Gran calidad.</p><span>Paula S.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Me encantó.</p><span>Andrea P.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Muy buena tienda.</p><span>Natalia R.</span></div>\n<div class=\"review-card\"><div class=\"stars\">★★★★★</div><p>Joyas increíbles.</p><span>Camila N.</span></div>\n\n</div>\n</div>\n\n<style>\n\n.review-slider-section{\nmax-width:1100px;\nmargin:70px auto;\ntext-align:center;\noverflow:hidden;\n}\n\n.review-title{\nfont-size:28px;\nmargin-bottom:30px;\n}\n\n.review-slider{\ndisplay:flex;\ngap:30px;\noverflow-x:auto;\nscroll-snap-type:x mandatory;\npadding:20px 40%;\nscroll-behavior:smooth;\n}\n\n.review-card{\nflex:0 0 340px;\nbackground:#fff;\nborder-radius:12px;\npadding:20px;\nbox-shadow:0 8px 20px rgba(0,0,0,0.08);\nscroll-snap-align:center;\ntext-align:left;\n}\n\n.stars{\ncolor:#f5b301;\nmargin-bottom:8px;\n}\n\n.review-card span{\ndisplay:block;\nmargin-top:10px;\nfont-weight:600;\n}\n\n.review-slider::-webkit-scrollbar{\ndisplay:none;\n}\n\n.review-slider{\nscrollbar-width:none;\n}\n\n@media(max-width:768px){\n\n.review-slider{\npadding:20px 25%;\n}\n\n.review-card{\nflex:0 0 260px;\n}\n\n}\n\n</style>\n\n<script>\n\nconst slider=document.getElementById(\"reviewSlider\")\n\nsetInterval(()=>{\nslider.scrollBy({\nleft:370,\nbehavior:\"smooth\"\n})\n},3500)\n\n</script>",
-        "full_width": false,
-        "show_section_divider": false,
-        "padding_top": 28,
-        "padding_bottom": 28,
-        "full_width_mobile": false,
-        "show_section_divider_mobile": false,
         "padding_top_mobile": 28,
         "padding_bottom_mobile": 28
       }
@@ -786,15 +506,10 @@
   "order": [
     "main",
     "custom_liquid_NLGn9E",
-    "ticker_EDChGG",
     "product-recommendations",
-    "recently_viewed_4h746e",
-    "1773246905d9151850",
-    "custom_liquid_tRBp6e",
-    "custom_liquid_iRmK4m",
-    "multicolumn_FfPreB",
-    "product_description_jXVpPU",
-    "logo_list_GgziEF",
-    "custom_liquid_RXYqQR"
+    "ticker_EDChGG",
+    "banner_pequeno_C9R6ib",
+    "1786119016b83f66d9",
+    "recently_viewed_4h746e"
   ]
 }

@@ -151,24 +151,22 @@ if (!window.Eurus.loadedScript.includes('product-cart.js')) {
                   if (Alpine.store('xQuickView') && Alpine.store('xQuickView').show) {
                     Alpine.store('xQuickView').show = false;
                   }
-                  Alpine.store('xPopup').close();
+                  Alpine.store('xPopup').open = false;
+                  if (Alpine.store('xMiniCart')) {
+                    clearTimeout(Alpine.store('xMiniCart')._popupTimer);
+                    Alpine.store('xMiniCart')._popupTimer = null;
+                  }
                   
                     if((quickView && Alpine.store('xQuickView').buttonQuickView && Alpine.store('xQuickView').buttonQuickView.dataset.addAsBundle) || (!quickView && this.$refs.product_form && this.$refs.product_form.querySelector('[data-add-as-bundle="true"]'))) {
                       document.dispatchEvent(new CustomEvent("eurus:cart:add-as-bundle"));
                     } else {
-                      Alpine.store('xCartHelper').getSectionsToRender().forEach((section => {
-                        const sectionElement = document.querySelector(section.selector);
-                        if (sectionElement) {
-                          if (response.sections[section.id])
-                            sectionElement.innerHTML = getSectionInnerHTML(response.sections[section.id], section.selector);
-                        }
-                      }));
+                      window.renderSectionsFromResponse(response.sections, Alpine.store('xCartHelper').getSectionsToRender());
                       if (!Alpine.store('xCartNoti') || !Alpine.store('xCartNoti').enable) {
                         setTimeout(() => {
                           Alpine.store('xMiniCart').openCart();                  
                         }, 500);
                       }  
-                      Alpine.store('xCartHelper').currentItemCount = parseInt(document.querySelector('#cart-icon-bubble span').innerHTML);
+                      Alpine.store('xCartHelper').currentItemCount = response.item_count ?? window.getCartBubbleCount();
                       document.dispatchEvent(new CustomEvent("eurus:cart:items-changed"));
                     }
                 });
@@ -179,22 +177,20 @@ if (!window.Eurus.loadedScript.includes('product-cart.js')) {
                 if (Alpine.store('xQuickView') && Alpine.store('xQuickView').show) {
                   Alpine.store('xQuickView').show = false;
                 }
-                Alpine.store('xPopup').close();
+                Alpine.store('xPopup').open = false;
+                if (Alpine.store('xMiniCart')) {
+                  clearTimeout(Alpine.store('xMiniCart')._popupTimer);
+                  Alpine.store('xMiniCart')._popupTimer = null;
+                }
                 
                 if((quickView && Alpine.store('xQuickView').buttonQuickView && Alpine.store('xQuickView').buttonQuickView.dataset.addAsBundle) || (!quickView && this.$refs.product_form && this.$refs.product_form.querySelector('[data-add-as-bundle="true"]'))) {
                   document.dispatchEvent(new CustomEvent("eurus:cart:add-as-bundle"));
                 } else {
-                  Alpine.store('xCartHelper').getSectionsToRender().forEach((section => {
-                    const sectionElement = document.querySelector(section.selector);
-                    if (sectionElement) {
-                      if (response.sections[section.id])
-                        sectionElement.innerHTML = getSectionInnerHTML(response.sections[section.id], section.selector);
-                    }
-                  }));
+                  window.renderSectionsFromResponse(response.sections, Alpine.store('xCartHelper').getSectionsToRender());
                   if (!Alpine.store('xCartNoti') || !Alpine.store('xCartNoti').enable) {
                     Alpine.store('xMiniCart').openCart();
                   }               
-                  Alpine.store('xCartHelper').currentItemCount = parseInt(document.querySelector('#cart-icon-bubble span').innerHTML);
+                  Alpine.store('xCartHelper').currentItemCount = response.item_count ?? window.getCartBubbleCount();
                   document.dispatchEvent(new CustomEvent("eurus:cart:items-changed"));
                 }
               }

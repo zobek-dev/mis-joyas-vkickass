@@ -48,16 +48,16 @@
   assign icon_breadcrumbs = settings.breadcrumbs_separator
 %}
 <div class="bg-breadcrumb--{{ section.id }} {{ class_border_desktop }} {{ class_border_mobile }} ltr">
-  <div class="w-full pt-3.5 pb-3.5 text-[rgb(var(--colors-text))]{% if full_width_breadcrumb %} md:pl-5 md:pr-5 {% else %} x-page-width page-width{% endif %} pl-5 pr-5">
+  <div class="w-full pt-[18px] pb-2 text-[13px] leading-normal text-[#737373]{% if full_width_breadcrumb %} md:pl-5 md:pr-5 {% else %} x-page-width page-width{% endif %} pl-5 pr-5">
     <div class="md:pl-0 md:pr-0 {{ mobile_content_alignment }} md:{{ desktop_content_alignment }}">
       {% unless template == 'index' or template == 'cart' %}
-        <div class="capitalize block" role="navigation" aria-label="breadcrumbs">
+        <div class="mj-breadcrumbs capitalize flex flex-wrap items-center gap-2" role="navigation" aria-label="breadcrumbs">
           <a 
-            class="nav-link text-[rgba(var(--colors-text-link))] relative h-fit before-link" 
+            class="nav-link text-[#737373] relative h-fit before-link" 
             href="{{ routes.root_url }}" 
             title="Home"
           >{{ 'general.breadcrumbs.home' | t }}</a>
-          <span class="breadcrumb__divider border-[rgba(var(--colors-text))]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block bottom-1 ml-1 mr-1" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
+          <span class="breadcrumb__divider border-[#737373]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
           {% if template contains 'page' %}
             {% capture schema_seo %}
               {
@@ -87,11 +87,11 @@
             {% endcapture %}
             {% if collection %}
               <a
-                class="nav-link text-[rgba(var(--colors-text-link))] relative h-fit before-link"
+                class="nav-link text-[#737373] relative h-fit before-link"
                 href="{{ collection.url }}"
                 title="{{ collection.title }}"
               >{{ collection.title | escape }}</a>
-              <span class="breadcrumb__divider border-[rgba(var(--colors-text))]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block bottom-1 ml-1 mr-1" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
+              <span class="breadcrumb__divider border-[#737373]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
             {% endif %}
             <span>{{ product.title | escape }}</span>
           {% elsif template contains 'collection' and collection.handle %}
@@ -105,11 +105,11 @@
             {% endcapture %}
             {% if current_tags %}
               <a 
-                class="nav-link text-[rgba(var(--colors-text-link))] relative h-fit before-link" 
+                class="nav-link text-[#737373] relative h-fit before-link" 
                 href="{{ collection.url }}" 
                 title="{{ collection.title }}"
               >{{ collection.title | escape }}</a>
-              <span class="breadcrumb__divider border-[rgba(var(--colors-text))]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block bottom-1 ml-1 mr-1" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
+              <span class="breadcrumb__divider border-[#737373]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
               <span>{{ current_tags | join: " + " }}</span>
             {% else %}
               <span>{{ collection.title | escape }}</span>
@@ -125,11 +125,11 @@
             {% endcapture %}
             {% if current_tags %}
               <a 
-                class="nav-link text-[rgba(var(--colors-text-link))] relative h-fit before-link" 
+                class="nav-link text-[#737373] relative h-fit before-link" 
                 href="{{ blog.url }}" 
                 title="{{ blog.title }}"
               >{{ blog.title | escape }}</a>
-              <span class="breadcrumb__divider border-[rgba(var(--colors-text))]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block bottom-1 ml-1 mr-1" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
+              <span class="breadcrumb__divider border-[#737373]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
               <span>{{ current_tags | join: " + " }}</span>
             {% else %}
             <span>{{ blog.title | escape }}</span>
@@ -150,11 +150,11 @@
               }
             {% endcapture %}
             <a 
-              class="nav-link text-[rgba(var(--colors-text-link))] relative h-fit" 
+              class="nav-link text-[#737373] relative h-fit" 
               href="{{ blog.url }}" 
               title="{{ blog.title }}"
             >{{ blog.title | escape }}</a>
-            <span class="breadcrumb__divider border-[rgba(var(--colors-text))]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block bottom-1 ml-1 mr-1" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
+            <span class="breadcrumb__divider border-[#737373]{% if icon_breadcrumbs == "—" %} w-2.5 border-b{% endif %} inline-block" aria-hidden="true">{% if icon_breadcrumbs != "—" %}{{ icon_breadcrumbs  }}{% endif %}</span>
             <span>{{ article.title | escape }}</span>
           {% else %}
           <span>{{ page_title | escape }}</span>

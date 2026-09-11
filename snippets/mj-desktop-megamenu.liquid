@@ -1,0 +1,338 @@
+{% comment %}
+  MisJoyas desktop mega menu (Figma)
+  Accepts: block
+
+  - Menú con subcolecciones: columnas (extras bajo la primera columna).
+  - Menú plano (sin hijos): category cards con imagen (Figma 2484:9482).
+{% endcomment %}
+{%- liquid
+  assign mega_heading = block.settings.mega_heading
+  assign promo_badge = block.settings.promo_badge
+  assign promo_badge_bg = block.settings.promo_badge_bg
+  assign cta_label = block.settings.cta_label
+  assign cta_link = block.settings.cta_link
+  if cta_link == blank and block.settings.menu_item_link != blank
+    assign cta_link = block.settings.menu_item_link
+  endif
+  assign show_promo_image = true
+  if block.settings.show_promo_image == false
+    assign show_promo_image = false
+  endif
+  assign has_promo = false
+  if show_promo_image and block.settings.promo_image != blank
+    assign has_promo = true
+  endif
+
+  assign menu_links = block.settings.menu.links
+  assign link_count = menu_links.size
+
+  assign is_ofertas = false
+  assign heading_key = block.settings.heading | downcase | strip
+  if heading_key == 'ofertas' or block.settings.menu == 'descuentos-black'
+    assign is_ofertas = true
+  endif
+
+  assign is_flat_categories = true
+  for link in menu_links
+    if link.links != blank
+      assign is_flat_categories = false
+      break
+    endif
+  endfor
+-%}
+
+{%- if is_flat_categories -%}
+  <div class="mj-mega mj-mega--categories{% if is_ofertas %} mj-mega--ofertas{% endif %}">
+    {%- if mega_heading != blank -%}
+      <p class="mj-mega__heading">{{ mega_heading | escape }}</p>
+    {%- endif -%}
+
+    <div class="mj-mega__cats">
+      {%- for link in menu_links -%}
+        {%- liquid
+          assign cat_image = ''
+          case forloop.index
+            when 1
+              assign cat_image = block.settings.category_image_1
+            when 2
+              assign cat_image = block.settings.category_image_2
+            when 3
+              assign cat_image = block.settings.category_image_3
+            when 4
+              assign cat_image = block.settings.category_image_4
+            when 5
+              assign cat_image = block.settings.category_image_5
+            when 6
+              assign cat_image = block.settings.category_image_6
+            when 7
+              assign cat_image = block.settings.category_image_7
+            when 8
+              assign cat_image = block.settings.category_image_8
+          endcase
+
+          assign title_text = link.title
+          assign title_lower = title_text | downcase
+          assign title_stacked = false
+          assign title_line_1 = blank
+          assign title_line_2 = blank
+          if is_ofertas
+            if title_lower contains 'entre '
+              assign title_stacked = true
+              if title_text contains 'Entre '
+                assign title_parts = title_text | split: 'Entre '
+                assign title_line_1 = title_parts.first | append: 'Entre'
+                assign title_line_2 = title_parts.last | strip
+              else
+                assign title_parts = title_text | split: 'entre '
+                assign title_line_1 = title_parts.first | append: 'entre'
+                assign title_line_2 = title_parts.last | strip
+              endif
+            elsif title_lower contains 'sobre '
+              assign title_stacked = true
+              if title_text contains 'Sobre '
+                assign title_parts = title_text | split: 'Sobre '
+                assign title_line_1 = title_parts.first | append: 'Sobre'
+                assign title_line_2 = title_parts.last | strip
+              else
+                assign title_parts = title_text | split: 'sobre '
+                assign title_line_1 = title_parts.first | append: 'sobre'
+                assign title_line_2 = title_parts.last | strip
+              endif
+            endif
+          endif
+        -%}
+        <a href="{{ link.url }}" class="mj-mega__cat">
+          {%- if cat_image != blank -%}
+            <span class="mj-mega__cat-media">
+              {{
+                cat_image
+                | image_url: width: 276
+                | image_tag:
+                  loading: 'lazy',
+                  class: 'mj-mega__cat-img',
+                  widths: '138, 276',
+                  sizes: '138px',
+                  alt: link.title
+              }}
+            </span>
+          {%- else -%}
+            <span class="mj-mega__cat-media mj-mega__cat-media--empty" aria-hidden="true"></span>
+          {%- endif -%}
+          <span class="mj-mega__cat-title{% if title_stacked %} mj-mega__cat-title--stacked{% endif %}">
+            {%- if title_stacked -%}
+              <span class="mj-mega__cat-title-row">{{ title_line_1 | strip | escape }}</span>
+              <span class="mj-mega__cat-title-row">{{ title_line_2 | escape }}</span>
+            {%- else -%}
+              {{ title_text | escape }}
+            {%- endif -%}
+          </span>
+          <span class="mj-mega__cat-line" aria-hidden="true"></span>
+        </a>
+      {%- endfor -%}
+    </div>
+
+    {%- if cta_label != blank -%}
+      <div class="mj-mega__footer">
+        {%- if cta_link != blank -%}
+          <a href="{{ cta_link }}" class="mj-mega__cta">{{ cta_label | escape }}</a>
+        {%- else -%}
+          <span class="mj-mega__cta mj-mega__cta--disabled">{{ cta_label | escape }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- else -%}
+  {%- liquid
+    assign stack_count = 5
+    if link_count < stack_count
+      assign stack_count = link_count
+    endif
+    if stack_count < 1
+      assign stack_count = 1
+    endif
+
+    assign stack_items_0 = ''
+    assign stack_items_1 = ''
+    assign stack_items_2 = ''
+    assign stack_items_3 = ''
+    assign stack_items_4 = ''
+
+    for link in menu_links
+      assign link_token = forloop.index0 | append: ''
+      if forloop.index0 < stack_count
+        assign target = forloop.index0
+      else
+        assign target = 0
+      endif
+
+      if target == 0
+        if stack_items_0 != blank
+          assign stack_items_0 = stack_items_0 | append: ',' | append: link_token
+        else
+          assign stack_items_0 = link_token
+        endif
+      elsif target == 1
+        assign stack_items_1 = link_token
+      elsif target == 2
+        assign stack_items_2 = link_token
+      elsif target == 3
+        assign stack_items_3 = link_token
+      else
+        assign stack_items_4 = link_token
+      endif
+    endfor
+  -%}
+  <div class="mj-mega{% if is_ofertas %} mj-mega--ofertas{% endif %}{% unless has_promo %} mj-mega--no-promo{% endunless %}">
+    {%- if mega_heading != blank -%}
+      <p class="mj-mega__heading">{{ mega_heading | escape }}</p>
+    {%- endif -%}
+
+    <div class="mj-mega__body">
+      <div class="mj-mega__columns">
+        {%- for stack_i in (0..4) -%}
+          {%- if stack_i >= stack_count -%}{%- break -%}{%- endif -%}
+          {%- liquid
+            case stack_i
+              when 0
+                assign stack_items = stack_items_0
+              when 1
+                assign stack_items = stack_items_1
+              when 2
+                assign stack_items = stack_items_2
+              when 3
+                assign stack_items = stack_items_3
+              else
+                assign stack_items = stack_items_4
+            endcase
+            assign stack_indexes = stack_items | split: ','
+          -%}
+          {%- if stack_items == blank -%}{%- continue -%}{%- endif -%}
+          <div class="mj-mega__stack">
+            {%- for idx_str in stack_indexes -%}
+              {%- assign idx = idx_str | plus: 0 -%}
+              {%- for link in menu_links offset: idx limit: 1 -%}
+                <div class="mj-mega__col">
+                  {%- liquid
+                    assign title_text = link.title
+                    assign title_lower = title_text | downcase
+                    assign title_stacked = false
+                    assign title_line_1 = blank
+                    assign title_line_2 = blank
+                    if is_ofertas
+                      if title_lower contains 'entre '
+                        assign title_stacked = true
+                        if title_text contains 'Entre '
+                          assign title_parts = title_text | split: 'Entre '
+                          assign title_line_1 = title_parts.first | append: 'Entre'
+                          assign title_line_2 = title_parts.last | strip
+                        else
+                          assign title_parts = title_text | split: 'entre '
+                          assign title_line_1 = title_parts.first | append: 'entre'
+                          assign title_line_2 = title_parts.last | strip
+                        endif
+                      elsif title_lower contains 'sobre '
+                        assign title_stacked = true
+                        if title_text contains 'Sobre '
+                          assign title_parts = title_text | split: 'Sobre '
+                          assign title_line_1 = title_parts.first | append: 'Sobre'
+                          assign title_line_2 = title_parts.last | strip
+                        else
+                          assign title_parts = title_text | split: 'sobre '
+                          assign title_line_1 = title_parts.first | append: 'sobre'
+                          assign title_line_2 = title_parts.last | strip
+                        endif
+                      endif
+                    endif
+                  -%}
+                  <a
+                    href="{{ link.url }}"
+                    class="mj-mega__col-title{% if title_stacked %} mj-mega__col-title--stacked{% endif %}"
+                  >
+                    {%- if title_stacked -%}
+                      <span class="mj-mega__col-title-row">{{ title_line_1 | strip | escape }}</span>
+                      <span class="mj-mega__col-title-row">{{ title_line_2 | escape }}</span>
+                    {%- else -%}
+                      {{ title_text | escape }}
+                    {%- endif -%}
+                  </a>
+                  <span class="mj-mega__col-line" aria-hidden="true"></span>
+                  {%- if link.links != blank -%}
+                    <ul class="mj-mega__links" role="list">
+                      {%- for childlink in link.links -%}
+                        <li class="mj-mega__link-item">
+                          <a href="{{ childlink.url }}" class="mj-mega__link">{{ childlink.title | escape }}</a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if has_promo -%}
+        <div class="mj-mega__promo">
+          {%- if promo_badge != blank -%}
+            <span
+              class="mj-mega__badge"
+              {% if promo_badge_bg != blank and promo_badge_bg.alpha != 0.0 %}
+                style="background-color: {{ promo_badge_bg }};"
+              {% endif %}
+            >{{ promo_badge | escape }}</span>
+          {%- endif -%}
+
+          <div class="mj-mega__promo-frame">
+            <img
+              class="mj-mega__sparkle mj-mega__sparkle--left"
+              src="{{ 'mj-mega-sparkle.png' | asset_url }}"
+              width="55"
+              height="55"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            >
+            <div class="mj-mega__promo-media">
+              {%- liquid
+                assign promo_alt = block.settings.promo_image.alt
+                if promo_alt == blank
+                  assign promo_alt = block.settings.heading
+                endif
+              -%}
+              {{
+                block.settings.promo_image
+                | image_url: width: 720
+                | image_tag:
+                  loading: 'lazy',
+                  class: 'mj-mega__promo-img',
+                  widths: '260, 360, 520, 720',
+                  sizes: '260px',
+                  alt: promo_alt
+              }}
+            </div>
+            <img
+              class="mj-mega__sparkle mj-mega__sparkle--right"
+              src="{{ 'mj-mega-sparkle.png' | asset_url }}"
+              width="55"
+              height="55"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            >
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if cta_label != blank -%}
+      <div class="mj-mega__footer">
+        {%- if cta_link != blank -%}
+          <a href="{{ cta_link }}" class="mj-mega__cta">{{ cta_label | escape }}</a>
+        {%- else -%}
+          <span class="mj-mega__cta mj-mega__cta--disabled">{{ cta_label | escape }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

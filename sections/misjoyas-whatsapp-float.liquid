@@ -1,0 +1,178 @@
+{%- if section.settings.enable -%}
+{%- liquid
+  assign wa_phone = section.settings.phone | default: '56945454917' | strip | replace: '+', '' | replace: ' ', '' | replace: '-', ''
+  assign wa_message = section.settings.message | default: '¡Hola! 👋 Me gustaría hacer una consulta con MisJoyas. ¿Me pueden orientar, por favor?'
+  assign wa_text = wa_message | url_encode
+  assign wa_url = 'https://wa.me/' | append: wa_phone | append: '?text=' | append: wa_text
+  assign size_desktop = section.settings.size_desktop | default: 60
+  assign size_mobile = section.settings.size_mobile | default: 50
+  assign right_desktop = section.settings.offset_right | default: 20
+  assign right_mobile = section.settings.offset_right_mobile | default: 17
+  assign bottom_desktop = section.settings.offset_bottom | default: 24
+  assign bottom_mobile = section.settings.offset_bottom_mobile | default: 20
+-%}
+{%- style -%}
+  .mj-wa-float-{{ section.id }} {
+    --mj-wa-bottom: {{ bottom_mobile }}px;
+    position: fixed;
+    z-index: {{ section.settings.z_index | default: 100 }};
+    bottom: var(--mj-wa-bottom);
+    right: {{ right_mobile }}px;
+    width: {{ size_mobile }}px;
+    height: {{ size_mobile }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    line-height: 0;
+    text-decoration: none;
+    transition: transform 0.2s ease, bottom 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+  .mj-wa-float-{{ section.id }}:hover,
+  .mj-wa-float-{{ section.id }}:focus-visible {
+    transform: scale(1.05);
+    outline: none;
+  }
+  .mj-wa-float-{{ section.id }} img {
+    display: block;
+    width: {{ size_mobile }}px;
+    height: {{ size_mobile }}px;
+    object-fit: contain;
+  }
+  @media (min-width: 768px) {
+    .mj-wa-float-{{ section.id }} {
+      --mj-wa-bottom: {{ bottom_desktop }}px;
+      right: {{ right_desktop }}px;
+      width: {{ size_desktop }}px;
+      height: {{ size_desktop }}px;
+    }
+    .mj-wa-float-{{ section.id }} img {
+      width: {{ size_desktop }}px;
+      height: {{ size_desktop }}px;
+    }
+  }
+{%- endstyle -%}
+
+<a
+  class="mj-wa-float mj-wa-float-{{ section.id }}"
+  href="{{ wa_url }}"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="{{ 'sections.misjoyas-whatsapp-float.aria_label' | t }}"
+  data-mj-wa-float
+>
+  <img
+    src="{{ 'misjoyas-icon-whatsapp.svg' | asset_url }}"
+    alt=""
+    width="{{ size_desktop }}"
+    height="{{ size_desktop }}"
+    loading="lazy"
+    decoding="async"
+  >
+</a>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "WhatsApp flotante",
+  "tag": "section",
+  "class": "section-misjoyas-whatsapp-float",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Activar botón flotante",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Teléfono (con código de país)",
+      "default": "56945454917",
+      "info": "Solo números, sin + ni espacios. Ej: 56945454917"
+    },
+    {
+      "type": "textarea",
+      "id": "message",
+      "label": "Mensaje prellenado",
+      "default": "¡Hola! 👋 Me gustaría hacer una consulta con MisJoyas. ¿Me pueden orientar, por favor?"
+    },
+    {
+      "type": "header",
+      "content": "Posición"
+    },
+    {
+      "type": "range",
+      "id": "offset_bottom",
+      "label": "Margen inferior — escritorio (px)",
+      "min": 8,
+      "max": 80,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "offset_bottom_mobile",
+      "label": "Margen inferior — móvil (px)",
+      "min": 8,
+      "max": 80,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "offset_right",
+      "label": "Margen derecho — escritorio (px)",
+      "min": 8,
+      "max": 48,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "offset_right_mobile",
+      "label": "Margen derecho — móvil (px)",
+      "min": 8,
+      "max": 48,
+      "step": 1,
+      "default": 17
+    },
+    {
+      "type": "header",
+      "content": "Tamaño"
+    },
+    {
+      "type": "range",
+      "id": "size_desktop",
+      "label": "Tamaño — escritorio (px)",
+      "min": 40,
+      "max": 80,
+      "step": 2,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "size_mobile",
+      "label": "Tamaño — móvil (px)",
+      "min": 40,
+      "max": 72,
+      "step": 2,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "label": "Z-index",
+      "min": 10,
+      "max": 200,
+      "step": 10,
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "WhatsApp flotante"
+    }
+  ]
+}
+{% endschema %}

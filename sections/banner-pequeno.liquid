@@ -1,0 +1,397 @@
+{%- liquid
+  assign pad_x = section.settings.padding_x | default: 80
+  assign pad_x_mobile = section.settings.padding_x_mobile | default: 20
+  assign pad_y = section.settings.padding_y | default: 40
+  assign pad_y_mobile = section.settings.padding_y_mobile | default: 40
+  assign banner_h = section.settings.banner_height | default: 246
+  assign banner_h_mobile = section.settings.banner_height_mobile | default: 550
+  assign radius = section.settings.border_radius | default: 4
+
+  assign media_image = section.settings.image
+  assign media_image_mobile = section.settings.image_mobile
+  assign has_media = false
+  if media_image != blank or media_image_mobile != blank
+    assign has_media = true
+  endif
+
+  if section.settings.image_alt != blank
+    assign media_alt = section.settings.image_alt
+  else
+    assign media_alt = 'sections.banner-pequeno.alt' | t
+  endif
+
+  assign button_position = section.settings.button_position | default: 'right'
+  if button_position != 'left' and button_position != 'right'
+    assign button_position = 'right'
+  endif
+
+  # Ratio desktop: imagen real o artboard 1440 × altura configurada
+  assign desktop_ratio_w = 1440
+  assign desktop_ratio_h = banner_h
+  if media_image != blank and media_image.width > 0 and media_image.height > 0
+    assign desktop_ratio_w = media_image.width
+    assign desktop_ratio_h = media_image.height
+  endif
+-%}
+
+{%- style -%}
+  .banner-pequeno-{{ section.id }} {
+    --bp-h: {{ banner_h }}px;
+    --bp-h-mobile: {{ banner_h_mobile }}px;
+    --bp-desktop-ratio: {{ desktop_ratio_w }} / {{ desktop_ratio_h }};
+    --bp-radius: {{ radius }}px;
+    --bp-pad-x: {{ pad_x }}px;
+    --bp-pad-x-mobile: {{ pad_x_mobile }}px;
+    width: 100%;
+    padding: {{ pad_y_mobile }}px var(--bp-pad-x-mobile);
+    box-sizing: border-box;
+  }
+  @media (min-width: 768px) {
+    .banner-pequeno-{{ section.id }} {
+      padding: {{ pad_y }}px var(--bp-pad-x);
+    }
+  }
+  .banner-pequeno-{{ section.id }} .banner-pequeno__frame {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-radius: var(--bp-radius);
+    overflow: hidden;
+    background: #1a1a1a;
+  }
+  @media (min-width: 768px) {
+    .banner-pequeno-{{ section.id }} .banner-pequeno__frame {
+      height: auto;
+      aspect-ratio: var(--bp-desktop-ratio);
+    }
+  }
+  .banner-pequeno-{{ section.id }} .banner-pequeno__media {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+  }
+  @media (min-width: 768px) {
+    .banner-pequeno-{{ section.id }} .banner-pequeno__media {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+    }
+  }
+  .banner-pequeno-{{ section.id }} .banner-pequeno__picture {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  @media (min-width: 768px) {
+    .banner-pequeno-{{ section.id }} .banner-pequeno__picture {
+      height: 100%;
+    }
+  }
+  .banner-pequeno-{{ section.id }} .banner-pequeno__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: unset;
+    object-position: center;
+  }
+  @media (min-width: 768px) {
+    .banner-pequeno-{{ section.id }} .banner-pequeno__img {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .banner-pequeno-{{ section.id }} .banner-pequeno__content {
+    position: absolute;
+    z-index: 2;
+    left: 20px;
+    right: 20px;
+    bottom: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  @media (min-width: 768px) {
+    .banner-pequeno-{{ section.id }} .banner-pequeno__content {
+      left: 49px;
+      right: 49px;
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%);
+      align-items: center;
+    }
+    .banner-pequeno-{{ section.id }} .banner-pequeno__content--left {
+      justify-content: flex-start;
+    }
+    .banner-pequeno-{{ section.id }} .banner-pequeno__content--right {
+      justify-content: flex-end;
+    }
+  }
+  .banner-pequeno-{{ section.id }} .banner-pequeno__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 50px;
+    padding: 12px 32px;
+    border: 0;
+    border-radius: 4px;
+    background: {{ section.settings.button_bg | default: '#f83785' }};
+    background-image: none;
+    color: {{ section.settings.button_color | default: '#ffffff' }};
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .banner-pequeno-{{ section.id }} .banner-pequeno__cta:hover,
+  .banner-pequeno-{{ section.id }} .banner-pequeno__cta:focus,
+  .banner-pequeno-{{ section.id }} .banner-pequeno__cta:focus-visible,
+  .banner-pequeno-{{ section.id }} .banner-pequeno__cta:active {
+    background: #000 !important;
+    background-image: none !important;
+    color: #fff !important;
+    text-decoration: none;
+  }
+  .banner-pequeno-{{ section.id }} .banner-pequeno__cta::before,
+  .banner-pequeno-{{ section.id }} .banner-pequeno__cta::after {
+    content: none !important;
+    display: none !important;
+  }
+  .banner-pequeno-{{ section.id }} .banner-pequeno__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #eae3d9;
+    color: #222;
+    font-size: 0.875rem;
+    text-align: center;
+    padding: 1.5rem;
+  }
+{%- endstyle -%}
+
+<div
+  class="banner-pequeno-{{ section.id }}"
+  role="region"
+  aria-label="{{ 'sections.banner-pequeno.aria_label' | t }}"
+>
+  <div class="banner-pequeno__frame">
+    {%- if has_media -%}
+      <div class="banner-pequeno__media">
+        <picture class="banner-pequeno__picture">
+          {%- if media_image_mobile != blank -%}
+            <source
+              media="(max-width: 767px)"
+              srcset="
+                {{ media_image_mobile | image_url: width: 750 }} 750w,
+                {{ media_image_mobile | image_url: width: 1100 }} 1100w
+              "
+              sizes="100vw"
+            >
+          {%- endif -%}
+          {%- if media_image != blank -%}
+            {{
+              media_image
+              | image_url: width: 2400
+              | image_tag:
+                class: 'banner-pequeno__img',
+                widths: '750, 1100, 1600, 2000, 2400',
+                sizes: '(min-width: 768px) calc(100vw - 160px), calc(100vw - 40px)',
+                alt: media_alt,
+                loading: 'lazy'
+            }}
+          {%- elsif media_image_mobile != blank -%}
+            {{
+              media_image_mobile
+              | image_url: width: 1100
+              | image_tag:
+                class: 'banner-pequeno__img',
+                widths: '750, 1100',
+                sizes: '100vw',
+                alt: media_alt,
+                loading: 'lazy'
+            }}
+          {%- endif -%}
+        </picture>
+      </div>
+
+      {%- if section.settings.button_label != blank -%}
+        <div class="banner-pequeno__content banner-pequeno__content--{{ button_position }}">
+          {%- if section.settings.button_link != blank -%}
+            <a
+              href="{{ section.settings.button_link }}"
+              class="banner-pequeno__cta disable-effect"
+              {% if section.settings.open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}
+            >
+              {{ section.settings.button_label | escape }}
+            </a>
+          {%- else -%}
+            <span class="banner-pequeno__cta">{{ section.settings.button_label | escape }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- elsif request.design_mode -%}
+      <div class="banner-pequeno__placeholder">
+        {{ 'sections.banner-pequeno.placeholder' | t }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner pequeño",
+  "tag": "section",
+  "class": "section-banner-pequeno",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen (escritorio)",
+      "info": "Recomendado 1280×246 px. Título y textos van en la imagen."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Imagen (móvil)",
+      "info": "Recomendado 400×550 px."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Texto alternativo"
+    },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Ver nueva línea"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "select",
+      "id": "button_position",
+      "label": "Posición del botón (escritorio)",
+      "info": "En móvil el botón siempre va abajo centrado.",
+      "options": [
+        {
+          "value": "left",
+          "label": "Izquierda"
+        },
+        {
+          "value": "right",
+          "label": "Derecha"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_new_window",
+      "label": "Abrir enlace en nueva pestaña",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Fondo del botón",
+      "default": "#f83785"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Texto del botón",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "label": "Altura — escritorio (px)",
+      "min": 180,
+      "max": 400,
+      "step": 4,
+      "default": 248
+    },
+    {
+      "type": "range",
+      "id": "banner_height_mobile",
+      "label": "Altura — móvil (px)",
+      "min": 400,
+      "max": 700,
+      "step": 4,
+      "default": 552
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Radio de esquinas (px)",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_x",
+      "label": "Padding lateral — escritorio (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mobile",
+      "label": "Padding lateral — móvil (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Padding vertical — escritorio (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mobile",
+      "label": "Padding vertical — móvil (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner pequeño"
+    }
+  ]
+}
+{% endschema %}

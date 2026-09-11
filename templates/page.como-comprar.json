@@ -43,7 +43,7 @@
         "text_HrYh7F": {
           "type": "text",
           "settings": {
-            "text": "<p>Para comprar en nuestro Catálogo Online Mayorista, debes registrarte y agregar al Carro de Compras los productos que tu elijas.<br/><br/>El mínimo de compra es $49.990 y sobre $99.990 el envío es GRATIS.</p>",
+            "text": "<p>Para comprar en nuestro Catálogo Online Mayorista, debes registrarte y agregar al Carro de Compras los productos que tu elijas.<br/><br/>El mínimo de compra es $39.990 y sobre $99.990 el envío es GRATIS.</p>",
             "number_of_lines_shown": "none",
             "read_more_label": "Read more",
             "see_less_label": "See less"

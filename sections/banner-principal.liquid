@@ -1,45 +1,66 @@
 {%- liquid
   assign enable_slider = false
-  if section.blocks.size > 1
-    assign enable_slider = true
-  endif
-  assign desktop_height = section.settings.banner_height
-  assign mobile_height = section.settings.banner_height_mobile
+  assign visible_blocks_count = 0
 
   assign mobile_ar_w = 750
   assign mobile_ar_h = 400
   assign desktop_ar_w = 1920
   assign desktop_ar_h = 580
+-%}
 
-  for block in section.blocks
-    assign block_desktop = block.settings.image
-    assign block_mobile = block.settings.image_mobile
+{%- for block in section.blocks -%}
+  {%- capture slide_visible_capture -%}
+    {%- render 'banner-principal-slide-visible',
+      schedule_enabled: block.settings.schedule_enabled,
+      schedule_start: block.settings.schedule_start,
+      schedule_end: block.settings.schedule_end
+    -%}
+  {%- endcapture -%}
+  {%- assign slide_visible = slide_visible_capture | strip -%}
 
-    if block_desktop != blank
-      assign cmp_desktop = block_desktop.height | times: desktop_ar_w
-      assign cmp_desktop_ref = desktop_ar_h | times: block_desktop.width
-      if cmp_desktop > cmp_desktop_ref
-        assign desktop_ar_h = block_desktop.height
-        assign desktop_ar_w = block_desktop.width
-      endif
-    endif
+  {%- if slide_visible == 'true' -%}
+    {%- assign visible_blocks_count = visible_blocks_count | plus: 1 -%}
 
-    if block_mobile != blank
-      assign cmp_mobile = block_mobile.height | times: mobile_ar_w
-      assign cmp_mobile_ref = mobile_ar_h | times: block_mobile.width
-      if cmp_mobile > cmp_mobile_ref
-        assign mobile_ar_h = block_mobile.height
-        assign mobile_ar_w = block_mobile.width
+    {%- liquid
+      assign block_desktop = block.settings.image
+      assign block_mobile = block.settings.image_mobile
+
+      if block_desktop != blank
+        assign cmp_desktop = block_desktop.height | times: desktop_ar_w
+        assign cmp_desktop_ref = desktop_ar_h | times: block_desktop.width
+        if cmp_desktop > cmp_desktop_ref
+          assign desktop_ar_h = block_desktop.height
+          assign desktop_ar_w = block_desktop.width
+        endif
       endif
-    elsif block_desktop != blank
-      assign cmp_mobile = block_desktop.height | times: mobile_ar_w
-      assign cmp_mobile_ref = mobile_ar_h | times: block_desktop.width
-      if cmp_mobile > cmp_mobile_ref
-        assign mobile_ar_h = block_desktop.height
-        assign mobile_ar_w = block_desktop.width
+
+      if block_mobile != blank
+        assign cmp_mobile = block_mobile.height | times: mobile_ar_w
+        assign cmp_mobile_ref = mobile_ar_h | times: block_mobile.width
+        if cmp_mobile > cmp_mobile_ref
+          assign mobile_ar_h = block_mobile.height
+          assign mobile_ar_w = block_mobile.width
+        endif
+      elsif block_desktop != blank
+        assign cmp_mobile = block_desktop.height | times: mobile_ar_w
+        assign cmp_mobile_ref = mobile_ar_h | times: block_desktop.width
+        if cmp_mobile > cmp_mobile_ref
+          assign mobile_ar_h = block_desktop.height
+          assign mobile_ar_w = block_desktop.width
+        endif
       endif
-    endif
-  endfor
+    -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- liquid
+  if visible_blocks_count > 1
+    assign enable_slider = true
+  endif
+
+  assign desktop_height = section.settings.banner_height
+  assign mobile_height = section.settings.banner_height_mobile
+  assign visible_slide_index = 0
 -%}
 
 {%- style -%}
@@ -52,10 +73,11 @@
     line-height: 0;
   }
   @media (min-width: 768px) {
+    /* Altura por aspect-ratio del slide (sin clamp 30vw que acortaba al achicar) */
     .banner-principal-{{ section.id }} {
       --banner-principal-slide-h: min(
         calc(100vw * {{ desktop_ar_h }} / {{ desktop_ar_w }}),
-        clamp(300px, 30vw, var(--banner-principal-max-h))
+        var(--banner-principal-max-h)
       );
     }
   }
@@ -188,6 +210,13 @@
   role="region"
   aria-label="{{ 'sections.banner-principal.aria_label' | t }}"
 >
+  {%- if visible_blocks_count == 0 -%}
+    {%- if request.design_mode -%}
+      <div class="banner-principal__placeholder tw-p-8 tw-text-center tw-text-sm tw-text-[#737373]">
+        {{ 'sections.banner-principal.no_active_slides' | t }}
+      </div>
+    {%- endif -%}
+  {%- else -%}
   <div
     id="x-banner-principal-{{ section.id }}"
     class="banner-principal__slider splide-slideshow overflow-hidden visible tw-w-full{% if enable_slider %} x-splide splide disable-effect-hover{% endif %}"
@@ -215,7 +244,19 @@
     <div class="{% if enable_slider %}splide__track{% endif %} overflow-hidden h-full">
       <div class="{% if enable_slider %}splide__list flex h-full{% else %}h-full{% endif %}">
         {%- for block in section.blocks -%}
+          {%- capture slide_visible_capture -%}
+            {%- render 'banner-principal-slide-visible',
+              schedule_enabled: block.settings.schedule_enabled,
+              schedule_start: block.settings.schedule_start,
+              schedule_end: block.settings.schedule_end
+            -%}
+          {%- endcapture -%}
+          {%- assign slide_visible = slide_visible_capture | strip -%}
+          {%- unless slide_visible == 'true' -%}
+            {%- continue -%}
+          {%- endunless -%}
           {%- liquid
+            assign visible_slide_index = visible_slide_index | plus: 1
             assign slide_image = block.settings.image
             assign slide_image_mobile = block.settings.image_mobile
             assign slide_link = block.settings.link
@@ -224,7 +265,7 @@
             else
               assign slide_alt = 'sections.banner-principal.slide_alt' | t
             endif
-            if forloop.first
+            if visible_slide_index == 1
               assign slide_loading = 'eager'
               assign slide_fetchpriority = 'high'
             else
@@ -323,6 +364,7 @@
       </div>
     {%- endif -%}
   </div>
+  {%- endif -%}
 </div>
 
 {% schema %}
@@ -405,6 +447,29 @@
           "id": "open_new_window",
           "label": "Abrir enlace en nueva pestaña",
           "default": false
+        },
+        {
+          "type": "header",
+          "content": "Programación por fecha"
+        },
+        {
+          "type": "checkbox",
+          "id": "schedule_enabled",
+          "label": "Activar programación",
+          "default": false,
+          "info": "Si está activo, la diapositiva solo se muestra según las fechas indicadas (hora de la tienda). Sin inicio: visible hasta el fin. Sin fin: visible desde el inicio en adelante. En el editor del tema siempre se previsualiza."
+        },
+        {
+          "type": "text",
+          "id": "schedule_start",
+          "label": "Inicio",
+          "info": "Opcional. Ej: 2026-08-01 00:00:00 o 2026-08-01. Si se deja vacío, la diapositiva estará activa hasta la fecha de fin."
+        },
+        {
+          "type": "text",
+          "id": "schedule_end",
+          "label": "Fin",
+          "info": "Opcional. Ej: 2026-08-31 23:59:59 o 2026-08-31. Si se deja vacío, la diapositiva no se oculta después del inicio."
         }
       ]
     }
